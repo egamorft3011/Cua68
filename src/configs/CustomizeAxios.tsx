@@ -67,7 +67,7 @@ contentInstance.interceptors.response.use(
     console.log(error.response);
 
     if (error.response && error.response.status === 401) {
-      window.localStorage.removeItem("token68bet");
+      window.localStorage.removeItem("tokenCUA68");
       window.localStorage.removeItem("txInfo");
     }
 

@@ -346,12 +346,12 @@ const VipPrivilegesPage: React.FC = () => {
                 lineHeight: 1.5,
               }}
             >
-              Chào mừng Quý thành viên đến với CLUB VIP của 68BET!
+              Chào mừng Quý thành viên đến với CLUB VIP của CUA68!
             </Typography>
             <Typography
               sx={{ fontSize: { xs: '14px', md: '24px' }, my: '14px', lineHeight: 1.5 }}
             >
-              <span style={{ color: 'red' }}>※ Đối tượng áp dụng:</span> Tất cả Hội viên của 68BET
+              <span style={{ color: 'red' }}>※ Đối tượng áp dụng:</span> Tất cả Hội viên của CUA68
             </Typography>
             <Typography
               sx={{ fontSize: { xs: '14px', md: '24px' }, my: '14px', lineHeight: 1.5 }}
@@ -363,7 +363,7 @@ const VipPrivilegesPage: React.FC = () => {
             >
               <span style={{ color: 'red' }}>※ Nội dung khuyến mãi:</span> Với mong muốn mang lại cho Quý khách hàng
               những trải nghiệm đẳng cấp và các ưu đãi đặc biệt VIP dành riêng cho Quý khách hàng luôn đồng hành và
-              gắn bó cùng 68BET. Chương trình VIP CLUB của 68BET là chương trình khuyến mãi đặc biệt ưu đãi cho Quý
+              gắn bó cùng CUA68. Chương trình VIP CLUB của CUA68 là chương trình khuyến mãi đặc biệt ưu đãi cho Quý
               thành viên VIP dựa điểm nạp tích lũy và tổng cược hợp lệ tích luỹ của Quý thành viên, mỗi cấp bậc sẽ
               có từng mức ưu đãi khác nhau và cấp VIP càng cao nhận được càng nhiều ưu đãi.
             </Typography>
@@ -403,14 +403,14 @@ const VipPrivilegesPage: React.FC = () => {
             <Typography
               sx={{ fontSize: { xs: '14px', md: '24px' }, my: '14px', lineHeight: 1.5 }}
             >
-              ※ Tất cả các chương trình ưu đãi của 68BET đều được thiết kế đặc biệt dành cho người chơi. Nếu phát
-              hiện bất kỳ nhóm hoặc cá nhân nào có hành vi gian lận để nhận tiền thưởng 68BET có quyền đóng băng
+              ※ Tất cả các chương trình ưu đãi của CUA68 đều được thiết kế đặc biệt dành cho người chơi. Nếu phát
+              hiện bất kỳ nhóm hoặc cá nhân nào có hành vi gian lận để nhận tiền thưởng CUA68 có quyền đóng băng
               hoặc hủy bỏ tài khoản và số dư tài khoản của nhóm hoặc cá nhân đó.
             </Typography>
             <Typography
               sx={{ fontSize: { xs: '14px', md: '24px' }, my: '14px', lineHeight: 1.5 }}
             >
-              ※ 68BET có quyền giải thích cuối cùng về các sự kiện và quyền sửa đổi hoặc chấm dứt sự kiện mà không
+              ※ CUA68 có quyền giải thích cuối cùng về các sự kiện và quyền sửa đổi hoặc chấm dứt sự kiện mà không
               cần thông báo, áp dụng đối với tất cả các ưu đãi.
             </Typography>
           </Box>

@@ -105,7 +105,7 @@ export default function FooterPage({ pageConfig }: FooterProps) {
           </div>
         </div>
         <div className="title-2">
-          <p>Copyright © 2024 Powered By 68BET All Rights Reserved.</p>
+          <p>Copyright © 2024 Powered By CUA68 All Rights Reserved.</p>
           <div className="title-img2">
             <Image
               src={"/images/copyright-logo.png"}
@@ -138,17 +138,17 @@ export default function FooterPage({ pageConfig }: FooterProps) {
           <h3>Liên hệ</h3>
           <div className="footer-links">
             <button>💬 Live chat 24/7</button>
-            <button>📲 Telegram 68BET</button>
+            <button>📲 Telegram CUA68</button>
             <button>👥 Cộng đồng</button>
             <button>📞 Hotline</button>
-            <button>📘 Fanpage 68BET</button>
+            <button>📘 Fanpage CUA68</button>
           </div>
         </div>
         <h2>
-          68BET - Nhà cái thể thao trực tuyến, Siêu chợ games đổi thưởng đỉnh cao
+          CUA68 - Nhà cái thể thao trực tuyến, Siêu chợ games đổi thưởng đỉnh cao
         </h2>
         <p className="footer-note">
-          68BET là trang cá cược thể thao hấp dẫn, cung cấp đa dạng về sản phẩm
+          CUA68 là trang cá cược thể thao hấp dẫn, cung cấp đa dạng về sản phẩm
           trò chơi như Thể Thao, Trò Chơi, Casino Trực Tuyến và thưởng hoàn trả
           cao nhất trên thị trường.
         </p>

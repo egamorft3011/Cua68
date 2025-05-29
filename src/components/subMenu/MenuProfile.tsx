@@ -110,7 +110,7 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
       text: "Đăng xuất",
       icon: <LogoutMenuIcon />,
       onClick: () => {
-        window.localStorage.removeItem("token68bet");
+        window.localStorage.removeItem("tokenCUA68");
         window.localStorage.removeItem("txInfo");
         window.location.href = "/";
       },

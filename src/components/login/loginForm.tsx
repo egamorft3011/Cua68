@@ -71,7 +71,7 @@ const DialogLogin = (props: propPopup) => {
       try {
         const res:any = await loginUser(userName, password);
         if (res?.status === true) {
-          window.localStorage.setItem("token68bet", res?.access_token);
+          window.localStorage.setItem("tokenCUA68", res?.access_token);
           window.location.href = "/";
         } else {
           toast.error(res?.msg);

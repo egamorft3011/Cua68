@@ -121,7 +121,7 @@ export default function MiniGameIframeComponent({
           >
             <iframe
               key={iframeKey} // Sử dụng key để buộc tải lại
-              src={`https://client.68bet.win/${txLink}`}
+              src={`https://client.CUA68.win/${txLink}`}
               width="100%"
               height="100%"
               style={{ border: "none", backgroundColor: "transparent" }}
