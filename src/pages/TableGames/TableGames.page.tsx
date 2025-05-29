@@ -95,7 +95,7 @@ export default function TableGamesPage() {
                 gridTemplateRows: "1fr 1fr",
                 justifyItems: "center",
                 "&:hover": {
-                  background: "#ff0000",
+                  background: " #ff0000",
                 },
               }}
               key={item.id}
@@ -145,7 +145,7 @@ export default function TableGamesPage() {
                 flexShrink: 0,
                 background:
                   item?.id === acctiveMenu
-                    ? "#ff0000"
+                    ? " #ff0000"
                     : "linear-gradient(180deg, #592929, #4f2323);",
                 border: "1px solid #753838",
                 color: "white",
@@ -155,7 +155,7 @@ export default function TableGamesPage() {
                 overflow: "hidden",
                 whiteSpace: "nowrap",
                 "&:hover": {
-                  background: "#ff0000",
+                  background: " #ff0000",
                 },
               }}
               key={item.id}
