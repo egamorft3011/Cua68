@@ -67,7 +67,7 @@ export default function LiveCasinoPage() {
 
   const buttonStyles = {
     backgroundImage:
-      "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%,rgb(255, 8, 8)rgb(224, 38, 38)2692e0 8rgb(224, 38, 38)rgb(224, 38, 38) 180.18deg,rgb(255, 8, 8) 1turn)",
+      "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
 
     color: "white",
     padding: "10px 20px",
@@ -80,7 +80,7 @@ export default function LiveCasinoPage() {
     transition: "opacity 0.2s ease-in-out",
     "&:hover": {
       backgroundImage:
-        "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%,rgb(255, 8, 8) 0deg,rgb(224, 38, 38) 8rgb(224, 38, 38)rgb(224, 38, 38) 180.18deg,rgb(255, 8, 8) 1turn)",
+        "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
 
       opacity: 1,
       filter: "none",

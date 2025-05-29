@@ -69,7 +69,7 @@ const commonCardStyles = {
 };
 const buttonStyles = {
   backgroundImage:
-    "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+    "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
 
   color: "white",
   padding: "4px 10px",
@@ -82,7 +82,7 @@ const buttonStyles = {
   transition: "opacity 0.2s ease-in-out",
   "&:hover": {
     backgroundImage:
-      "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+      "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
 
     opacity: 1,
     filter: "none",
@@ -191,10 +191,10 @@ export default function FishGameItemPage() {
                 color: "white", // Mặc định chữ màu trắng
               },
               "& .Mui-selected": {
-                backgroundColor: "#0366FE", // Nền màu xanh vàng khi active
+                backgroundColor: "#790f0f", // Nền màu xanh vàng khi active
                 color: "white", // Chữ màu trắng
                 "&:hover": {
-                  backgroundColor: "#0366FE", // Duy trì màu khi hover
+                  backgroundColor: "#580909", // Duy trì màu khi hover
                 },
               },
             }}
