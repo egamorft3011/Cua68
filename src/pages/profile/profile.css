@@ -1,0 +1,195 @@
+.step-label-active {
+    background: linear-gradient(90.08deg, rgba(0, 156, 59, .1) 3.8%, rgba(0, 156, 59, 0) 97.33%);
+    border-left: 3px solid green;
+}
+
+
+.profile-m {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    /* background-color: #020D24; */
+    margin: auto;
+}
+
+.card-content-profile {
+
+    width: "65%";
+    border-radius: 10px,
+}
+
+.step-label {
+    color: white;
+}
+
+.step-title {
+    color: #fff;
+}
+
+.step-title-active {
+    color: #009c3b;
+}
+
+.your-rewards {
+    width: 100%;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #503535;
+    margin-top: 10px;
+}
+
+.your-rewards .title-rewards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.your-rewards .title-rewards h4 {
+    color: #918080;
+    font-weight: 600;
+    height: 50px;
+}
+
+.your-rewards .title-rewards a {
+    text-decoration: none;
+    text-align: right;
+    color: #009c3b;
+}
+
+
+.card:hover>.textBox-container>.textBox,
+.textBox:hover {
+    opacity: 1;
+}
+
+.card:hover>.img {
+    filter: blur(3px);
+    /* Hiệu ứng mờ chỉ áp dụng cho ảnh */
+}
+
+.textBox-btn {
+    background: green;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 3;
+    /* Đảm bảo nút không bị ảnh hưởng */
+}
+
+.img {
+    height: 240px;
+    position: absolute;
+    transition: 0.2s ease-in-out;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.textBox-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    /* Đảm bảo lớp nội dung luôn trên lớp mờ */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    /* Ngăn chặn hover vào container (chỉ áp dụng cho con) */
+}
+
+.textBox {
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    transition: 0.2s ease-in-out;
+    pointer-events: auto;
+    /* Cho phép tương tác với nút bên trong */
+}
+
+.list-game-profile .card.card:hover {
+    transform: scale(1.04) rotate(-1deg);
+}
+
+.list-game-profile .card .card-img {
+    width: 376px;
+    height: 239px;
+    position: relative;
+}
+
+.list-game-profile .card .card-img .title-card {
+    position: absolute;
+    bottom: 5px;
+    left: 50px;
+    font-family: Martian Mono, monospace;
+    font-weight: 700;
+    color: yellow;
+    font-size: 40px;
+}
+
+.list-game-profile .card {
+    width: 120px;
+    height: 200px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: 0.2s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.list-game-profile .card .img {
+    width: 120px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.item-rewards {
+    padding: 8px 0px;
+}
+
+.item-rewards .item-rewards-top {
+    color: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.item-rewards .item-rewards-top p {
+    text-align: right;
+    font-weight: bold;
+    color: white;
+}
+
+.item-rewards .progress {
+    background-color: #503535;
+    height: 12px;
+    width: 100%;
+    border-radius: 5px;
+}
+
+@media(max-width: 600px) {
+    .profile-main {
+        display: none;
+    }
+
+    .card-content-profile {
+        width: "90%";
+    }
+
+    .profile-m {
+        width: 100%;
+    }
+}

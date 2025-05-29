@@ -1,0 +1,40 @@
+.casino {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.casino .title-casino {
+    width: 180px;
+    height: 50px;
+    border-radius: 8px;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    gap: 10px;
+    background: #ff0000;
+}
+
+.casino .title-casino img {
+    object-fit: contain;
+}
+
+.casino .title-casino p {
+    font-size: 20px;
+    color: white;
+    font-weight: 600;
+}
+
+@media(max-width: 500px) {
+    .casino .title-casino {
+        width: 120px;
+
+    }
+
+    .casino .title-casino p {
+        font-size: 15px;
+    }
+}

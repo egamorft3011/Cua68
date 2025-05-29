@@ -1,0 +1,169 @@
+.hot-game {
+    width: 90%;
+    margin: auto;
+}
+
+.hot-game .title {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.hot-game .title h1 {
+    color: white;
+}
+
+.list-item {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.card {
+    width: 237px;
+    height: 237px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: 0.2s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+
+@keyframes shine {
+    0% {
+        transform: translateX(-50%) rotate(45deg);
+    }
+
+    100% {
+        transform: translateX(100%) rotate(45deg);
+    }
+}
+
+.card .img {
+    height: 240px;
+    position: relative;
+    transition: 0.2s ease-in-out;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.card .number-card {
+    align-items: center;
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    left: 50%;
+    position: absolute;
+    top: 2px;
+    transform: translate(-50%);
+    color: #fbc16c;
+    font-family: Averta, sans-serif;
+    font-size: 16px;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    line-height: 24px;
+    text-align: left;
+    z-index: 3;
+}
+
+.card .title-card {
+    bottom: 11px;
+    color: #fff;
+    display: flex;
+    font-size: 20px;
+    font-weight: 700;
+    justify-content: center;
+    line-height: 28px;
+    margin: auto;
+    position: absolute;
+    text-transform: capitalize;
+    width: 100%;
+    z-index: 3;
+}
+
+
+.card:hover {
+    transform: scale(1.04) rotate(-1deg);
+}
+
+.card-img {
+    width: 376px;
+    height: 239px;
+    position: relative;
+}
+
+.card-img .title-card {
+    position: absolute;
+    bottom: 5px;
+    left: 50px;
+    font-family: Martian Mono, monospace;
+    font-weight: 700;
+    color: yellow;
+    font-size: 40px;
+}
+
+.mobile {
+    display: none;
+}
+
+
+
+@media(max-width: 600px) {
+    .hot-game {
+        width: 98%;
+    }
+
+    .list-item {
+        gap: 5px;
+        margin-bottom: 5px;
+    }
+
+    .website {
+        display: none;
+    }
+
+    .mobile {
+        display: block;
+    }
+
+
+    .card {
+        width: 110px;
+        height: 110px;
+        border-radius: 5px;
+    }
+
+
+    .card-img {
+        display: none;
+    }
+
+    .card .img {
+        width: 110px;
+        height: 110px;
+        object-fit: cover;
+    }
+
+    .card .number-card {
+        font-size: 10px;
+        top: -5px;
+    }
+
+    .card .title-card {
+        font-size: 12px;
+        bottom: 1px;
+    }
+
+    .it-10 {
+        display: none;
+    }
+}

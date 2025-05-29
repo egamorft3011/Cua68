@@ -1,0 +1,299 @@
+:root {
+  --theme-rem-unit: 100;
+  --theme-header-height: 0.8rem;
+  --theme-side-width: 190;
+  --theme-scroll-bar-bg-color: var(--theme-color-line);
+  --theme-filter-active-color: #D1AE52;
+  --theme-main-bg-color: #020d24;
+  --theme-main-bg-color-hex: 26, 26, 26;
+  --theme-bg-color: #0A0A0A;
+  --theme-table-bg-color: #0A0A0A;
+  --theme-disabled-bg-color: #999;
+  --theme-countTo-bg: #0A0A0A;
+  --theme-ant-message-bg: #FFF;
+  --theme-bg-shadow: rgba(0, 0, 0, 0.06);
+  --theme-load-bg-color: #33333366;
+  --theme-home-bg-color: 26, 26, 26;
+  --theme-primary-color: #D1AE52;
+  --theme-primay-color-hex: 209, 174, 82;
+  --theme-primary-font-color: #703904;
+  --theme-disabled-font-color: #fff;
+  --theme-ant-message-font-color: #333;
+  --theme-aside-icon-color-0: #BEBEBE;
+  --theme-aside-icon-color-1: #A8A8A8;
+  --theme-aside-icon-color-2: #666;
+  --theme-aside-font-color: #D1AE52;
+  --theme-aside-active-font-color: #D1AE52;
+  --theme-aside-active-bg-color-0: #232323;
+  --theme-aside-active-bg-color-1: #262626;
+  --theme-aside-box-shadow: 0 0.02rem 0.04rem 0 rgba(0, 0, 0, 0.3);
+  --theme-aside-no-active-box-shadow: #0000001F;
+  --theme-jackpot-bg-color-0: #2A2A2A;
+  --theme-jackpot-bg-color-1: #282828;
+  --theme-jackpot-num-bg-color-0: #0D0D0D;
+  --theme-jackpot-num-bg-color-1: #404040;
+  --theme-jackpot-num-bg-color-2: #0D0D0D;
+  --theme-jackpot-num-bg-shadow-color-0: #F9E69C;
+  --theme-jackpot-num-bg-shadow-color-1: #CDAA6C;
+  --theme-jackpot-title-color: #FFFFFF;
+  --theme-game-lobby-border: #333333;
+  --theme-search-icon-color: #D1AE52;
+  --theme-btm-def-color: #999999;
+  --theme-btm-bg-color: #0A0A0A;
+  --theme-mine-icon-color: #D1AE52;
+  --theme-hx-color: #E3E3E3;
+  --theme-text-color-darken: #E3E3E3;
+  --theme-text-color: #999999;
+  --theme-text-color-lighten: #666666;
+  --theme-text-color-lighten-withshadow: #fff;
+  --theme-text-color-placeholder: #666666;
+  --theme-text-color-task-btn: #fff;
+  --theme-text-color-process-text: #fff;
+  --theme-text-color-activities-text: #fff;
+  --theme-text-color-side-tabs: #999;
+  --theme-alt-text-color: #703904;
+  --theme-text-person-color: #fff;
+  --theme-color-line: #333333;
+  --theme-color-line-hex: 51, 51, 51;
+  --theme-active-bg-color: #1A1A1A;
+  --theme-active-gou-color: #D1AE52;
+  --theme-cardBg-color: rgba(0, 0, 0, 0.5);
+  --theme-cardShadow-mask-color: rgba(255, 255, 255, 0.1);
+  --theme-cardShadow-font-color: #fff;
+  --theme-progress-line-color: #666666;
+  --theme-text-color-darken-hex: 227, 227, 227;
+  --theme-secondary-color-success: #04BE02;
+  --theme-secondary-color-success-linear-gradient: #18c516;
+  --theme-secondary-color-success-text: #fff;
+  --theme-secondary-color-error: #EA4E3D;
+  --theme-secondary-color-error-linear-gradient: #f35a4a;
+  --theme-secondary-color-finance: #FFAA09;
+  --theme-secondary-color-finance-linear-gradient: #ffb325;
+  --theme-secondary-color-tabs-start-gradient: #1A1A1A;
+  --theme-secondary-color-tabs-end-gradient: #1A1A1A;
+  --theme-secondary-color-tabs-active-start-gradien: #1A1A1A;
+  --theme-secondary-color-tabs-active-end-gradient: #1A1A1A;
+  --theme-secondary-color-tabs-active-border: #D1AE52;
+  --theme-secondary-color-help-text-color: #FFFFFF;
+  --theme-label-secondary-color-finance: #FFAA09;
+  --theme-event-luck-wheel-silver: #f21616;
+  --theme-event-luck-wheel-gold: #ffaa09;
+  --theme-event-luck-wheel-diamond: #b751ff;
+  --theme-user-card-top-bg-color: #E9CA78;
+  --theme-user-card-bg-color: #E0BE6D;
+  --theme-user-card-bottom-bg-color: #C39949;
+  --theme-vip-progress-bg-color: #D1AE52;
+  --theme-top-nav-bg: #290f0f;
+  --theme-side-menu-bg-color: #1A1A1A;
+  --theme-side-menu-btn-color: #0A0A0A;
+  --theme-side-menu-btn-color-hex: 10, 10, 10;
+  --theme-side-menu-btn-hover: #FFFFFF;
+  --theme-side-footer-bg-color: #1A1A1A;
+  --theme-tabbar-bg-color: #231111;
+  --theme-home-bg: #1A1A1A;
+  --theme-side-bg-color: #0f212e;
+  --theme-left-nav-text-color: #999999;
+  --theme-left-nav-text-active-color: #D1AE52;
+  --theme-side-popver-text-color: #fff;
+  --theme-game-card-ddt_bg: #333333;
+  --theme-game-card-ddt_icon: #1A1A1A;
+  --theme-alt-primary: #D1AE52;
+  --theme-alt-neutral-1: #999999;
+  --theme-alt-neutral-2: #666666;
+  --theme-alt-border: #999999;
+  --theme-profile_icon_1: #D1AE52;
+  --theme-profile_icon_2: #D1AE52;
+  --theme-profile_icon_3: #D1AE52;
+  --theme-profile_icon_4: #D1AE52;
+  --theme-web_filter_gou: #703904;
+  --theme-aside-active-box-shadow: 0 0.02rem 0.04rem 0 rgba(0, 0, 0, 0.3);
+  --vh: 7.42px;
+  --theme-ant-primary-color-0: #d1ae52;
+  --theme-ant-primary-color-1: #d6b663;
+  --theme-ant-primary-color-2: #dabe75;
+  --theme-ant-primary-color-3: #dfc686;
+  --theme-ant-primary-color-4: #e3ce97;
+  --theme-ant-primary-color-5: #e8d7a9;
+  --theme-ant-primary-color-6: #eddfba;
+  --theme-ant-primary-color-7: #f1e7cb;
+  --theme-ant-primary-color-8: #f6efdc;
+  --theme-ant-primary-color-9: #fffdf0;
+  --theme-ant-primary-color-10: #fffdf0;
+  --theme-ant-primary-color-11: #f7f1d7;
+  --theme-ant-primary-color-12: #ebdca7;
+  --theme-ant-primary-color-13: #dec57a;
+  --theme-ant-primary-color-14: #d1ae52;
+  --theme-ant-primary-color-15: #ab873a;
+  --theme-ant-primary-color-16: #856426;
+  --theme-ant-primary-color-17: #5e4317;
+  --theme-ant-primary-color-18: #38260d;
+  --theme-ant-primary-color-19: 209, 174, 82;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Lexend", sans-serif;
+}
+
+body {
+  background-color: var(--theme-btm-bg-color);
+  --device: "d";
+}
+
+p {
+  word-break: break-word;
+}
+
+
+
+.form {
+  width: 90%;
+  background-color: #fff;
+  box-shadow: 0 10px 60px rgb(218, 229, 255);
+  border-radius: 20px;
+  padding: 2rem .7rem .7rem .7rem;
+  text-align: center;
+  margin: auto;
+  font-size: 1.125rem;
+}
+
+.form-title {
+  color: #000000;
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+.form-paragraph {
+  margin-top: 10px;
+  font-size: 0.9375rem;
+  color: rgb(105, 105, 105);
+}
+
+.drop-container {
+  background-color: #fff;
+  position: relative;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin-top: 2.1875rem;
+  border-radius: 10px;
+  border: 2px dashed #853232;
+  color: #444;
+  cursor: pointer;
+  transition: background .2s ease-in-out, border .2s ease-in-out;
+}
+
+.drop-container:hover {
+  background: rgba(0, 140, 255, 0.164);
+  border-color: rgba(17, 17, 17, 0.616);
+}
+
+.drop-container:hover .drop-title {
+  color: #222;
+}
+
+.drop-title {
+  color: #444;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  transition: color .2s ease-in-out;
+}
+
+#file-input {
+  width: 100%;
+  max-width: 100%;
+  color: #444;
+  padding: 2px;
+
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid rgba(8, 8, 8, 0.288);
+}
+
+#file-input::file-selector-button {
+  margin-right: 20px;
+  border: none;
+  background: #853232;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+}
+
+li {
+  list-style: none;
+}
+
+li a {
+  text-decoration: none;
+}
+
+#file-input::file-selector-button:hover {
+  background: #111923;
+}
+
+@media only screen and (max-width: 768px) {
+
+  /* Thiết lập CSS cho mobile */
+  body {
+    --device: "m";
+  }
+
+
+}
+
+#google_translate_element {
+  display: flex;
+  gap: 10px;
+
+  .goog-logo-link {
+    display: none !important;
+  }
+
+  .goog-te-gadget {
+    color: transparent !important;
+  }
+
+  span {
+    display: none;
+  }
+}
+
+input {
+  text-size-adjust: 100%;
+  /* Vô hiệu hóa phóng to tự động */
+}
+
+#google_translate_element select {
+  width: 100%;
+  height: 30px;
+  background: none;
+  color: white;
+  margin-left: 10px;
+  border-radius: 10px;
+
+  option {
+    background: rgba(17, 17, 17, 0.616);
+    color: white;
+  }
+}
+
+@media(max-width: 500px) {
+  .google_translate_element {
+    width: 30px;
+  }
+
+  #google_translate_element select {
+    width: 120px;
+    right: 10px;
+    top: 60px;
+    position: fixed;
+  }
+}

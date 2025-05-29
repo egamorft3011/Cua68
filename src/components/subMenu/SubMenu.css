@@ -1,0 +1,34 @@
+.main-header-menu .header-bottom {
+    background-color: #240202;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    transition: all .4s;
+    width: 100%;
+    z-index: 999;
+}
+
+.header-bottom-menu {
+    width: 100%;
+}
+
+.header-bottom-menu ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+.header-bottom-menu ul li {
+    background: #452828;
+    border-radius: 8px;
+    color: #fff;
+    font-family: Nunito Sans, sans-serif;
+    font-size: 14px;
+    padding: 20px 5px;
+    text-align: center;
+    align-content: center;
+}
+
+.header-bottom-menu ul li a {
+    color: white;
+}

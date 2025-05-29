@@ -1,0 +1,269 @@
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
+import Logout from "@mui/icons-material/Logout";
+import PersonIcon from "@mui/icons-material/Person";
+import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
+import SavingsOutlinedIcon from "@mui/icons-material/SavingsOutlined";
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
+import HistoryIcon from "@mui/icons-material/History";
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
+import { Avatar, Button } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { formatCurrency } from "@/utils/formatMoney";
+import {
+  GiftMenuIcon,
+  HistoryMenuIcon,
+  HoanIcon,
+  LiveChatMenuIcon,
+  LogoutMenuIcon,
+  NapIcon,
+  NapMenuIcon,
+  ProfileIcon,
+  RutIcon,
+  RutMenuIcon,
+  VipIcon,
+} from "@/shared/Svgs/Svg.component";
+import Image from "next/image";
+import NavigationGame from "@/hook/NavigationGame";
+import { PageConfig } from "@/interface/PageConfig.interface";
+
+export interface UserProps {
+  user: {
+    coin: number;
+    username: string;
+  };
+  pageConfig: PageConfig;
+}
+
+export default function MenuProfile({ user, pageConfig }: UserProps) {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const router = useRouter();
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const menuItemStyles = {
+    minWidth: "200px",
+    color: "white",
+    "&:hover": {
+      background:
+        "linear-gradient(90deg, rgba(0, 104, 230, 0.1) 0%, rgba(12, 0, 230, 0) 100%)",
+      "& .MuiSvgIcon-root": {
+        color: "white",
+      },
+    },
+  };
+  const menuItems = [
+    {
+      text: "Quản lý tài khoản",
+      icon: <ProfileIcon />,
+      onClick: () => router.push("/profile"),
+    },
+    {
+      text: "Nạp Tiền",
+      icon: <NapIcon />,
+      onClick: () => router.push("/profile/account-deposit"),
+    },
+    {
+      text: "Rút Tiền",
+      icon: <RutIcon />,
+      onClick: () => router.push("/profile/account-withdraw"),
+    },
+    {
+      text: "Hoàn Tiền",
+      icon: <HoanIcon />,
+      onClick: () => router.push("/profile/account-withdraw"),
+    },
+    {
+      text: "Khuyến mãi",
+      icon: <GiftMenuIcon />,
+      onClick: () => router.push("/promotion"),
+    },
+    {
+      text: "Cấp độ VIP",
+      icon: <VipIcon />,
+      onClick: () => router.push("/vip"),
+    },
+    {
+      text: "Lịch sử giao dịch",
+      icon: <HistoryMenuIcon />,
+      onClick: () => router.push("/profile/transaction-history"),
+    },
+    {
+      text: "Live chat 24/7",
+      icon: <LiveChatMenuIcon />,
+      onClick: () => window.open(pageConfig.contact.telegram, "_blank"),
+    },
+    {
+      text: "Đăng xuất",
+      icon: <LogoutMenuIcon />,
+      onClick: () => {
+        window.localStorage.removeItem("token68bet");
+        window.localStorage.removeItem("txInfo");
+        window.location.href = "/";
+      },
+    },
+  ];
+  return (
+    <React.Fragment>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 1,
+          textAlign: "center",
+          borderRadius: "8px",
+        }}
+      >
+        {/* Username và Số dư */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography sx={{ color: "white", fontSize: 14 }}>
+            {user?.username ?? "huyn196Ebfa5"}
+          </Typography>
+          <Typography sx={{ color: "#fbc16c", fontSize: 14 }}>
+            {formatCurrency(user?.coin ?? 0)}
+          </Typography>
+        </Box>
+
+        {/* Nút Rút, Nạp và Icon Menu */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          {/* Nút Rút */}
+          {/* Icon mở menu */}
+          <Tooltip title="">
+            <button
+              onClick={handleClick}
+              style={{
+                border: "none",
+                borderRadius: "0",
+                background: "none",
+                cursor: "pointer",
+              }}
+              aria-controls={open ? "account-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+            >
+              <Avatar
+                src="/images/avatar-4.webp"
+                sx={{ width: 32, height: 32 }}
+              ></Avatar>
+            </button>
+          </Tooltip>
+          <button
+            onClick={() => router.push("/profile/account-withdraw")}
+            style={{
+              display: "flex",
+              backgroundImage:
+                "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+              color: "white",
+              borderRadius: "20px",
+              textTransform: "none",
+              fontSize: "14px",
+              width: "122px",
+              height: "38px",
+              border: "none",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+            }}
+          >
+            <RutMenuIcon />
+            RÚT
+          </button>
+
+          {/* Nút Nạp */}
+          <button
+            onClick={() => router.push("/profile/account-deposit")}
+            style={{
+              display: "flex",
+              backgroundImage:
+                "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #d61f57 0deg, #ff0250 89.73deg, #af0036 180.18deg, #d61f57 1turn)",
+
+              color: "white",
+              borderRadius: "20px",
+              border: "none",
+              fontSize: "14px",
+              width: "122px",
+              height: "38px",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+            }}
+          >
+            <NapMenuIcon />
+            NẠP
+          </button>
+        </Box>
+
+        {/* Menu thả xuống */}
+        <Menu
+          anchorEl={anchorEl}
+          id="account-menu"
+          open={open}
+          onClose={handleClose}
+          onClick={handleClose}
+          sx={{
+            zIndex: 9999999,
+          }}
+          slotProps={{
+            paper: {
+              elevation: 0,
+              sx: {
+                overflow: "visible",
+                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                border: "1px solid #353d50",
+                background: "#1e3c72",
+                borderRadius: 6,
+                mt: 1.5,
+                color: "white",
+                "& .MuiAvatar-root": {
+                  width: 32,
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1,
+                },
+                "&::before": {
+                  content: '""',
+                  display: "block",
+                  position: "absolute",
+                  top: 0,
+                  right: 14,
+                  width: 10,
+                  height: 10,
+                  bgcolor: "#1e3c72",
+                  borderTop: "1px solid #353d50",
+                  borderLeft: "1px solid #353d50",
+                  transform: "translateY(-50%) rotate(45deg)",
+                  zIndex: 0,
+                },
+              },
+            },
+          }}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        >
+          {menuItems.map((item, index) => {
+            return (
+              <MenuItem onClick={item.onClick} sx={menuItemStyles} key={index}>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                {item.text}
+              </MenuItem>
+            );
+          })}
+        </Menu>
+      </Box>
+    </React.Fragment>
+  );
+}

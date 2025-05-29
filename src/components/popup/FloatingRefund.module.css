@@ -1,0 +1,312 @@
+/* Desktop styles (unchanged) */
+.marqueeContainer {
+  position: fixed;
+  z-index: 10001;
+  bottom: 100px;
+  width: 100%;
+  height: 0;
+}
+
+.marqueeWrapper {
+  height: 0;
+  white-space: nowrap;
+}
+
+.marqueeContent {
+  width: 100000px;
+  white-space: nowrap;
+}
+
+.marqueeItem {
+  position: relative;
+  width: 500px;
+  height: 80px;
+  background: url('/images/refund/floating_refund.png');
+  cursor: pointer;
+  float: left;
+  margin-right: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center; /* Center the content as a whole */
+}
+
+.closeButton {
+  cursor: pointer;
+  margin-left: auto; /* Push the close button to the right */
+  margin-right: 14px; /* Match original right spacing */
+}
+
+.marqueeText {
+  color: #000;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: normal;
+  margin: 0;
+  padding: 0 40px;
+  flex: none;
+}
+
+.highlight {
+  color: #ff0000;
+  display: contents;
+}
+
+.modalContent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 670px;
+  height: 720px;
+  padding: 100px 85px 0 68px;
+  background: url('/images/refund/banner.png') no-repeat center;
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+
+.modalTitle {
+  font-size: 48px !important;
+  font-weight: bold !important;
+  -webkit-text-stroke-width: 1.5px;
+  -webkit-text-stroke-color: #332c1d;
+  -webkit-text-fill-color: #fad654;
+  font-family: Tahoma, Geneva, sans-serif !important;
+  text-align: center;
+  position: absolute;
+  top: 25%;
+  left: 0;
+  width: 100%;
+}
+
+.modalCloseButton {
+  position: absolute !important;
+  right: 5%;
+  top: 10%;
+  cursor: pointer;
+  color: #fff;
+}
+
+.modalBody {
+  width: 100%;
+  top: 25%;
+  position: relative;
+}
+
+.timeRange {
+  margin: 1em 0;
+  color: #111;
+  font-size: 16px;
+}
+
+.tableHeader {
+  height: 40px;
+  line-height: 40px;
+  background-color: #ffdd54;
+  display: flex;
+}
+
+.tableHeader p {
+  color: #3f3f3f;
+  text-align: center;
+}
+
+.tableCell {
+  flex: 1;
+  text-align: center;
+  font-size: 16px;
+}
+
+.tableBody {
+  height: 250px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.tableRow {
+  height: 65px;
+  padding-top: 5px;
+  font-size: 16px;
+  color: #8c8c8c;
+  background-color: #fff;
+  border: 1px solid #fff7b9;
+  display: flex;
+  align-items: center;
+}
+
+.tableRow .tableCell {
+  flex: 1;
+  text-align: right;
+}
+
+.tableRow .tableCell:first-child {
+  text-align: left;
+  padding-left: 10px;
+}
+
+.tableFooter {
+  height: 45px;
+  display: flex;
+  align-items: center;
+}
+
+.tableFooter p {
+  color: #f63232;
+}
+
+.footerLabel {
+  flex: 2;
+  text-align: right;
+  padding-right: 10px;
+}
+
+.footerValue {
+  flex: 1;
+  text-align: right;
+}
+
+.buttonContainer {
+  text-align: right;
+}
+
+.actionButton {
+  width: 95px;
+  height: 41px;
+  margin: 10px 0 !important;
+  padding: 10px !important;
+  font-size: 14px;
+  background: no-repeat center top;
+  border: 0;
+}
+
+.actionButton:hover {
+  background-position: center bottom;
+}
+
+.refreshButton {
+  color: #111 !important;
+  background-image: url('/images/refund/yellow_btn.png');
+}
+
+.receiveButton {
+  color: #fff !important;
+  background-image: url('/images/refund/red_btn.png');
+}
+
+/* Mobile styles (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Marquee adjustments */
+  .marqueeContainer {
+    bottom: 150px; /* Reduced for better mobile fit */
+  }
+
+  .marqueeContent {
+    width: 1000px; /* Already good for mobile */
+  }
+
+  .marqueeItem {
+    background-size: cover; /* Ensure background scales */
+  }
+
+  .marqueeText {
+    font-size: 12px; /* Smaller font for mobile */
+    padding: 0 20px; /* Reduced padding */
+  }
+
+  .closeButton {
+    width: 24px; /* Slightly smaller but still tappable */
+    height: 24px;
+    margin-right: 10px;
+  }
+
+  /* Modal adjustments */
+  .modalContent {
+    width: 90%; /* Use most of the screen width */
+    height: auto; /* Dynamic height for content */
+    max-height: 90vh; /* Prevent overflow */
+    padding: 132px 30px 82px 18px; /* Reduced padding */
+    background-size: cover; /* Scale background image */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+  }
+
+  .modalTitle {
+    display: none;
+  }
+
+  .modalCloseButton {
+    top: 8%;
+    right: -2%;
+  }
+
+  .modalBody {
+    width: 100%; /* Full width on mobile */
+  }
+
+  .timeRange {
+    font-size: 12px; /* Smaller font */
+    margin: 0.5em 0;
+  }
+
+  .tableHeader {
+    height: auto; /* Dynamic height */
+    padding: 4px;
+  }
+
+  .tableCell {
+    font-size: 12px; /* Smaller font */
+    text-align: left; /* Align left for readability */
+    padding: 4px 0; /* Spacing between stacked items */
+  }
+
+  .tableBody {
+    height: auto; /* Dynamic height */
+    max-height: 145px; /* Limit scrolling height */
+  }
+
+  .tableRow {
+    height: auto; /* Dynamic height */
+    padding: 4px;
+    font-size: 12px; /* Smaller font */
+  }
+
+  .tableRow .tableCell {
+    text-align: center; /* Align left */
+    padding-left: 0; /* Remove extra padding */
+  }
+
+  .tableRow .tableCell:first-child {
+    padding-left: 0; /* Remove extra padding */
+  }
+
+  .tableFooter {
+    height: auto; /* Dynamic height */
+  }
+
+  .footerLabel,
+  .footerValue {
+    text-align: right; /* Center align */
+    padding: 0;
+    font-size: 14px; /* Smaller font */
+  }
+
+  .footerValue {
+    margin-top: 4px;
+  }
+
+  .buttonContainer {
+    text-align: center; /* Center buttons */
+    display: flex;
+    justify-content: end;
+    flex-direction: row; /* Stack buttons */
+    gap: 10px; /* Space between buttons */
+  }
+
+  .actionButton {
+    width: 80px; /* Slightly smaller width */
+    height: 35px; /* Smaller height */
+    font-size: 12px; /* Smaller font */
+    padding: 8px !important; /* Adjust padding */
+    background-size: cover; /* Scale button background */
+  }
+}

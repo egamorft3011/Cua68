@@ -1,0 +1,235 @@
+/* Container chính bao phủ toàn bộ màn hình */
+.container-loading {
+    width: 100vw;
+    /* Đảm bảo chiếm toàn bộ chiều rộng của viewport */
+    height: 100vh;
+    /* Đảm bảo chiếm toàn bộ chiều cao của viewport */
+    z-index: 99999999999999;
+    /* Đưa phần tử loading lên trên cùng */
+    position: fixed;
+    /* Định vị cố định để luôn nằm ở chính giữa */
+    top: 0;
+    left: 0;
+    display: flex;
+    /* Sử dụng flexbox */
+    justify-content: center;
+    /* Căn giữa theo chiều ngang */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    background: #020d24;
+    /* Màu nền */
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Màu nền mờ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    /* Đưa lên trên cùng */
+}
+
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Thành phần con bên trong (item) */
+.container-loading .item {
+    display: flex;
+    z-index: 2;
+    flex-direction: column;
+    /* Sắp xếp các phần tử con theo chiều dọc */
+    align-items: center;
+    /* Căn giữa phần tử con theo chiều ngang */
+    justify-content: center;
+    /* Căn giữa phần tử con theo chiều dọc */
+    text-align: center;
+    /* Căn giữa nội dung */
+}
+
+/* Logo */
+.container-loading .item img {
+    object-fit: cover;
+    max-width: 100%;
+    z-index: 3;
+    /* Đảm bảo logo không vượt quá kích thước container */
+    height: auto;
+    /* Giữ tỷ lệ của hình ảnh */
+    margin-bottom: 20px;
+    /* Khoảng cách giữa logo và loader */
+}
+
+/* Loader (vòng xoay) */
+.loader {
+    border: 4px solid #ae0707;
+    /* Màu viền */
+    z-index: 3;
+    border-left-color: transparent;
+    /* Xóa viền bên trái để tạo hiệu ứng xoay */
+    border-radius: 50%;
+    /* Tạo hình tròn */
+    width: 36px;
+    /* Chiều rộng */
+    height: 36px;
+    /* Chiều cao */
+    animation: spin89345 1s linear infinite;
+    /* Tạo hiệu ứng xoay */
+}
+
+.banner-loading {
+    display: none;
+}
+
+/* Hiệu ứng xoay cho loader */
+@keyframes spin89345 {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 600px) {
+
+    .banner-loading {
+        position: absolute;
+        z-index: 1;
+        height: 100px;
+        top: 40%;
+        display: block;
+    }
+
+    .banner-loading img {
+        object-fit: cover;
+    }
+
+}
+
+
+/* From Uiverse.io by Nawsome */
+.pl {
+    display: block;
+    width: 80px;
+    height: 80px;
+}
+
+.pl__arrows,
+.pl__ring-rotate,
+.pl__ring-stroke,
+.pl__tick {
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.pl__arrows {
+    animation-name: arrows42;
+    transform: rotate(45deg);
+    transform-origin: 16px 52px;
+}
+
+.pl__ring-rotate,
+.pl__ring-stroke {
+    transform-origin: 80px 80px;
+}
+
+.pl__ring-rotate {
+    animation-name: ringRotate42;
+}
+
+.pl__ring-stroke {
+    animation-name: ringStroke42;
+    transform: rotate(-45deg);
+}
+
+.pl__tick {
+    animation-name: tick42;
+}
+
+.pl__tick:nth-child(2) {
+    animation-delay: -1.75s;
+}
+
+.pl__tick:nth-child(3) {
+    animation-delay: -1.5s;
+}
+
+.pl__tick:nth-child(4) {
+    animation-delay: -1.25s;
+}
+
+.pl__tick:nth-child(5) {
+    animation-delay: -1s;
+}
+
+.pl__tick:nth-child(6) {
+    animation-delay: -0.75s;
+}
+
+.pl__tick:nth-child(7) {
+    animation-delay: -0.5s;
+}
+
+.pl__tick:nth-child(8) {
+    animation-delay: -0.25s;
+}
+
+/* Animations */
+@keyframes arrows42 {
+    from {
+        transform: rotate(45deg);
+    }
+
+    to {
+        transform: rotate(405deg);
+    }
+}
+
+@keyframes ringRotate42 {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(720deg);
+    }
+}
+
+@keyframes ringStroke42 {
+
+    from,
+    to {
+        stroke-dashoffset: 452;
+        transform: rotate(-45deg);
+    }
+
+    50% {
+        stroke-dashoffset: 169.5;
+        transform: rotate(-180deg);
+    }
+}
+
+@keyframes tick42 {
+
+    from,
+    3%,
+    47%,
+    to {
+        stroke-dashoffset: -12;
+    }
+
+    14%,
+    36% {
+        stroke-dashoffset: 0;
+    }
+}
