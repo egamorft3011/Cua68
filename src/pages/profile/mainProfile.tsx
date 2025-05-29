@@ -247,7 +247,7 @@ export default function MainProfile() {
               sx={{
                 mr: 1,
                 backgroundColor:
-                  activeTab === "account" ? "#3B82F6" : "#384375",
+                  activeTab === "account" ? "#3B82F6" : "#4c0101",
                 "&:hover": {
                   backgroundColor:
                     activeTab === "account" ? "#2563EB" : "#4A5894",
@@ -260,7 +260,7 @@ export default function MainProfile() {
             <Button
               variant="contained"
               sx={{
-                backgroundColor: activeTab === "bank" ? "#3B82F6" : "#384375",
+                backgroundColor: activeTab === "bank" ? "#3B82F6" : "#4c0101",
                 "&:hover": {
                   backgroundColor: activeTab === "bank" ? "#2563EB" : "#4A5894",
                 },
@@ -392,7 +392,7 @@ export default function MainProfile() {
                   variant="contained"
                   sx={{
                     backgroundImage:
-                      "url(https://staticda88.com/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+                      "url(https://staticda88.com/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
                     mt: 4,
                     width: "100%",
                     height: "44px",
@@ -516,7 +516,7 @@ export default function MainProfile() {
                             mt: 2,
                             width: "100%",
                             backgroundImage:
-                              "url(https://staticda88.com/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+                              "url(https://staticda88.com/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
                             borderRadius: "20px",
                             color: "white",
                           }}

@@ -130,9 +130,9 @@ export default function SlotsPage() {
                 flexShrink: 0,
                 background:
                   item?.id == "2"
-                    ? "#0063ff"
-                    : "linear-gradient(180deg,rgb(89, 41rgba(79, 35, 35, 0.7)79, .7));",
-                border: "1px solidrgb(117, 56, 56)",
+                    ? "#ff0000"
+                    : "linear-gradient(180deg, #592929, #4f2323);",
+                border: "1px solid #4c0101",
                 color: "white",
                 gap: "5px",
                 fontSize: { xs: "12px", sm: "14px" },
@@ -143,7 +143,7 @@ export default function SlotsPage() {
                 gridTemplateRows: "1fr 1fr",
                 justifyItems: "center",
                 "&:hover": {
-                  background: "#0063ff",
+                  background: "#ff0000",
                 },
               }}
               key={item.id}
@@ -195,9 +195,9 @@ export default function SlotsPage() {
                 flexShrink: 0,
                 background:
                   item?.id === acctiveMenu
-                    ? "#0063ff"
-                    : "linear-gradient(180deg,rgb(89, 41, 41), rgba(79, 35, 35, 0.7));",
-                border: "1px solid #470808",
+                    ? "#ff0000"
+                    : "linear-gradient(180deg, #592929, #4f2323);",
+                border: "1px solid #4c0101",
                 color: "white",
                 gap: "5px",
                 fontSize: { xs: "12px", sm: "14px" },
@@ -205,7 +205,7 @@ export default function SlotsPage() {
                 overflow: "hidden",
                 whiteSpace: "nowrap",
                 "&:hover": {
-                  background: "#0063ff",
+                  background: "#ff0000",
                 },
               }}
               key={item.id}

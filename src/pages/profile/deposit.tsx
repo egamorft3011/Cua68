@@ -387,7 +387,7 @@ export default function Deposit(props: TabPProps) {
                     sx={{
                       display: "flex",
                       backgroundImage:
-                        "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+                        "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
                       color: "white",
                       borderRadius: "5px",
                       textTransform: "none",
@@ -408,7 +408,7 @@ export default function Deposit(props: TabPProps) {
                   <Button
                     sx={{
                       display: "flex",
-                      background: "#384375",
+                      background: "#4c0101",
                       color: "white",
                       borderRadius: "5px",
                       textTransform: "none",
@@ -513,7 +513,7 @@ export default function Deposit(props: TabPProps) {
                     sx={{
                       display: "flex",
                       backgroundImage:
-                        "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+                        "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
                       color: "white",
                       borderRadius: "20px",
                       textTransform: "none",
@@ -537,7 +537,7 @@ export default function Deposit(props: TabPProps) {
                     padding: 2,
                     borderRadius: "8px",
                     marginTop: 5,
-                    border: "1px dashed #384375",
+                    border: "1px dashed #4c0101",
                   }}
                 >
                   <Typography
@@ -677,7 +677,7 @@ export default function Deposit(props: TabPProps) {
                       style={{
                         display: "flex",
                         backgroundImage:
-                          "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+                          "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
                         color: "white",
                         borderRadius: "20px",
                         textTransform: "none",

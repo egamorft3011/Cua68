@@ -104,12 +104,7 @@ export default function HeaderPage(props: propUser) {
                   fontStyle: "italic",
                 }}
               >
-                <Image
-                            src={"/images/logo.png"}
-                            width="140"
-                            height={112}
-                            alt=""
-                          />
+                <Image src={"/images/logo.png"} width="100" height={80} alt="" />
               </Link>
             </div>
           </div>
@@ -165,12 +160,7 @@ export default function HeaderPage(props: propUser) {
           >
             <div className="logo">
               <Link href={"/"} prefetch={false}>
-                <Image
-                            src={"/images/logo.png"}
-                            width="100"
-                            height={80}
-                            alt=""
-                          />
+                 <Image src={"/images/logo.png"} width="100" height={80} alt="" />
               </Link>
             </div>
           </div>

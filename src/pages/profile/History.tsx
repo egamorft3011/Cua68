@@ -50,7 +50,7 @@ export default function TransactionHistory(prog: TabPProps) {
               fontWeight: "bold",
               display: "flex",
               gap: "10px",
-              background: tab === "transaction" ? "blue" : "#384375",
+              background: tab === "transaction" ? "blue" : "#4c0101",
               "&:hover": {
                 background: "blue",
               },
@@ -66,7 +66,7 @@ export default function TransactionHistory(prog: TabPProps) {
               fontWeight: "bold",
               display: "flex",
               gap: "10px",
-              background: tab === "bet" ? "blue" : "#384375",
+              background: tab === "bet" ? "blue" : "#4c0101",
               "&:hover": {
                 background: "blue",
               },

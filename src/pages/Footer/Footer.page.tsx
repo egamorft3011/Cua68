@@ -19,12 +19,7 @@ export default function FooterPage({ pageConfig }: FooterProps) {
     <>
       <footer>
         <div className="info-footer">
-          <Image
-                      src={"/images/logo.png"}
-                      width="100"
-                      height={80}
-                      alt=""
-                    />
+          <Image src={"/images/logo.png"} width="100" height={80} alt="" />
           <div className="info-title">
             <h2>
               {pageConfig?.site_name || ""}

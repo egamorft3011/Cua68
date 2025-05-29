@@ -182,14 +182,14 @@ export default function MenuProfileMobile(data: userProps) {
           sx={{
             flex: 1,
             backgroundImage:
-              "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+              "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
             color: "white",
             borderRadius: "20px",
             textTransform: "none",
             fontSize: "14px",
             "&:hover": {
               backgroundImage:
-                "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+                "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
             },
           }}
         >

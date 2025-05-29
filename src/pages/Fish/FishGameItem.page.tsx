@@ -191,10 +191,10 @@ export default function FishGameItemPage() {
                 color: "white", // Mặc định chữ màu trắng
               },
               "& .Mui-selected": {
-                backgroundColor: "#790f0f", // Nền màu xanh vàng khi active
+                backgroundColor: "#b20707", // Nền màu xanh vàng khi active
                 color: "white", // Chữ màu trắng
                 "&:hover": {
-                  backgroundColor: "#580909", // Duy trì màu khi hover
+                  backgroundColor: "#b20707", // Duy trì màu khi hover
                 },
               },
             }}

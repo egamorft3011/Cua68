@@ -217,10 +217,10 @@ export default function ExplodingJarPage() {
                 color: "white", // Mặc định chữ màu trắng
               },
               "& .Mui-selected": {
-                backgroundColor: "#0366FE", // Nền màu xanh vàng khi active
+                backgroundColor: "#b20707", // Nền màu xanh vàng khi active
                 color: "white", // Chữ màu trắng
                 "&:hover": {
-                  backgroundColor: "#0366FE", // Duy trì màu khi hover
+                  backgroundColor: "#b20707", // Duy trì màu khi hover
                 },
               },
             }}
