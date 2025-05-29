@@ -147,7 +147,7 @@ export default function MenuProfileMobile(data: userProps) {
           alignItems: "center",
           justifyContent: "space-between",
           padding: "16px",
-          borderBottom: "1px solid #2f3b56",
+          borderBottom: "1px solid #562f2f",
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -172,7 +172,7 @@ export default function MenuProfileMobile(data: userProps) {
           display: "flex",
           gap: "12px",
           padding: "16px",
-          borderBottom: "1px solid #2f3b56",
+          borderBottom: "1px solid #562f2f",
         }}
       >
         <Button
@@ -201,14 +201,14 @@ export default function MenuProfileMobile(data: userProps) {
           sx={{
             flex: 1,
             backgroundImage:
-              "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #d61f57 0deg, #ff0250 89.73deg, #af0036 180.18deg, #d61f57 1turn)",
+              "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #1f50d6 0deg, #4a02ff 89.73deg, #003daf 180.18deg, #2b1fd6 1turn)",
 
             color: "white",
             borderRadius: "20px",
             textTransform: "none",
             fontSize: "14px",
             "&:hover": {
-              background: "#e03500",
+              background: " #e00000",
             },
           }}
         >
@@ -253,7 +253,7 @@ export default function MenuProfileMobile(data: userProps) {
       </List>
 
       {/* Sign Out Button */}
-      <Box sx={{ padding: "16px", borderTop: "1px solid #2f3b56" }}>
+      <Box sx={{ padding: "16px", borderTop: "1px solid #562f2f" }}>
         <Button
           onClick={() =>
             handleMenuItemClick(() => {
@@ -266,7 +266,7 @@ export default function MenuProfileMobile(data: userProps) {
             width: "100%",
             background: "transparent",
             color: "white",
-            border: "1px solid #2f3b56",
+            border: "1px solid #562f2f",
             borderRadius: "8px",
             textTransform: "none",
             fontSize: "14px",
@@ -357,7 +357,7 @@ export default function MenuProfileMobile(data: userProps) {
         sx={{
           zIndex: 9999999,
           "& .MuiDrawer-paper": {
-            background: "#1a263f",
+            background: " #3f1a1a",
             border: "none",
             borderRadius: "0",
           },

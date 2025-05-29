@@ -140,7 +140,7 @@ header {
     width: 120px;
     height: 40px;
     border-radius: 20px;
-    background-image: url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #d61f57 0deg, #ff0250 89.73deg, #af0036 180.18deg, #d61f57 1turn);
+    background-image: url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #1f50d6 0deg, #4a02ff 89.73deg, #003daf 180.18deg, #2b1fd6 1turn);
     color: white;
     border: none;
     font-size: 17px;
@@ -148,7 +148,7 @@ header {
 }
 
 .header-right .header-right-menu .register:hover {
-    background: linear-gradient(#eb4170, #b70b3c);
+    background: linear-gradient(#eb4141, #b70b3c);
 }
 
 .header-right-ios .header-right-menu .login {
@@ -164,7 +164,7 @@ header {
     width: 120px;
     height: 30px;
     border-radius: 20px;
-    background-image: url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #d61f57 0deg, #ff0250 89.73deg, #af0036 180.18deg, #d61f57 1turn);
+    background-image: url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #1f50d6 0deg, #4a02ff 89.73deg, #003daf 180.18deg, #2b1fd6 1turn);
     color: white;
     border: none;
 }

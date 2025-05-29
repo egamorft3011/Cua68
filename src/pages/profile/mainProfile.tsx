@@ -165,7 +165,7 @@ export default function MainProfile() {
           sx={{
             alignItems: "center",
             backgroundImage:
-              "url(https://staticda88.com/images/account/layout/account-info.webp)",
+              "url(/images/account-info.webp)",
             backgroundSize: "100% 100%",
             borderRadius: "8px",
             display: {

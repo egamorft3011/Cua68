@@ -59,7 +59,7 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
     color: "white",
     "&:hover": {
       background:
-        "linear-gradient(90deg, rgba(0, 104, 230, 0.1) 0%, rgba(12, 0, 230, 0) 100%)",
+        "linear-gradient(90deg, rgba(230, 0, 0, 0.1) 0%, rgba(230, 0, 0, 0) 100%)",
       "& .MuiSvgIcon-root": {
         color: "white",
       },
@@ -189,7 +189,7 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
             style={{
               display: "flex",
               backgroundImage:
-                "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #d61f57 0deg, #ff0250 89.73deg, #af0036 180.18deg, #d61f57 1turn)",
+                "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #1f50d6 0deg, #4a02ff 89.73deg, #003daf 180.18deg, #2b1fd6 1turn)",
 
               color: "white",
               borderRadius: "20px",
@@ -223,7 +223,7 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
               sx: {
                 overflow: "visible",
                 filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                border: "1px solid #353d50",
+                border: "1px solid #503535",
                 background: "#1e3c72",
                 borderRadius: 6,
                 mt: 1.5,
@@ -243,8 +243,8 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
                   width: 10,
                   height: 10,
                   bgcolor: "#1e3c72",
-                  borderTop: "1px solid #353d50",
-                  borderLeft: "1px solid #353d50",
+                  borderTop: "1px solid #503535",
+                  borderLeft: "1px solid #503535",
                   transform: "translateY(-50%) rotate(45deg)",
                   zIndex: 0,
                 },

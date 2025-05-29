@@ -20,7 +20,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     position: "absolute",
     bottom: "50px",
     width: "100%",
-    background: "#0f192f",
+    background: "#2f0f0f",
     border: "none",
     borderRadius: "24px 24px 0 0",
     color: "white",
@@ -51,7 +51,7 @@ const CustomizedDialog: React.FC<CustomizedDialogProps> = ({
           position: "absolute",
           bottom: "50px",
           width: "100%",
-          background: "#0f192f",
+          background: "#2f0f0f",
           borderRadius: "24px 24px 0 0",
           color: "white",
         },
@@ -62,7 +62,7 @@ const CustomizedDialog: React.FC<CustomizedDialogProps> = ({
           m: 0,
           p: 2,
           textAlign: "center",
-          borderBottom: "1px solid #38496c;",
+          borderBottom: "1px solid #6c3838;",
         }}
         id="customized-dialog-title"
       >
