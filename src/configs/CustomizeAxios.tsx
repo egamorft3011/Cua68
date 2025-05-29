@@ -5,7 +5,7 @@ import swal from "sweetalert";
 // Lấy baseURL từ environment
 const AUTH_API_URL = "https://www.cua68.com";
 
-const CONTENT_API_URL = "https://api1.theabcdef.com";
+const CONTENT_API_URL = "https://api1.cua68.com";
 
 // API instance for login and register
 const authInstance = axios.create({
