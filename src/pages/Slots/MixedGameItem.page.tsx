@@ -64,7 +64,7 @@ const commonCardStyles = {
 };
 const buttonStyles = {
   backgroundImage:
-    "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+    "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%,rgb(255, 8, 8) 0deg,rgb(224, 38, 38) 8rgb(224, 38, 38)rgb(224, 38, 38) 180.18deg,rgb(255, 8, 8) 1turn)",
 
   color: "white",
   padding: "4px 10px",
@@ -77,7 +77,7 @@ const buttonStyles = {
   transition: "opacity 0.2s ease-in-out",
   "&:hover": {
     backgroundImage:
-      "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+      "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%,rgb(255, 8, 8) 0deg,rgb(224, 38, 38) 89.73deg,rgb(224, 38, 38) 180.18deg,rgb(255, 8, 8) 1turn)",
 
     opacity: 1,
     filter: "none",

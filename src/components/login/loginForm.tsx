@@ -202,7 +202,7 @@ const DialogLogin = (props: propPopup) => {
                     style={{
                       display: "flex",
                       backgroundImage:
-                        "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #085cff 0deg, #2692e0 89.73deg, #263be0 180.18deg, #085cff 1turn)",
+                        "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%,rgb(255, 8, 8)rgb(224, 38, 38)2692e0 89.73deg,rgb(224, 38, 38) 180.18deg,rgb(255, 8, 8) 1turn)",
                       color: "white",
                       borderRadius: "20px",
                       textTransform: "none",

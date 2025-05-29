@@ -132,8 +132,8 @@ export default function GameCasinoPage() {
                 background:
                   item?.id == "3"
                     ? "#0063ff"
-                    : "linear-gradient(180deg, #293259, rgba(35, 43, 79, .7));",
-                border: "1px solid #384375",
+                    : "linear-gradient(180deg,rgb(89, 41, 41), rgba(79, 35, 35, 0.7));",
+                border: "1px solid #470808",
                 color: "white",
                 gap: "5px",
                 fontSize: { xs: "12px", sm: "14px" },
@@ -197,8 +197,8 @@ export default function GameCasinoPage() {
                 background:
                   item?.id === acctiveMenu
                     ? "#0063ff"
-                    : "linear-gradient(180deg, #293259, rgba(35, 43, 79, .7));",
-                border: "1px solid #384375",
+                    : "linear-gradient(180deg,rgb(89, 41, 41), rgba(79, 35, 35, 0.7));",
+                border: "1px solid #470808",
                 color: "white",
                 gap: "5px",
                 fontSize: { xs: "12px", sm: "14px" },
