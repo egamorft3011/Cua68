@@ -105,11 +105,11 @@ export default function HeaderPage(props: propUser) {
                 }}
               >
                 <Image
-                  src={pageConfig?.site_logo || ""}
-                  width={80}
-                  height={80}
-                  alt=""
-                />
+                            src={"/images/logo.png"}
+                            width="140"
+                            height={112}
+                            alt=""
+                          />
               </Link>
             </div>
           </div>
@@ -166,11 +166,11 @@ export default function HeaderPage(props: propUser) {
             <div className="logo">
               <Link href={"/"} prefetch={false}>
                 <Image
-                  src={pageConfig?.site_logo || ""}
-                  width={100}
-                  height={40}
-                  alt=""
-                />
+                            src={"/images/logo.png"}
+                            width="140"
+                            height={112}
+                            alt=""
+                          />
               </Link>
             </div>
           </div>
