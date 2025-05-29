@@ -167,8 +167,8 @@ export default function HeaderPage(props: propUser) {
               <Link href={"/"} prefetch={false}>
                 <Image
                             src={"/images/logo.png"}
-                            width="140"
-                            height={112}
+                            width="100"
+                            height={80}
                             alt=""
                           />
               </Link>

@@ -21,8 +21,8 @@ export default function FooterPage({ pageConfig }: FooterProps) {
         <div className="info-footer">
           <Image
                       src={"/images/logo.png"}
-                      width="140"
-                      height={112}
+                      width="100"
+                      height={80}
                       alt=""
                     />
           <div className="info-title">

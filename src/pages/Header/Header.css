@@ -69,8 +69,8 @@ header {
 }
 
 .logo img {
-    height: 113px;
-    width: 142px;
+    height: 80px;
+    width: 100px;
     object-fit: contain;
     /* position: absolute; */
 }
