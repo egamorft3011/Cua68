@@ -205,7 +205,7 @@ export default function MainProfile() {
             sx={{
               width: "2px",
               height: "100%",
-              background: "#3887fe",
+              background: " #fe3838",
               marginLeft: "20px",
               marginRight: "20px",
             }}
@@ -222,7 +222,7 @@ export default function MainProfile() {
         </Box>
         <Box
           sx={{
-            backgroundColor: "#232b4f",
+            backgroundColor: " #4f2323",
             color: "white",
             padding: 2,
             borderRadius: 2,
@@ -247,10 +247,10 @@ export default function MainProfile() {
               sx={{
                 mr: 1,
                 backgroundColor:
-                  activeTab === "account" ? "#3B82F6" : "#4c0101",
+                  activeTab === "account" ? "#f63b3b" : "#4c0101",
                 "&:hover": {
                   backgroundColor:
-                    activeTab === "account" ? "#2563EB" : "#4A5894",
+                    activeTab === "account" ? "#eb2525" : "#944a4a",
                 },
               }}
               onClick={() => setActiveTab("account")}
@@ -260,9 +260,9 @@ export default function MainProfile() {
             <Button
               variant="contained"
               sx={{
-                backgroundColor: activeTab === "bank" ? "#3B82F6" : "#4c0101",
+                backgroundColor: activeTab === "bank" ? "#f63b3b" : "#4c0101",
                 "&:hover": {
-                  backgroundColor: activeTab === "bank" ? "#2563EB" : "#4A5894",
+                  backgroundColor: activeTab === "bank" ? "#eb2525" : "#944a4a",
                 },
               }}
               onClick={() => setActiveTab("bank")}
@@ -287,10 +287,10 @@ export default function MainProfile() {
                   InputProps={{
                     readOnly: true,
                     startAdornment: (
-                      <PersonIcon sx={{ color: "#4ADE80", mr: 1 }} />
+                      <PersonIcon sx={{ color: "#fff1b5", mr: 1 }} />
                     ),
                     sx: {
-                      backgroundColor: "#2A4066",
+                      backgroundColor: "#662a2a",
                       color: "white",
                       borderRadius: 1,
                       "& .MuiInputBase-input.Mui-disabled": {
@@ -312,7 +312,7 @@ export default function MainProfile() {
                   InputProps={{
                     readOnly: true,
                     startAdornment: (
-                      <EmailIcon sx={{ color: "#4ADE80", mr: 1 }} />
+                      <EmailIcon sx={{ color: " #fff1b5", mr: 1 }} />
                     ),
                     sx: {
                       backgroundColor: "#2A4066",
@@ -333,10 +333,10 @@ export default function MainProfile() {
                   variant="outlined"
                   InputProps={{
                     startAdornment: (
-                      <PersonIcon sx={{ color: "#4ADE80", mr: 1 }} />
+                      <PersonIcon sx={{ color: "#fff1b5", mr: 1 }} />
                     ),
                     sx: {
-                      backgroundColor: "#2A4066",
+                      backgroundColor: "#662a2a",
                       color: "white",
                       borderRadius: 1,
                     },
@@ -355,10 +355,10 @@ export default function MainProfile() {
                   InputProps={{
                     readOnly: true,
                     startAdornment: (
-                      <LockIcon sx={{ color: "#4ADE80", mr: 1 }} />
+                      <LockIcon sx={{ color: "#fff1b5", mr: 1 }} />
                     ),
                     sx: {
-                      backgroundColor: "#2A4066",
+                      backgroundColor: "#662a2a",
                       color: "white",
                       borderRadius: 1,
                     },
@@ -377,10 +377,10 @@ export default function MainProfile() {
                   InputProps={{
                     readOnly: true,
                     startAdornment: (
-                      <PhoneIcon sx={{ color: "#4ADE80", mr: 1 }} />
+                      <PhoneIcon sx={{ color: "#fff1b5", mr: 1 }} />
                     ),
                     sx: {
-                      backgroundColor: "#2A4066",
+                      backgroundColor: "#662a2a",
                       color: "white",
                       borderRadius: 1,
                     },
@@ -392,7 +392,7 @@ export default function MainProfile() {
                   variant="contained"
                   sx={{
                     backgroundImage:
-                      "url(https://staticda88.com/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
+                      "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
                     mt: 4,
                     width: "100%",
                     height: "44px",
@@ -413,7 +413,7 @@ export default function MainProfile() {
                       alignItems: "center",
                       alignSelf: "stretch",
                       background:
-                        "linear-gradient(90deg, rgba(39, 47, 82, .5), rgba(78, 87, 126, .5))",
+                        "linear-gradient(90deg, rgba(82, 39, 39, 0.5), rgba(126, 78, 78, 0.5))",
                       backgroundImage: "url(/images/bg-bank.webp)",
                       backgroundPosition: "50%",
                       backgroundRepeat: "no-repeat",
@@ -463,7 +463,7 @@ export default function MainProfile() {
                       margin: "auto",
                       mt: 4,
                       p: 3,
-                      backgroundColor: "#2A4066",
+                      backgroundColor: "#662a2a",
                       borderRadius: 2,
                     }}
                   >
@@ -499,7 +499,7 @@ export default function MainProfile() {
                           onChange={(e) => setBankNumber(e.target.value)}
                           InputProps={{
                             sx: {
-                              backgroundColor: "#3B4D7A",
+                              backgroundColor: "#7a3b3b",
                               color: "white",
                               borderRadius: 1,
                             },
@@ -516,7 +516,7 @@ export default function MainProfile() {
                             mt: 2,
                             width: "100%",
                             backgroundImage:
-                              "url(https://staticda88.com/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
+                              "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
                             borderRadius: "20px",
                             color: "white",
                           }}
