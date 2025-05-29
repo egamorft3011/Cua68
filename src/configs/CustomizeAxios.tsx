@@ -3,7 +3,7 @@ import { getToken } from "./client-store";
 import swal from "sweetalert";
 
 // Lấy baseURL từ environment
-const AUTH_API_URL = "https://www.cua68.com";
+const AUTH_API_URL = "https://cua68.com";
 
 const CONTENT_API_URL = "https://api1.theabcdef.com";
 
