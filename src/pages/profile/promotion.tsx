@@ -146,19 +146,19 @@ const PromotionsPage: React.FC = () => {
             <Grid item xs={12} sm={6} md={6} key={promotion.id}>
               <Card
                 sx={{
-                  height: 240,
-                  cursor: "pointer",
+                   cursor: "pointer",
                   "&:hover": { boxShadow: "0 6px 12px rgba(0,0,0,0.3)" },
                 }}
                 onClick={() => handleCardClick(promotion.id)}
               >
                 <CardMedia
                   component="img"
-                  height="180"
-                  image={promotion.thumbnail}
+                   image={promotion.thumbnail}
                   alt={promotion.title}
-                  sx={{ objectFit: "cover" }}
-                />
+                sx={{
+                  height: { xs: 143, sm: 143, md: 240 },  }}                
+                  />
+
                 <CardContent sx={{ p: 1, bgcolor: "#fff" }}>
                   <Typography variant="body2" sx={{ fontWeight: "bold" }}>
                     {promotion.title}
@@ -181,7 +181,7 @@ const PromotionsPage: React.FC = () => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: { xs: "90%", sm: 600 },
-            bgcolor: "#252b38",
+            bgcolor: "#382525",
             color: "#fff",
             borderRadius: 2,
             boxShadow: 24,

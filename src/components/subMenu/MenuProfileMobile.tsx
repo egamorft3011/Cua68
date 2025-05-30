@@ -117,7 +117,7 @@ export default function MenuProfileMobile(data: userProps) {
       onClick: () => route.push("/profile/transaction-history"),
     },
     {
-      text: "Lịch sử cược cục",
+      text: "Lịch sử cược",
       icon: <HistoryBetMenuIcon />,
       onClick: () => route.push("/profile/betting-history"),
     },
@@ -132,7 +132,7 @@ export default function MenuProfileMobile(data: userProps) {
     <Box
       sx={{
         width: 350,
-        background: "#232b4f",
+        background: "#4f2323",
         color: "white",
         height: "100%",
         display: "flex",
@@ -272,7 +272,7 @@ export default function MenuProfileMobile(data: userProps) {
             fontSize: "14px",
             padding: "8px 0",
             "&:hover": {
-              background: "#2f3b56",
+              background: "#562f2f",
             },
           }}
         >
@@ -311,7 +311,7 @@ export default function MenuProfileMobile(data: userProps) {
               whiteSpace: "nowrap",
               display: "block",
               "&:hover": {
-                background: "#2f3b56",
+                background: "#562f2f",
               },
             }}
           >
@@ -322,14 +322,14 @@ export default function MenuProfileMobile(data: userProps) {
           onClick={() => route.replace("/profile/account-deposit")}
           sx={{
             backgroundImage:
-              "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #d61f57 0deg, #ff0250 89.73deg, #af0036 180.18deg, #d61f57 1turn)",
+              "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #d61f1f 0deg, #ff0202 89.73deg, #af0036 180.18deg, #d61f1f 1turn)",
             color: "white",
             borderRadius: "16px",
             padding: "4px 12px",
             fontSize: "14px",
             textTransform: "none",
             "&:hover": {
-              background: "#e03500",
+              background: "#e00000",
             },
           }}
         >

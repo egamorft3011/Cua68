@@ -65,7 +65,7 @@ export default function TransactionHistoryPage() {
           sx={{
             width: "100%",
             overflowX: "auto", // scroll chỉ tại đây
-            background: "#141b36",
+            background: "#361414",
             borderRadius: "10px",
           }}
         >
@@ -76,9 +76,9 @@ export default function TransactionHistoryPage() {
               justifyContent="space-between"
               px={1}
               mb={2}
-              color="#ccc"
+              color=" #ccc"
               sx={{
-                background: "#1c2340",
+                background: "#401c1c",
                 p: 2,
               }}
             >
@@ -104,8 +104,8 @@ export default function TransactionHistoryPage() {
               <Card
                 key={i}
                 sx={{
-                  background: "#141b36",
-                  borderBottom: "1px solid rgba(56,67,117,.35)",
+                  background: "#361414",
+                  borderBottom: "1px solid rgba(117, 56, 56, 0.35)",
                   boxShadow: "none",
                 }}
               >
@@ -153,7 +153,7 @@ export default function TransactionHistoryPage() {
       ) : (
         <Box
           sx={{
-            backgroundColor: "#0f1a35",
+            backgroundColor: "#350f0f",
             borderRadius: 2,
             py: 15,
             display: "flex",

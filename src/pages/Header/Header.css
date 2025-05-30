@@ -30,7 +30,6 @@ header {
 
 .header-left {
     width: 10%;
-    margin-left: -10%;
 }
 
 .header-bottom {
@@ -69,8 +68,8 @@ header {
 }
 
 .logo img {
-    height: 80px;
-    width: 100px;
+    height: 60px;
+    width: 75px;
     object-fit: contain;
     /* position: absolute; */
 }
@@ -85,8 +84,7 @@ header {
     max-width: 60%;
 }
 
-
-.header-right-menu {
+ .header-right-menu {
     width: 100%;
     display: flex;
     /* flex-wrap: wrap; */

@@ -139,7 +139,7 @@ const VipProgress: React.FC = () => {
     <Grid
       container
       sx={{
-        backgroundColor: '#232B4F',
+        backgroundColor: '#4f2323',
         width: '100%',
         borderRadius: '8px',
         display: 'flex',

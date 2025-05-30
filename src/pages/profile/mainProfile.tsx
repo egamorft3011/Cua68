@@ -205,7 +205,7 @@ export default function MainProfile() {
             sx={{
               width: "2px",
               height: "100%",
-              background: " #fe3838",
+              background: "#ff0000",
               marginLeft: "20px",
               marginRight: "20px",
             }}
@@ -260,9 +260,9 @@ export default function MainProfile() {
             <Button
               variant="contained"
               sx={{
-                backgroundColor: activeTab === "bank" ? "#f63b3b" : "#4c0101",
+                backgroundColor: activeTab === "bank" ? " #af0404" : " #4c0101",
                 "&:hover": {
-                  backgroundColor: activeTab === "bank" ? "#eb2525" : "#944a4a",
+                  backgroundColor: activeTab === "bank" ? " #af0404" : " #944a4a",
                 },
               }}
               onClick={() => setActiveTab("bank")}
@@ -290,7 +290,7 @@ export default function MainProfile() {
                       <PersonIcon sx={{ color: "#fff1b5", mr: 1 }} />
                     ),
                     sx: {
-                      backgroundColor: "#662a2a",
+                      backgroundColor: " #662a2a",
                       color: "white",
                       borderRadius: 1,
                       "& .MuiInputBase-input.Mui-disabled": {
@@ -315,7 +315,7 @@ export default function MainProfile() {
                       <EmailIcon sx={{ color: " #fff1b5", mr: 1 }} />
                     ),
                     sx: {
-                      backgroundColor: "#2A4066",
+                      backgroundColor: " #662a2a",
                       color: "white",
                       borderRadius: 1,
                     },
@@ -499,7 +499,7 @@ export default function MainProfile() {
                           onChange={(e) => setBankNumber(e.target.value)}
                           InputProps={{
                             sx: {
-                              backgroundColor: "#7a3b3b",
+                              backgroundColor: " #7a3b3b",
                               color: "white",
                               borderRadius: 1,
                             },

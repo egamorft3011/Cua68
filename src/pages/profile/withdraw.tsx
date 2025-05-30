@@ -160,7 +160,7 @@ export default function Withdraw() {
     <Grid
       container
       sx={{
-        backgroundColor: "#232B4F",
+        backgroundColor: "#4f2323",
         width: "100%",
         borderRadius: "8px",
         display: "flex",
@@ -218,7 +218,7 @@ export default function Withdraw() {
                 <Typography sx={{ marginBottom: 1 }}>Ngân Hàng</Typography>
                 <ListItem
                   sx={{
-                    backgroundColor: "#2D355D",
+                    backgroundColor: "#5d2d2d",
                     width: "100%",
                     borderRadius: 5,
                     color: "white",
@@ -258,7 +258,7 @@ export default function Withdraw() {
                 </Typography>
                 <TextField
                   sx={{
-                    backgroundColor: "#2A3144",
+                    backgroundColor: "#442a2a",
                     borderRadius: "8px",
                     "& .MuiInputBase-input": {
                       color: "white",
@@ -293,7 +293,7 @@ export default function Withdraw() {
                 </Typography>
                 <TextField
                   sx={{
-                    backgroundColor: "#2A3144",
+                    backgroundColor: "#442a2a",
                     borderRadius: "8px",
                     "& .MuiInputBase-input": {
                       color: "white",
@@ -429,7 +429,7 @@ export default function Withdraw() {
                 <Typography sx={{ marginBottom: 1 }}>Ngân Hàng</Typography>
                 <ListItem
                   sx={{
-                    backgroundColor: "#2D355D",
+                    backgroundColor: "#5d2d2d",
                     width: "100%",
                     borderRadius: 5,
                     color: "white",
@@ -479,7 +479,7 @@ export default function Withdraw() {
                 </Typography>
                 <TextField
                   sx={{
-                    backgroundColor: "#2A3144",
+                    backgroundColor: "#442a2a",
                     borderRadius: "8px",
                     "& .MuiInputBase-input": {
                       color: "white",
@@ -513,7 +513,7 @@ export default function Withdraw() {
                 </Typography>
                 <TextField
                   sx={{
-                    backgroundColor: "#2A3144",
+                    backgroundColor: "#442a2a",
                     borderRadius: "8px",
                     "& .MuiInputBase-input": {
                       color: "white",

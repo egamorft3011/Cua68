@@ -101,7 +101,7 @@ export default function BettingHistoryPage() {
             onChange={(e) => setCategory(e.target.value)}
             displayEmpty
             sx={{
-              backgroundColor: "#29345c",
+              backgroundColor: "#5c2929",
               color: "#fff",
               width: {
                 xs: "50%",
@@ -120,7 +120,7 @@ export default function BettingHistoryPage() {
             onChange={(e) => setStatus(e.target.value)}
             displayEmpty
             sx={{
-              backgroundColor: "#29345c",
+              backgroundColor: "#5c2929",
               color: "#fff",
               width: {
                 xs: "50%",
@@ -243,7 +243,7 @@ export default function BettingHistoryPage() {
         ) : (
           <Box
             sx={{
-              backgroundColor: "#0f1a35",
+              backgroundColor: "#350f0f",
               borderRadius: 2,
               py: 15,
               display: "flex",

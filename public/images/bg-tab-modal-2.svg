@@ -1,36 +1,33 @@
-<svg width="450" height="64" viewBox="0 0 450 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_1_65)">
-<g filter="url(#filter0_b_1_65)">
-<path d="M450 63.2041C450 56.6029 444.668 51.2413 438.067 51.2043L267.441 50.248C260.84 50.211 255.508 44.8494 255.508 38.2482V20.5C255.508 13.8726 250.136 8.5 243.508 8.5H12C5.37258 8.5 0 13.8726 0 20.5V64H450V63.2041Z" fill="#ABAFC8"/>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 28.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 450 64" style="enable-background:new 0 0 450 64;" xml:space="preserve">
+<style type="text/css">
+	.st0{clip-path:url(#SVGID_00000120519448456289336870000008811250897460411047_);}
+	.st1{fill:#552100;}
+	.st2{fill:#141B36;}
+	.st3{fill:#451B00;}
+</style>#4f2323
+<g>
+	<defs>
+		<rect id="SVGID_1_" width="450" height="64"/>
+	</defs>
+	<clipPath id="SVGID_00000170984906652452047750000015300033679331870907_">
+		<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
+	</clipPath>
+	<g style="clip-path:url(#SVGID_00000170984906652452047750000015300033679331870907_);">
+		<g>
+			<path class="st1" d="M450,63.2c0-6.6-5.3-12-11.9-12l-170.6-1c-6.6,0-11.9-5.4-11.9-12V20.5c0-6.6-5.4-12-12-12H12
+				c-6.6,0-12,5.4-12,12V64h450V63.2z"/>
+		</g>
+		<g>
+			<path class="st2" d="M0,64c0-6.6,5.4-12,12-12h203.9c4.7,0,8.9-2.7,10.9-7L244.3,7c2-4.2,6.2-7,10.9-7L438,0c6.6,0,12,5.4,12,12
+				v52H0L0,64z"/>
+		</g>
+		<g>
+			<path class="st3" d="M0,64c0-6.6,5.4-12,12-12l199.3,0c5.2,0,9.8-3.3,11.4-8.3l11.6-35.5c1.6-4.9,6.2-8.3,11.4-8.3H438
+				c6.6,0,12,5.4,12,12v52H0L0,64z"/>
+		</g>
+	</g>
 </g>
-<g filter="url(#filter1_b_1_65)">
-<path d="M0 64C0 57.3964 5.35325 52.0432 11.9568 52.0432H215.826C220.505 52.0432 224.757 49.3241 226.719 45.0771L244.331 6.96614C246.294 2.71916 250.546 4.91451e-05 255.224 4.79923e-05L438 2.95677e-06C444.627 1.32379e-06 450 5.37258 450 12V64H0V64Z" fill="#141B36"/>
-</g>
-<g filter="url(#filter2_b_1_65)">
-<path d="M0 64C0 57.3961 5.35287 52.0421 11.9568 52.0408L211.3 52.0017C216.49 52.0007 221.091 48.6635 222.703 43.7306L234.296 8.27113C235.909 3.33738 240.511 0 245.702 0H438C444.627 0 450 5.37258 450 12V64H0V64Z" fill="#232B4F"/>
-</g>
-</g>
-<defs>
-<filter id="filter0_b_1_65" x="-8" y="0.5" width="466" height="71.5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feGaussianBlur in="BackgroundImageFix" stdDeviation="4"/>
-<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_1_65"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_1_65" result="shape"/>
-</filter>
-<filter id="filter1_b_1_65" x="-8" y="-8" width="466" height="80" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feGaussianBlur in="BackgroundImageFix" stdDeviation="4"/>
-<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_1_65"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_1_65" result="shape"/>
-</filter>
-<filter id="filter2_b_1_65" x="-8" y="-8" width="466" height="80" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feGaussianBlur in="BackgroundImageFix" stdDeviation="4"/>
-<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_1_65"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_1_65" result="shape"/>
-</filter>
-<clipPath id="clip0_1_65">
-<rect width="450" height="64" fill="white"/>
-</clipPath>
-</defs>
 </svg>

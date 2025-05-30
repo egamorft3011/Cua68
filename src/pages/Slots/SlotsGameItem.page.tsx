@@ -201,7 +201,7 @@ export default function SlotsGameItemPage({
                 color: "white", // Mặc định chữ màu trắng
               },
               "& .Mui-selected": {
-                backgroundColor: "#ee0000", // Nền màu xanh vàng khi active
+                backgroundColor: "#b20707", // Nền màu xanh vàng khi active
                 color: "white", // Chữ màu trắng
                 "&:hover": {
                   backgroundColor: "#4f1401", // Duy trì màu khi hover

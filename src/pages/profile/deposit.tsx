@@ -320,14 +320,14 @@ export default function Deposit(props: TabPProps) {
         sx={{
           width: "100%",
           borderRadius: 6.5,
-          backgroundColor: "#232B4F",
+          backgroundColor: "#4f2323",
         }}
       >
         <Box
           sx={{
             borderBottom: 1,
             borderColor: "divider",
-            backgroundColor: "#020D24",
+            backgroundColor: "#240202",
           }}
         >
           <Tabs
@@ -338,13 +338,13 @@ export default function Deposit(props: TabPProps) {
               "& .MuiTab-root": {
                 color: "white",
                 "&.Mui-selected": {
-                  backgroundColor: "#232B4F",
+                  backgroundColor: "#4f2323",
                   color: "white",
                   borderRadius: "10px 10px 0px 0px",
                 },
               },
               "& .MuiTabs-indicator": {
-                backgroundColor: "#232B4F",
+                backgroundColor: "#4f2323",
               },
             }}
             aria-label="Profile navigation tabs"
@@ -365,7 +365,7 @@ export default function Deposit(props: TabPProps) {
             <Grid
               container
               sx={{
-                backgroundColor: "#232B4F",
+                backgroundColor: "#4f2323",
                 width: "100%",
                 borderRadius: "8px",
                 display: "flex",
@@ -445,7 +445,7 @@ export default function Deposit(props: TabPProps) {
                   </Grid>
                   <TextField
                     sx={{
-                      backgroundColor: "#2A3144",
+                      backgroundColor: "#442a2a",
                       borderRadius: "8px",
                       "& .MuiInputBase-input": {
                         color: "white",
@@ -483,14 +483,14 @@ export default function Deposit(props: TabPProps) {
                           sx={{
                             minWidth: "135px",
                             backgroundColor:
-                              amount === option ? "#008AFF" : "#59638d",
+                              amount === option ? "#ff0000" : "#8d5959",
                             color: amount === option ? "#fff" : "#fff",
                             fontWeight: "bold",
                             borderRadius: "8px",
                             cursor: "pointer",
                             transition: "all 0.3s",
                             "&:hover": {
-                              backgroundColor: "#008AFF",
+                              backgroundColor: "#ff0000",
                             },
                           }}
                           onClick={() => {
@@ -568,7 +568,7 @@ export default function Deposit(props: TabPProps) {
                   spacing: 2,
                   borderRadius: 5,
                   padding: 1,
-                  backgroundColor: "#2D355D",
+                  backgroundColor: "#5d2d2d",
                   height: { xs: "auto", sm: "auto" },
                   marginTop: { xs: 2, sm: 0 },
                   gap: { xs: 2, sm: 0 },

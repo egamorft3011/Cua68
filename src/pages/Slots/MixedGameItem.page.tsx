@@ -235,7 +235,7 @@ export default function MixedGameItemPage({
                 color: "white", // Mặc định chữ màu trắng
               },
               "& .Mui-selected": {
-                backgroundColor: " #fe0303", // Nền màu xanh vàng khi active
+                backgroundColor: " #b20707", // Nền màu xanh vàng khi active
                 color: "white", // Chữ màu trắng
                 "&:hover": {
                   backgroundColor: " #b20707", // Duy trì màu khi hover

@@ -77,7 +77,7 @@ const VipPrivilegesPage: React.FC = () => {
       id="body-web-vip"
       sx={{
         paddingBottom: '50px',
-        backgroundColor: '#232B4F',
+        backgroundColor: '#4f2323',
         minHeight: '100vh',
       }}
     >
