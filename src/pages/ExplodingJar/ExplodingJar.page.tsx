@@ -220,7 +220,7 @@ export default function ExplodingJarPage() {
                 backgroundColor: "#b20707", // Nền màu xanh vàng khi active
                 color: "white", // Chữ màu trắng
                 "&:hover": {
-                  backgroundColor: "#b20707", // Duy trì màu khi hover
+                  backgroundColor: "rgb(58, 1, 1)", // Duy trì màu khi hover
                 },
               },
             }}
