@@ -77,7 +77,7 @@ const VipPrivilegesPage: React.FC = () => {
       id="body-web-vip"
       sx={{
         paddingBottom: '50px',
-        backgroundColor: '#4f2323',
+        backgroundColor: ' #4f2323',
         minHeight: '100vh',
       }}
     >
@@ -203,7 +203,7 @@ const VipPrivilegesPage: React.FC = () => {
                   borderRadius: '50%',
                 },
                 '& .swiper-pagination-bullet-active': {
-                  backgroundColor: '#007aff',
+                  backgroundColor: 'rgb(255, 0, 0)',
                 },
               }}
             />

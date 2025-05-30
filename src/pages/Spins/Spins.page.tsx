@@ -206,7 +206,7 @@ export default function SpinsPage() {
                 overflow: "hidden",
                 whiteSpace: "nowrap",
                 "&:hover": {
-                  background: "#ff0000",
+                  background: " #ff0000",
                 },
               }}
               key={item.id}

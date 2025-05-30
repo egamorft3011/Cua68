@@ -338,13 +338,13 @@ export default function Deposit(props: TabPProps) {
               "& .MuiTab-root": {
                 color: "white",
                 "&.Mui-selected": {
-                  backgroundColor: "#4f2323",
+                  backgroundColor: " #4f2323",
                   color: "white",
                   borderRadius: "10px 10px 0px 0px",
                 },
               },
               "& .MuiTabs-indicator": {
-                backgroundColor: "#4f2323",
+                backgroundColor: " #4f2323",
               },
             }}
             aria-label="Profile navigation tabs"
@@ -365,7 +365,7 @@ export default function Deposit(props: TabPProps) {
             <Grid
               container
               sx={{
-                backgroundColor: "#4f2323",
+                backgroundColor: " #4f2323",
                 width: "100%",
                 borderRadius: "8px",
                 display: "flex",

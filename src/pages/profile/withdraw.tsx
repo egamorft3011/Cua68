@@ -471,13 +471,15 @@ export default function Withdraw() {
               >
                 Thêm mật khẩu rút tiền
               </Typography>
-              <FormControl fullWidth>
+              <FormControl fullWidth sx={{ color: " #808691", fontSize: 14, mb: 1, mt: 2, }}>
                 <Typography
-                  sx={{ color: "#808691", fontSize: 14, mb: 1, mt: 2 }}
+                  sx={{ color: " #808691", fontSize: 14, mb: 1, mt: 2, marginTop: "55px" }}
+                  
                 >
-                  Nhập Mật Khẩu <span style={{ color: "red" }}>*</span>
-                </Typography>
+                 Nhập Mật Khẩu
+                </Typography> 
                 <TextField
+                
                   sx={{
                     backgroundColor: "#442a2a",
                     borderRadius: "8px",
