@@ -45,10 +45,14 @@ const DialogLogin = (props: propPopup) => {
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [activeTab, setActiveTab] = useState(props.activeTab);
+  const [refCode, setRefCode] = useState<string>("");
 
   // Tab handler
   useEffect(() => {
     setActiveTab(props.activeTab);
+    const urlParams = new URLSearchParams(window.location.search);
+    const affId = urlParams.get("affiliate_id") || "";
+    setRefCode(affId);
   }, [props.activeTab]);
 
   // Input handlers
@@ -63,6 +67,7 @@ const DialogLogin = (props: propPopup) => {
   const handlePhone = (e: any) => setPhone(e.target.value);
   const handleEmail = (e: any) => setEmail(e.target.value);
   const toggleShowPassword = () => setShowPassword(!showPassword);
+  const handleRefCode = (e: any) => setRefCode(e.target.value);
 
   // Login handler
   const login = async () => {
@@ -100,7 +105,7 @@ const DialogLogin = (props: propPopup) => {
       const autoEmail =
         email !== "" ? email : generateEmailFromUsername(userName);
       setLoadding(true);
-      await signupUser(name, userName, password, autoEmail, phone)
+      await signupUser(name, userName, password, autoEmail, phone, refCode)
         .then((res: any) => {
           if (res?.status === true) {
             toast.success("Tạo tài khoản thành công");
@@ -255,6 +260,14 @@ const DialogLogin = (props: propPopup) => {
                     placeholder="Nhập số điện thoại"
                     value={phone}
                     onChange={handlePhone}
+                  />
+                  <label>Mã đại lý</label>
+                  <input
+                    type="text"
+                    value={refCode}
+                    disabled={!!refCode}
+                    placeholder="Mã đại lý"
+                    onChange={handleRefCode}
                   />
 
                   <div className="terms">

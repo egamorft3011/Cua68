@@ -15,7 +15,8 @@ const signupUser = (
   username: string,
   password: string,
   email: string,
-  phone: string
+  phone: string,
+  refcode: string
 ) => {
   return authInstance.post("/auth/register", {
     name,
@@ -23,6 +24,7 @@ const signupUser = (
     phone,
     email,
     password,
+    refcode
   });
 };
 const getMessage = () => {
