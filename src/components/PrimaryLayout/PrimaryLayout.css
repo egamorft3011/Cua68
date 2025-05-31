@@ -123,7 +123,7 @@ main {
 @media(max-width: 850px) {
     .menu-mobile {
         display: block;
-        z-index: 99999;
+        z-index: 100;
     }
 
     .slide-gif-mobile {
@@ -133,7 +133,7 @@ main {
         height: 45px;
         top: 0;
         background-color: var(--theme-top-nav-bg);
-        z-index: 99999;
+        z-index: 90;
         padding: 0px;
     }
 
@@ -176,7 +176,7 @@ main {
 @media(max-width: 500px) {
     .menu-mobile {
         display: block;
-        z-index: 99999;
+        z-index: 100;
     }
 
     .banner-games {
@@ -190,7 +190,7 @@ main {
         height: 45px;
         top: 0;
         background-color: var(--theme-top-nav-bg);
-        z-index: 99999;
+        z-index: 90;
         padding: 0px;
     }
 
