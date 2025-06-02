@@ -7,11 +7,11 @@ export const ListGameHome = [
     nameGame: "Live Casino",
   },
   {
-    id: "2",
-    images: "type-bet-game-bai.webp",
-    link: "/gamecasio",
+    id: "6",
+    images: "type-bet-sport.webp",
+    link: "/sport",
     numberC: 0,
-    nameGame: "Game bài",
+    nameGame: "Thể thao",
   },
   {
     id: "3",
@@ -34,12 +34,13 @@ export const ListGameHome = [
     numberC: 0,
     nameGame: "Đá gà",
   },
-  {
-    id: "6",
-    images: "type-bet-game-nhanh.webp",
-    link: "/slots",
+
+    {
+    id: "2",
+    images: "type-bet-game-bai.webp",
+    link: "/gamecasio",
     numberC: 0,
-    nameGame: "Game nhanh",
+    nameGame: "Game bài",
   },
 ];
 

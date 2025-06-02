@@ -186,8 +186,8 @@ export const ListMenu = [
   {
     id: "1",
     icon: <TableGameMenuIcon />,
-    title: "Table Games ",
-    link: "/tablegame",
+    title: "Thể Thao ",
+    link: "/sport",
   },
   {
     id: "2",
