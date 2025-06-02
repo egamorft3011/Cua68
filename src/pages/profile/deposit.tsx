@@ -87,6 +87,7 @@ export default function Deposit(props: TabPProps) {
   const { user, loading } = useAuth();
   const [load, setLoad] = useState<boolean>(false);
   const [bankAdmin, setBankAdmin] = useState<any>();
+  const [bankList, setBankList] = useState<any[]>([]);
   const router = useRouter();
   const [qrData, setQrData] = useState<any | null>(null);
   const [openPopup, setOpenPopup] = useState(false);
@@ -151,13 +152,19 @@ export default function Deposit(props: TabPProps) {
     navigator.clipboard.writeText(text);
     alert(`sao chép: ${text}`);
   };
+
   useEffect(() => {
     getListBankPayment().then((res) => {
       if (res.status && res.data.length > 0) {
-        setBankAdmin(res.data[0]);
+        setBankList(res.data);
+        setBankAdmin(res.data[0]); // Set default to first bank
       }
     });
   }, []);
+
+  const handleBankChange = (bank: any) => {
+    setBankAdmin(bank);
+  };
 
   const quickOptions = [
     50000, 100000, 200000, 300000, 400000, 500000, 1000000, 2000000,
@@ -203,6 +210,7 @@ export default function Deposit(props: TabPProps) {
       );
     }
   };
+
   const RequestDeposit = () => {
     if (bankAdmin && amount) {
       setLoad(true);
@@ -440,7 +448,56 @@ export default function Deposit(props: TabPProps) {
                       variant="body2"
                       gutterBottom
                     >
-                      Nhập số tiền cần nạp (K)
+                      Chọn ngân hàng
+                    </Typography>
+                  </Grid>
+                  <Grid container sx={{ flexWrap: "wrap", gap: "10px" }}>
+                    {bankList.map((bank) => (
+                      <Grid item key={bank.id}>
+                        <Button
+                          sx={{
+                            width: "150px",
+                            height: "60px",
+                            background: bankAdmin?.id === bank.id
+                              ? "linear-gradient(45deg, #008AFF 30%, #2692e0 90%)"
+                              : "linear-gradient(45deg, #3A4566 30%, #59638d 90%)",
+                            color: "white",
+                            borderRadius: "8px",
+                            padding: "8px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            cursor: "pointer",
+                            transition: "all 0.3s",
+                            "&:hover": {
+                              background: "linear-gradient(45deg, #ff0000 30%, #e02626 90%)",
+                            },
+                            boxShadow: bankAdmin?.id === bank.id
+                              ? "0 4px 8px rgba(255, 0, 0, 0.3)"
+                              : "0 2px 4px rgba(0, 0, 0, 0.2)",
+                          }}
+                          onClick={() => handleBankChange(bank)}
+                        >
+                          <Image
+                            src={`/images/banklist/${bank.bankProvide.toLowerCase()}.png`}
+                            width={100}
+                            height={100}
+                            alt={bank.bankProvide}
+                            style={{ objectFit: "contain" }}
+                          />
+                        </Button>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+                <Box sx={{ marginBottom: 2, width: "100%" }}>
+                  <Grid display={"flex"} justifyContent={"space-between"}>
+                    <Typography
+                      sx={{ color: "white", marginBottom: 2, fontWeight: 600 }}
+                      variant="body2"
+                      gutterBottom
+                    >
+                      Nhập số tiền cần nạp (đ)
                     </Typography>
                   </Grid>
                   <TextField
@@ -498,7 +555,7 @@ export default function Deposit(props: TabPProps) {
                             setInputValue(formatCurrency(option));
                           }}
                         >
-                          {Number(option).toLocaleString("en-US")} K
+                          {Number(option).toLocaleString("vi-VN")}
                         </Button>
                       </Grid>
                     ))}

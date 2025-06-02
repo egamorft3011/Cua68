@@ -27,7 +27,7 @@ export default function NumberCount(props: NumberCountProps) {
   }, [targetValue]);
   return (
     <>
-      <p className={props.classname}> {value.toLocaleString("en-US")} </p>
+      <p className={props.classname}> {value.toLocaleString("vi-VN")} </p>
     </>
   );
 }
