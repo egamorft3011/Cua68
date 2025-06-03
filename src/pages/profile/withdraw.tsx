@@ -132,7 +132,7 @@ export default function Withdraw() {
           swal(
             "Rút tiền",
             "Tạo lệnh rút tiền thành công. Hệ thống sẽ tự động chuyển tiền vào tài khoản của bạn",
-            "Success"
+            "success"
           );
         } else {
           setLoad(false);
@@ -148,7 +148,7 @@ export default function Withdraw() {
     changePassSecurity("", password, rePassword).then((res: any) => {
       if (res.status === true) {
         setLoad(false);
-        swal("Tạo mật khẩu", "Tạo mật khẩu rút tiền thành công", "Success");
+        swal("Tạo mật khẩu", "Tạo mật khẩu rút tiền thành công", "success");
         router.refresh();
       } else {
         setLoad(false);

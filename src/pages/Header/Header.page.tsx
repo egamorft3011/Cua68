@@ -88,6 +88,8 @@ export default function HeaderPage(props: propUser) {
     }
   }, []);
 
+  const router = useRouter();
+
   return (
     <header>
       <div className="main-header">
@@ -142,6 +144,7 @@ export default function HeaderPage(props: propUser) {
                 >
                   Đăng ký
                 </button>
+                <button className="agentList" onClick={() => router.push('/agency')}>Đại lý</button>
                 <DialogLogin
                   activeTab={activeTab}
                   onClose={handleClose}
@@ -192,6 +195,7 @@ export default function HeaderPage(props: propUser) {
                 >
                   Đăng ký
                 </button>
+                <button className="agentList" onClick={() => router.push('/agency')}>Đại lý</button>
                 <DialogLogin
                   activeTab={activeTab}
                   onClose={handleClose}

@@ -44,6 +44,7 @@ import Withdraw from "./withdraw";
 import TransactionHistory from "./History";
 import Promotion from "./promotion";
 import VipProgress from "./vipProgress";
+import AgentList from "./agentList";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -97,8 +98,9 @@ export default function Deposit(props: TabPProps) {
   const [inputValue, setInputValue] = useState<string>(""); // Track raw input
   const instructionsRef = useRef<HTMLDivElement>(null); // Ref for Instructions Grid
 
+  const agnecyBool = props.value === 5 ? 1 : 0;
   useEffect(() => {
-    setValue(user ? props.value : 0); // Default to Khuyến mãi (index 0) if not authenticated
+    setValue(user ? props.value : agnecyBool); // Default to Khuyến mãi (index 0) if not authenticated
   }, [props.value, user]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -295,6 +297,17 @@ export default function Deposit(props: TabPProps) {
           ),
           index: 4,
         },
+        {
+          label: "Danh Sách Đại Lý",
+          icon: (
+            <BankMenuIcon
+              width="23px"
+              height="25px"
+              fill={value === 5 ? "white" : undefined}
+            />
+          ),
+          index: 5,
+        },
       ]
     : [
         {
@@ -307,6 +320,17 @@ export default function Deposit(props: TabPProps) {
             />
           ),
           index: 0,
+        },
+        {
+          label: "Danh sách dại lý",
+          icon: (
+            <BankMenuIcon
+              width="23px"
+              height="23px"
+              fill={value === 0 ? "white" : undefined}
+            />
+          ),
+          index: 1,
         },
       ];
 
@@ -772,6 +796,14 @@ export default function Deposit(props: TabPProps) {
             </>
           )}
         </CustomTabPanel>
+        {!user && (
+          <CustomTabPanel value={value} index={1}>
+            <Typography variant="h5" sx={{ fontWeight: 600, color: "white", mb: 1 }}>
+              Danh Sách Đại Lý
+            </Typography>
+            <AgentList />
+          </CustomTabPanel>
+        )}
         {user && (
           <>
             <CustomTabPanel value={value} index={1}>
@@ -791,6 +823,9 @@ export default function Deposit(props: TabPProps) {
             </CustomTabPanel>
             <CustomTabPanel value={value} index={4}>
               <VipProgress />
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={5}>
+              <AgentList />
             </CustomTabPanel>
           </>
         )}

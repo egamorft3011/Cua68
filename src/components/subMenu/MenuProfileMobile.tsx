@@ -335,6 +335,23 @@ export default function MenuProfileMobile(data: userProps) {
         >
           NẠP
         </Button>
+         {/* Nút Đại lý */}
+        <Button
+          onClick={() => route.replace("/agency")}
+          style={{
+            display: "flex",
+            backgroundImage:
+              " url(/images/bg-btn.png), conic-gradient( from 0deg at 50% 50%, #ff9900 0deg, #ff6600 90deg, #ff3300 180deg, #ff6600 270deg, #ff9900 360deg )",
+
+             color: "white",
+            borderRadius: "16px",
+            padding: "4px 12px",
+            fontSize: "14px",
+            textTransform: "none",
+          }}
+        >
+          ĐẠI LÝ
+        </Button>
         <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}

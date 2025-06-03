@@ -17,6 +17,7 @@ import { Avatar, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/utils/formatMoney";
 import {
+  BankMenuIcon,
   GiftMenuIcon,
   HistoryMenuIcon,
   HoanIcon,
@@ -204,6 +205,29 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
           >
             <NapMenuIcon />
             NẠP
+          </button>
+
+          {/* Nút Đại lý */}
+          <button
+            onClick={() => router.push("/agency")}
+            style={{
+              display: "flex",
+              backgroundImage:
+                " url(/images/bg-btn.png), conic-gradient( from 0deg at 50% 50%, #ff9900 0deg, #ff6600 90deg, #ff3300 180deg, #ff6600 270deg, #ff9900 360deg )",
+
+              color: "white",
+              borderRadius: "20px",
+              border: "none",
+              fontSize: "14px",
+              width: "122px",
+              height: "38px",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+            }}
+          >
+            <BankMenuIcon />
+            ĐẠI LÝ
           </button>
         </Box>
 

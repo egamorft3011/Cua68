@@ -15,6 +15,18 @@ export default function usePlayGame() {
     onError?: (error: any) => void
   ): Promise<string | null> => {
     setLoading(true); // Bắt đầu trạng thái loading
+    
+    if (!user) {
+      swal("Lỗi", "Bạn chưa đăng nhập", "error");
+      setLoading(false);
+      return null;
+    }
+
+    if (user?.role == "agency") {
+      swal("Lỗi", "Tài khoản đại lý không thể chơi game", "error");
+      setLoading(false);
+      return null;
+    }
 
     const tempWindow = window.open("", "_blank");
     const dataGame = GameConfig.find((item) => item.code === id);

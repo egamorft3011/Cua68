@@ -149,6 +149,21 @@ header {
     background: linear-gradient(#eb4141, #b70b3c);
 }
 
+.header-right .header-right-menu .agentList {
+    width: 120px;
+    height: 40px;
+    border-radius: 20px;
+    background-image: url(/images/bg-btn.png), conic-gradient( from 0deg at 50% 50%, #ff9900 0deg, #ff6600 90deg, #ff3300 180deg, #ff6600 270deg, #ff9900 360deg );
+    color: white;
+    border: none;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.header-right .header-right-menu .agentList:hover {
+    background: linear-gradient(#eb4141, #b70b3c);
+}
+
 .header-right-ios .header-right-menu .login {
     width: 120px;
     height: 30px;
@@ -462,6 +477,10 @@ header {
         margin: 0;
     }
 
+    .header-right-menu{
+        margin-left: -15% !important;
+    }
+
     .main-header-mobile .header-mobile .header-right .header-right-menu a,
     span {
         display: none;
@@ -499,6 +518,21 @@ header {
         width: 80px;
         font-size: 12px;
     }
+
+    .header-right-menu .agentList {
+        width: 80px;
+        border-radius: 20px;
+        background-image: url(/images/bg-btn.png), conic-gradient( from 0deg at 50% 50%, #ff9900 0deg, #ff6600 90deg, #ff3300 180deg, #ff6600 270deg, #ff9900 360deg );
+        color: white;
+        border: none;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .header-right-menu .agentList:hover {
+        background: linear-gradient(#eb4141, #b70b3c);
+    }
+
 
 
 
