@@ -30,6 +30,8 @@ import { GameConfig } from "@/configs/GameConfig";
 import { NoticationIconMobile } from "@/shared/Svgs/Svg.component";
 import { pageInfo } from "@/services/Info.service";
 import { PageConfig } from "@/interface/PageConfig.interface";
+import NotificationBell from '@/components/subMenu/NotificationBell';
+
 
 interface propUser {
   user: userResponse;
@@ -119,7 +121,7 @@ export default function HeaderPage(props: propUser) {
               ))}
             </ul>
           </nav>
-          <div className="header-right">
+          <div className="header-right non-login">
             {user ? (
               <div className="header-right-menu">
                 <span></span>
@@ -130,6 +132,7 @@ export default function HeaderPage(props: propUser) {
                 {/* <button className="header-noti" type="button">
                   <NoticationIconMobile width="24px" height="24px" />
                 </button> */}
+                <NotificationBell />
                 <button
                   className="login"
                   onClick={() => handleSetActiveTab(0)} // Use memoized function

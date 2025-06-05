@@ -33,6 +33,7 @@ import {
 import Image from "next/image";
 import NavigationGame from "@/hook/NavigationGame";
 import { PageConfig } from "@/interface/PageConfig.interface";
+import NotificationBell from './NotificationBell';
 
 export interface UserProps {
   user: {
@@ -131,6 +132,9 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
       >
         {/* Username và Số dư */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography sx={{ color: "white", fontSize: 14 }}>
+            <NotificationBell />
+          </Typography>
           <Typography sx={{ color: "white", fontSize: 14 }}>
             {user?.username ?? "huyn196Ebfa5"}
           </Typography>
