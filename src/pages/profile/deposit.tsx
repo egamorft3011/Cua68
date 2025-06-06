@@ -455,14 +455,11 @@ export default function Deposit(props: TabPProps) {
                       fontWeight: 600,
                       margin: "auto",
                     }}
+                    onClick={() => setValue(user ? 5 : 1)}
                   >
-                    <Image
-                      src={"/images/icon-crypto.webp"}
-                      width={25}
-                      height={25}
-                      alt=""
-                    />{" "}
-                    Tiền ảo
+                   <BankMenuIcon />
+
+                    Đại lý
                   </Button>
                 </Box>
                 <Box sx={{ marginBottom: 2, width: "100%" }}>
@@ -807,8 +804,9 @@ export default function Deposit(props: TabPProps) {
         {user && (
           <>
             <CustomTabPanel value={value} index={1}>
-              <Withdraw />
+              <Withdraw goToTab={setValue} />
             </CustomTabPanel>
+
             <CustomTabPanel value={value} index={2}>
               <TransactionHistory value={props.history ?? "transaction"} />
             </CustomTabPanel>

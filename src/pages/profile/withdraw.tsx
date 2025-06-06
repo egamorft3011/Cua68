@@ -3,6 +3,7 @@ import LoadingComponent from "@/components/Loading";
 import useAuth from "@/hook/useAuth";
 import {
   BankIcon,
+  BankMenuIcon,
   ProfileBettingHistory,
   ProfileDeposit,
   ProfileDiscount,
@@ -49,7 +50,12 @@ import swal from "sweetalert";
 import { formatCurrency } from "@/utils/formatMoney";
 import Image from "next/image";
 
-export default function Withdraw() {
+
+interface WithdrawProps {
+  goToTab?: (index: number) => void;
+}
+
+export default function Withdraw({ goToTab }: WithdrawProps) {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [bankUser, setBankUser] = useState<any>();
@@ -198,6 +204,27 @@ export default function Withdraw() {
                 borderRadius: "5px",
                 textTransform: "none",
                 fontSize: "14px",
+                width: "300px",
+                height: "38px",
+                border: "none",
+                alignItems: "center",
+                justifyContent: "center",
+                justifyItems: "center",
+                cursor: "pointer",
+                fontWeight: 600,
+                margin: 0,
+              }}
+            >
+              <BankIcon /> Chuyển khoản ngân hàng
+            </Button>
+            <Button
+              sx={{
+                display: "flex",
+                background: "#4c0101",
+                color: "white",
+                borderRadius: "5px",
+                textTransform: "none",
+                fontSize: "14px",
                 width: "150px",
                 height: "38px",
                 border: "none",
@@ -206,10 +233,13 @@ export default function Withdraw() {
                 justifyItems: "center",
                 cursor: "pointer",
                 fontWeight: 600,
-                margin: "auto",
+                margin: 0,
               }}
+              onClick={() => goToTab?.(5)}
             >
-              <BankIcon /> Ví điện tử
+              <BankMenuIcon />
+
+              Đại lý
             </Button>
           </Box>
           <Box sx={{ marginBottom: 2, width: "100%" }}>
