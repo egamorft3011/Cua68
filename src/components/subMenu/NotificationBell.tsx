@@ -33,27 +33,17 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
 
   const fetchUnreadCount = useCallback(async () => {
     try {
-      const token = localStorage.getItem('tokenCUA68');
-      if (!token) {
-        setError('Không tìm thấy token');
-        return;
-      }
-
       const response = await contentInstance.get('/api/annoucement', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
         params: {
           page: 1,
           limit: 4,
         },
       });
-
       if (response.status) {
         setUnreadCount(response.data.total || 0);
       }
     } catch (error: any) {
-      setError(error.response?.data?.msg || error.message || 'Đã có lỗi xảy ra khi lấy dữ liệu thông báo.');
+      setError(error.message || 'Đã có lỗi xảy ra khi lấy dữ liệu thông báo.');
     }
   }, []);
 
@@ -91,13 +81,11 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
         }));
 
         setNotifications((prev) => [...prev, ...newNotifications]);
-        setTotal(totalItems ?? null);
+        setTotal(totalItems);
 
         // Tăng page nếu còn dữ liệu
-        if (typeof totalItems === 'number' && notifications.length + newNotifications.length < totalItems) {
+        if (notifications.length + newNotifications.length < totalItems) {
           setPage((prev) => prev + 1);
-        } else if (typeof totalItems !== 'number') {
-          setTotal(newNotifications.length); // Assume no more data
         }
 
       } else {
