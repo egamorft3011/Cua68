@@ -121,14 +121,14 @@ export default function HeaderPage(props: propUser) {
               ))}
             </ul>
           </nav>
-          <div className="header-right non-login">
+          <div className="header-right">
             {user ? (
               <div className="header-right-menu">
                 <span></span>
                 <MenuProfile user={user} pageConfig={pageConfig}/>
               </div>
             ) : (
-              <div className="header-right-menu">
+              <div className="header-right-menu non-login">
                 {/* <button className="header-noti" type="button">
                   <NoticationIconMobile width="24px" height="24px" />
                 </button> */}
