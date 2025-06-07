@@ -25,17 +25,20 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState<number | null>(null);
   const [isInitialLoadComplete, setIsInitialLoadComplete] = useState(false);
+  const [token, setToken] = useState<string | null>(null); // Quản lý token qua state
   const router = useRouter();
   const observer = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const modalContentRef = useRef<HTMLDivElement | null>(null);
   const [unreadCount, setUnreadCount] = useState(initialCount);
 
-  // Retrieve token from localStorage
-  const token = localStorage.getItem('tokenCUA68');
+  // Lấy token từ localStorage khi component mount
+  useEffect(() => {
+    const storedToken = typeof window !== 'undefined' ? localStorage.getItem('tokenCUA68') : null;
+    setToken(storedToken);
+  }, []);
 
   const fetchUnreadCount = useCallback(async () => {
-    // Skip API call if no token
     if (!token) {
       setUnreadCount(0);
       return;
@@ -43,23 +46,18 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
 
     try {
       const response = await contentInstance.get('/api/annoucement', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          page: 1,
-          limit: 4,
-        },
+        headers: { Authorization: `Bearer ${token}` },
+        params: { page: 1, limit: 4 },
       });
       if (response.status) {
-        setUnreadCount(response.data.total || 0); // Default to 0 if total is missing
+        setUnreadCount(response.data.total || 0);
       }
     } catch (error: any) {
       setError(error.message || 'Đã có lỗi xảy ra khi lấy dữ liệu thông báo.');
     }
   }, [token]);
 
-  // Gọi fetchUnreadCount khi component mount
+  // Gọi fetchUnreadCount khi token thay đổi
   useEffect(() => {
     fetchUnreadCount();
   }, [fetchUnreadCount]);
@@ -70,7 +68,6 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
   const isFetchingRef = useRef(false);
 
   const fetchNotifications = useCallback(async (pageNum: number) => {
-    // Skip API call if no token or already fetching or no more data
     if (!token || isFetchingRef.current || (total !== null && notifications.length >= total)) {
       return;
     }
@@ -80,9 +77,7 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
     try {
       const limit = 1;
       const response = await contentInstance.get('/api/annoucement', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
         params: { page: pageNum, limit },
       });
 
@@ -98,18 +93,16 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
           isRead: item.seen === 1,
         }));
 
-        // If no new data is returned, stop further requests
         if (newNotifications.length === 0) {
-          setTotal(notifications.length); // Set total to current length to stop pagination
+          setTotal(notifications.length);
           isFetchingRef.current = false;
           setIsLoading(false);
           return;
         }
 
         setNotifications((prev) => [...prev, ...newNotifications]);
-        setTotal(totalItems !== undefined ? totalItems : notifications.length + newNotifications.length); // Fallback if total is missing
+        setTotal(totalItems !== undefined ? totalItems : notifications.length + newNotifications.length);
 
-        // Tăng page nếu còn dữ liệu
         if (notifications.length + newNotifications.length < (totalItems || Infinity)) {
           setPage((prev) => prev + 1);
         }
@@ -125,14 +118,12 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
     }
   }, [notifications.length, total, token]);
 
-  // Initial fetch - Only run once on mount
   useEffect(() => {
     if (isModalOpen && !isInitialLoadComplete && token) {
       fetchNotifications(1);
     }
   }, [isModalOpen, token]);
 
-  // Setup Intersection Observer for lazy loading
   useEffect(() => {
     if (!isModalOpen || !loadMoreRef.current || !modalContentRef.current || isLoading || !isInitialLoadComplete || (total !== null && notifications.length >= total)) return;
 
@@ -165,13 +156,8 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
     };
   }, [page, isInitialLoadComplete, isLoading, total, fetchNotifications, isModalOpen]);
 
-  const handleMouseEnter = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsModalOpen(false);
-  };
+  const handleMouseEnter = () => setIsModalOpen(true);
+  const handleMouseLeave = () => setIsModalOpen(false);
 
   const handleDetailClick = (id: string) => {
     const notification = notifications.find((notif) => notif.id === id);
@@ -182,20 +168,10 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
   };
 
   return (
-    <div
-      className="notification-wrapper"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <div className="notification-wrapper" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <div className={`bell-container ${isModalOpen ? 'modal-open' : ''}`}>
-        <img
-          src="https://staticda88.com/images/icon-notif.svg?v=1f70d39"
-          alt="Notification Bell"
-          className="bell-icon"
-        />
-        {unreadCount > 0 && (
-          <span className="notification-badge">{unreadCount}</span>
-        )}
+        <img src="https://staticda88.com/images/icon-notif.svg?v=1f70d39" alt="Notification Bell" className="bell-icon" />
+        {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
         <div className="modal-arrow"></div>
       </div>
 
@@ -214,11 +190,7 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
               notifications.map((notification) => (
                 <div key={notification.id} className="notification-item">
                   <div className="notification-icon">
-                    <img
-                      src="https://staticda88.com/images/item-notif.svg?v=1f70d39"
-                      alt="Icon"
-                      className="notif-icon"
-                    />
+                    <img src="https://staticda88.com/images/item-notif.svg?v=1f70d39" alt="Icon" className="notif-icon" />
                   </div>
                   <div className="notification-content">
                     <div className="notification-title-wrapper">
@@ -227,21 +199,18 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
                     </div>
                     <p className="notification-time">{notification.time}</p>
                     <div dangerouslySetInnerHTML={{ __html: notification.content }} />
-                    <button
-                      className="detail-btn"
-                      onClick={() => handleDetailClick(notification.id)}
-                    >
+                    <button className="detail-btn" onClick={() => handleDetailClick(notification.id)}>
                       Chi tiết
                     </button>
                   </div>
                 </div>
               ))
             )}
-            {token && (total === null || notifications.length < total) ? (
+            {token && (total === null || notifications.length < total) && (
               <div ref={loadMoreRef} className="load-more">
                 {isLoading && <p>Đang tải thêm...</p>}
               </div>
-            ) : null}
+            )}
             <div className="modal-footer">
               Cua68 - Trang cá cược thể thao chuyên nghiệp, nạp rút nhanh chóng!
             </div>
