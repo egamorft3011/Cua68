@@ -3,7 +3,6 @@ import LoadingComponent from "@/components/Loading";
 import useAuth from "@/hook/useAuth";
 import {
   BankIcon,
-  BankMenuIcon,
   ProfileBettingHistory,
   ProfileDeposit,
   ProfileDiscount,
@@ -50,12 +49,7 @@ import swal from "sweetalert";
 import { formatCurrency } from "@/utils/formatMoney";
 import Image from "next/image";
 
-
-interface WithdrawProps {
-  goToTab?: (index: number) => void;
-}
-
-export default function Withdraw({ goToTab }: WithdrawProps) {
+export default function Withdraw() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [bankUser, setBankUser] = useState<any>();
@@ -204,27 +198,6 @@ export default function Withdraw({ goToTab }: WithdrawProps) {
                 borderRadius: "5px",
                 textTransform: "none",
                 fontSize: "14px",
-                width: "300px",
-                height: "38px",
-                border: "none",
-                alignItems: "center",
-                justifyContent: "center",
-                justifyItems: "center",
-                cursor: "pointer",
-                fontWeight: 600,
-                margin: 0,
-              }}
-            >
-              <BankIcon /> Chuyển khoản ngân hàng
-            </Button>
-            <Button
-              sx={{
-                display: "flex",
-                background: "#4c0101",
-                color: "white",
-                borderRadius: "5px",
-                textTransform: "none",
-                fontSize: "14px",
                 width: "150px",
                 height: "38px",
                 border: "none",
@@ -233,13 +206,10 @@ export default function Withdraw({ goToTab }: WithdrawProps) {
                 justifyItems: "center",
                 cursor: "pointer",
                 fontWeight: 600,
-                margin: 0,
+                margin: "auto",
               }}
-              onClick={() => goToTab?.(5)}
             >
-              <BankMenuIcon />
-
-              Đại lý
+              <BankIcon /> Ví điện tử
             </Button>
           </Box>
           <Box sx={{ marginBottom: 2, width: "100%" }}>

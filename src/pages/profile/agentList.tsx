@@ -128,7 +128,6 @@ const AgentList: React.FC = () => {
           <Typography sx={{ flex: 2 }}>NICKNAME</Typography>
           <Typography sx={{ flex: 2 }}>SỐ ĐIỆN THOẠI</Typography>
           <Typography sx={{ flex: 1 }}>LIÊN HỆ</Typography>
-          <Typography sx={{ flex: 1 }}>GIAO DỊCH</Typography>
         </Box>
 
         {/* Danh sách đại lý */}
@@ -147,44 +146,11 @@ const AgentList: React.FC = () => {
               minWidth: '600px', // Đảm bảo mỗi hàng có cùng chiều rộng với tiêu đề
             }}
           >
-            <Typography sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-              {`${agent.stt} ⭐⭐`}
-            </Typography>
-            <Typography sx={{ flex: 2, display: 'flex', alignItems: 'center' }}>
-              {agent.daiLy}
-            </Typography>
-            <Typography sx={{ flex: 2, display: 'flex', alignItems: 'center' }}>
-              {agent.nickname}
-            </Typography>
-            <Typography sx={{ flex: 2, display: 'flex', alignItems: 'center' }}>
-              {agent.phone}
-            </Typography>
-            <Typography sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-              {renderContactIcons(agent.contact)}
-            </Typography>
-            <Typography sx={{ flex: 1 }}>
-              <Button
-                sx={{
-                  display: "flex",
-                  background: "#4c0101",
-                  color: "white",
-                  borderRadius: "5px",
-                  textTransform: "none",
-                  fontSize: "14px",
-                  width: "auto",
-                  height: "38px",
-                  border: "none",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  justifyItems: "center",
-                  cursor: "pointer",
-                  fontWeight: 600,
-                  margin: 0,
-                }}
-              >
-                Rút tiền
-              </Button>
-            </Typography>
+            <Typography sx={{ flex: 1 }}>{`${agent.stt} ⭐⭐`}</Typography>
+            <Typography sx={{ flex: 2 }}>{agent.daiLy}</Typography>
+            <Typography sx={{ flex: 2 }}>{agent.nickname}</Typography>
+            <Typography sx={{ flex: 2 }}>{agent.phone}</Typography>
+            <Typography sx={{ flex: 1 }}>{renderContactIcons(agent.contact)}</Typography>
           </Box>
         ))}
       </Box>

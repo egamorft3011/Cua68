@@ -94,7 +94,7 @@ header {
     margin-top: -20px;
     /* margin-left: 5%; */
 }
-.header-right-menu.non-login {
+.header-right.non-login {
   margin-left: 5%;
 }
 
@@ -183,15 +183,6 @@ header {
     height: 30px;
     border-radius: 20px;
     background-image: url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #1f50d6 0deg, #4a02ff 89.73deg, #003daf 180.18deg, #2b1fd6 1turn);
-    color: white;
-    border: none;
-}
-
-.header-right-ios .header-right-menu .agentList {
-    width: 120px;
-    height: 30px;
-    border-radius: 20px;
-    background-image: url(/images/bg-btn.png), conic-gradient( from 0deg at 50% 50%, #ff9900 0deg, #ff6600 90deg, #ff3300 180deg, #ff6600 270deg, #ff9900 360deg );
     color: white;
     border: none;
 }
@@ -438,19 +429,11 @@ header {
         width: 80px;
     }
 
-    .header-right-ios .header-right-menu .agentList {
-        width: 80px;
-    }
-
     .header-right .header-right-menu .login {
         width: 80px;
     }
 
     .header-right .header-right-menu .register {
-        width: 80px;
-    }
-
-    .header-right .header-right-menu .agentList {
         width: 80px;
     }
 
