@@ -13,8 +13,8 @@ import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export async function generateMetadata(): Promise<Metadata> {
-  let pageConfig: PageConfig = {
+async function getPageConfig(): Promise<PageConfig> {
+  const defaultConfig: PageConfig = {
     site_name: "",
     site_logo: "",
     site_banner: [],
@@ -30,17 +30,35 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const response = await pageInfo();
     if (response.status) {
-      pageConfig = response.data;
+      return response.data;
     }
+    return defaultConfig;
   } catch (error) {
     console.error("Error fetching page config:", error);
+    return defaultConfig;
   }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const pageConfig = await getPageConfig();
 
   return {
     title: pageConfig.site_name || "",
     description: pageConfig.site_description || "",
     icons: {
       icon: pageConfig.site_logo || "",
+    },
+    keywords: pageConfig.site_keyword || "",
+    openGraph: {
+      title: pageConfig.site_name || "",
+      description: pageConfig.site_description || "",
+      url: pageConfig.site_url || "",
+      images: [
+        {
+          url: pageConfig.site_logo || "",
+          alt: pageConfig.site_name || "",
+        },
+      ],
     },
   };
 }
@@ -50,27 +68,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  let pageConfig: PageConfig = {
-    site_name: "",
-    site_logo: "",
-    site_banner: [],
-    site_brand_marquee: "",
-    announcement: { isShow: "", title: "", description: "", content: "" },
-    copyright: "",
-    contact: { telegram: "", fanpage: "", hotline: "", email: "" },
-    site_description: "",
-    site_keyword: "",
-    site_url: "",
-  };
-
-  try {
-    const response = await pageInfo();
-    if (response.status) {
-      pageConfig = response.data;
-    }
-  } catch (error) {
-    console.error("Error fetching page config:", error);
-  }
+  const pageConfig = await getPageConfig();
 
   return (
     <html lang="en">
