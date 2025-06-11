@@ -56,7 +56,7 @@ const DialogLogin = (props: propPopup) => {
   }, [props.activeTab]);
 
   // Input handlers
-  const handleUserName = (e: any) => setUserName(e.target.value);
+  const handleUserName = (e: any) => setUserName(e.target.value.toLowerCase());
   const handleName = (e: any) => {
     const inputValue = e.target.value;
     // Chuyển thành chữ hoa và loại bỏ dấu
