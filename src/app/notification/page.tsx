@@ -1,8 +1,9 @@
 'use client'; // Mark as Client Component
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Box, Typography, Container, Paper, List, ListItem, ListItemText } from '@mui/material';
+import { contentInstance } from "@/configs/CustomizeAxios";
 
 interface Notification {
   id: string;
@@ -18,35 +19,46 @@ const NotificationDetail: React.FC = () => {
   const notificationID = searchParams?.get('notificationID') ?? null;
   const [notification, setNotification] = useState<Notification | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('tokenCUA68') : null;
+
+  const fetchNotification = useCallback(async () => {
+    if (!notificationID || !token) {
+      setError('Thiếu ID thông báo hoặc token xác thực.');
+      setLoading(false);
+      return;
+    }
+
     try {
-      // Get notification from localStorage
-      const storedNotification = localStorage.getItem('notificationDetail');
-      
-      if (storedNotification) {
-        const parsedNotification: Notification = JSON.parse(storedNotification);
-        
-        // Verify the notification ID matches the URL parameter (if provided)
-        if (!notificationID || parsedNotification.id === notificationID) {
-          setNotification(parsedNotification);
-        }
+      const response = await contentInstance.get(`/api/annoucement/annoucement-info/${notificationID}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.status) {
+        const data = response.data;
+        setNotification({
+          id: data.id.toString(),
+          title: data.title,
+          time: data.createdAt,
+          content: data.content,
+          isRead: data.isRead,
+          details: data.details || [],
+        });
+      } else {
+        setError('Dữ liệu thông báo không hợp lệ.');
       }
-    } catch (error) {
-      console.error('Error parsing notification from localStorage:', error);
+    } catch (err: any) {
+      console.error('Lỗi khi lấy thông báo:', err);
+      setError(err.response?.status === 401 ? 'Phiên đăng nhập hết hạn.' : 'Đã có lỗi xảy ra.');
     } finally {
       setLoading(false);
     }
-  }, [notificationID]);
+  }, [notificationID, token]);
 
-  // Function to strip HTML tags from content
-  const stripHtmlTags = (html: string): string => {
-    const div = document.createElement('div');
-    div.innerHTML = html;
-    return div.textContent || div.innerText || '';
-  };
+  useEffect(() => {
+    fetchNotification();
+  }, [fetchNotification]);
 
-  // Function to format date string
   const formatDate = (dateString: string): string => {
     try {
       const date = new Date(dateString);
@@ -58,7 +70,7 @@ const NotificationDetail: React.FC = () => {
         year: 'numeric'
       });
     } catch {
-      return dateString; // Return original string if parsing fails
+      return dateString;
     }
   };
 
@@ -66,27 +78,24 @@ const NotificationDetail: React.FC = () => {
     return (
       <Container maxWidth="lg" sx={{ pt: 12, pb: 2 }}>
         <Paper elevation={3} sx={{ p: 4, textAlign: 'center' }}>
-          <Typography variant="h5">
-            Đang tải...
-          </Typography>
+          <Typography variant="h5">Đang tải...</Typography>
         </Paper>
       </Container>
     );
   }
 
-  if (!notification) {
+  if (error || !notification) {
     return (
       <Container maxWidth="lg" sx={{ pt: 12, pb: 2 }}>
         <Paper elevation={3} sx={{ p: 4, textAlign: 'center' }}>
           <Typography variant="h5" color="error">
-            Không tìm thấy thông báo
+            {error || 'Không tìm thấy thông báo'}
           </Typography>
         </Paper>
       </Container>
     );
   }
 
-  const cleanContent = stripHtmlTags(notification.content);
   const formattedTime = formatDate(notification.time);
 
   return (
@@ -109,7 +118,7 @@ const NotificationDetail: React.FC = () => {
             <strong>Thời gian:</strong> {formattedTime}
           </Typography>
         </Box>
-        
+
         <Box
           sx={{
             background: 'linear-gradient(135deg, #d32f2f, #7b1fa2)',
@@ -123,9 +132,9 @@ const NotificationDetail: React.FC = () => {
           <Typography
             variant="h3"
             component="h1"
-            sx={{ 
-              fontWeight: 'bold', 
-              color: '#ffd700', 
+            sx={{
+              fontWeight: 'bold',
+              color: '#ffd700',
               textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
               fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' }
             }}
@@ -145,19 +154,17 @@ const NotificationDetail: React.FC = () => {
             }}
           />
         </Box>
-        
-        <Typography 
-          variant="body1" 
-          paragraph 
-          sx={{ 
+
+        <Box
+          sx={{
             color: '#ccc',
             lineHeight: 1.6,
-            fontSize: '1rem'
+            fontSize: '1rem',
+            mb: 3
           }}
-        >
-          {cleanContent}
-        </Typography>
-        
+          dangerouslySetInnerHTML={{ __html: notification.content }}
+        />
+
         {notification.details && notification.details.length > 0 && (
           <>
             <Typography variant="h6" sx={{ color: '#ffd700', mb: 2, fontWeight: 'bold' }}>
@@ -166,13 +173,13 @@ const NotificationDetail: React.FC = () => {
             <List sx={{ color: '#ccc' }}>
               {notification.details.map((detail, index) => (
                 <ListItem key={index} disablePadding sx={{ mb: 1 }}>
-                  <ListItemText 
+                  <ListItemText
                     primary={`${index + 1}. ${detail}`}
-                    sx={{ 
-                      '& .MuiListItemText-primary': { 
+                    sx={{
+                      '& .MuiListItemText-primary': {
                         lineHeight: 1.5,
                         fontSize: '0.95rem'
-                      } 
+                      }
                     }}
                   />
                 </ListItem>

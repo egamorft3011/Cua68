@@ -17,6 +17,21 @@ interface Notification {
   isRead: boolean;
 }
 
+const formatDate = (dateString: string): string => {
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleString('vi-VN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+    } catch {
+      return dateString;
+    }
+  };
+
 const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: initialCount = 0 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -45,15 +60,37 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
     }
 
     try {
-      const response = await contentInstance.get('/api/annoucement', {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { page: 1, limit: 4 },
-      });
-      if (response.status) {
-        setUnreadCount(response.data.total || 0);
+      let unreadCount = 0;
+      let page = 1;
+
+      while (true) {
+        const response = await contentInstance.get('/api/info/annoucement', {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { page },
+        });
+
+        if (response.status) {
+          const announcements = response.data.data || [];
+          unreadCount += announcements.filter((item: { isRead: boolean }) => !item.isRead).length;
+
+          if (announcements.length === 0 || page * announcements.length >= response.data.total) {
+            break;
+          }
+          page++;
+        } else {
+          throw new Error('Dữ liệu thông báo không hợp lệ.');
+        }
       }
+
+      setUnreadCount(unreadCount);
     } catch (error: any) {
-      setError(error.message || 'Đã có lỗi xảy ra khi lấy dữ liệu thông báo.');
+      console.error('Lỗi khi lấy thông báo:', error);
+      if (error.response?.status === 401) {
+        setError('Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.');
+      } else {
+        setError(error.message || 'Đã có lỗi xảy ra khi lấy dữ liệu thông báo.');
+      }
+      setUnreadCount(0);
     }
   }, [token]);
 
@@ -76,7 +113,7 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
 
     try {
       const limit = 1;
-      const response = await contentInstance.get('/api/annoucement', {
+      const response = await contentInstance.get('/api/info/annoucement', {
         headers: { Authorization: `Bearer ${token}` },
         params: { page: pageNum, limit },
       });
@@ -90,7 +127,7 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
           title: item.title || 'Không có tiêu đề',
           time: item.createdAt || new Date().toLocaleString('vi-VN'),
           content: item.content || 'Không có nội dung',
-          isRead: item.seen === 1,
+          isRead: item.isRead === 1,
         }));
 
         if (newNotifications.length === 0) {
@@ -162,7 +199,39 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
   const handleDetailClick = (id: string) => {
     const notification = notifications.find((notif) => notif.id === id);
     if (notification) {
+      // Lưu thông báo vào localStorage
       localStorage.setItem('notificationDetail', JSON.stringify(notification));
+
+      // Cập nhật trạng thái isRead của thông báo
+      if (!notification.isRead) {
+        setNotifications((prev) =>
+          prev.map((notif) =>
+            notif.id === id ? { ...notif, isRead: true } : notif
+          )
+        );
+        setUnreadCount((prev) => (prev > 0 ? prev - 1 : 0));
+
+        // Cập nhật giao diện: Xóa unread-dot
+        const dotEl = document.getElementById(id);
+        if (dotEl?.classList.contains('unread-dot')) {
+          dotEl.classList.remove('unread-dot');
+        }
+
+        // Cập nhật badge số lượng thông báo chưa đọc
+        const badgeEl = document.querySelector('.notification-badge') as HTMLElement;
+        if (badgeEl) {
+          let currentCount = parseInt(badgeEl.innerText, 10);
+          if (currentCount > 0) {
+            currentCount -= 1;
+            badgeEl.innerText = currentCount.toString();
+            if (currentCount === 0) {
+              badgeEl.style.display = 'none';
+            }
+          }
+        }
+      }
+
+      // Chuyển hướng đến trang chi tiết thông báo
       router.push(`/notification?notificationID=${id}`);
     }
   };
@@ -195,10 +264,10 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
                   <div className="notification-content">
                     <div className="notification-title-wrapper">
                       <h4>{notification.title}</h4>
-                      {!notification.isRead && <span className="unread-dot"></span>}
+                      <span id={notification.id} className={notification.isRead ? '' : 'unread-dot'}></span>
                     </div>
-                    <p className="notification-time">{notification.time}</p>
-                    <div dangerouslySetInnerHTML={{ __html: notification.content }} />
+                    <p className="notification-time">{formatDate(notification.time)}</p>
+                    <div className="truncate" dangerouslySetInnerHTML={{ __html: notification.content }} />
                     <button className="detail-btn" onClick={() => handleDetailClick(notification.id)}>
                       Chi tiết
                     </button>

@@ -42,7 +42,7 @@ const AgentList: React.FC = () => {
         const response = await axios.get("https://api1.cua68.com/api/info/agency");
 
         // Kiểm tra trạng thái phản hồi
-        if (response.status === 200) {
+        if (response.status) {
           const data = response.data.data.data; // Giả định API trả về mảng trong response.data.data
           setAgents(
             data.map((item: any, index: number) => ({
