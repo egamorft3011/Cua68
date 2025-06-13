@@ -2,7 +2,7 @@ import { authInstance, contentInstance } from "@/configs/CustomizeAxios";
 
 // đăng nhập
 const loginUser = (username: string, password: string) => {
-  return authInstance.post("/auth/login", {
+  return contentInstance.post("/api/auth/login", {
     username,
     password,
     captcha: "123",
@@ -18,7 +18,7 @@ const signupUser = (
   phone: string,
   refcode: string
 ) => {
-  return authInstance.post("/auth/register", {
+  return contentInstance.post("/api/auth/register", {
     name,
     username,
     phone,
