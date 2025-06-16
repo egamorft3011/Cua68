@@ -481,6 +481,7 @@ const VipProgress: React.FC = () => {
                       fontWeight: 900,
                       textAlign: 'center',
                       textShadow: '3px 3px 6px rgba(0,0,0,0.5), 0 0 20px rgba(255,215,0,0.3)',
+                      lineHeight: 2.0,
                       mb: 1,
                       letterSpacing: '2px',
                       background: 'linear-gradient(45deg, #fff, #ffd700)',
