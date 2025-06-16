@@ -17,6 +17,7 @@ import {
   Menu,
   Event,
   History,
+  LocalOffer,
 } from "@mui/icons-material";
 import LoadingComponent from "../Loading";
 import { getMe } from "@/services/User.service";
@@ -176,63 +177,75 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
             <ul>
               <li>
                 <button type="button" onClick={() => hanldMenu(5)}>
-                  <Image
-                    src={"/images/khuyenmai.webp"}
-                    width={25}
-                    height={25}
+                  <Menu
+                    width="25px"
+                    height="25px"
+                    className="moblie-icon"
                     style={
                       menu === 5 ? { color: "#d7ca63" } : { color: "white" }
                     }
-                    alt=""
-                    className="moblie-icon"
                   />
-
                   <p className={menu === 5 ? "mobile-active" : "mobile-p"}>
-                    Khuyến mãi
-                  </p>
-                </button>
-              </li>
-
-              <li>
-                <button type="button" onClick={() => hanldMenu(1)}>
-                  <SportsIcon className="moblie-icon" />
-                  <p className={menu === 1 ? "mobile-active" : "mobile-p"}>
-                    Thể thao
+                    Danh mục
                   </p>
                 </button>
               </li>
               <li>
                 <button type="button" onClick={() => hanldMenu(2)}>
-                  {/* <SearchIcon
+                  <Event
                     width="25px"
                     height="25px"
                     className="moblie-icon"
-                  /> */}
-                  <Image
-                    src={"/images/home.png"}
-                    width={34}
-                    height={34}
-                    alt=""
-                    style={{ objectFit: "cover" }}
+                    style={
+                      menu === 2 ? { color: "#d7ca63" } : { color: "white" }
+                    }
                   />
                   <p className={menu === 2 ? "mobile-active" : "mobile-p"}>
-                    Trang chủ
+                    Ưu đãi
+                  </p>
+                </button>
+              </li>
+              <li>
+                <button type="button" onClick={() => hanldMenu(1)}>
+                  <Image
+                    className="img-nap"
+                    src={"/images/icon-deposit.svg"}
+                    width={50}
+                    height={50}
+                    alt=""
+                  />
+                  <p className={menu === 1 ? "mobile-active" : "mobile-p"}>
+                    Nạp Tiền
                   </p>
                 </button>
               </li>
               <li>
                 <button type="button" onClick={() => hanldMenu(3)}>
-                  <CasioIcon className="moblie-icon" />
+                  <History
+                    width="25px"
+                    height="25px"
+                    className="moblie-icon"
+                    style={
+                      menu === 3 ? { color: "#d7ca63" } : { color: "white" }
+                    }
+                  />
                   <p className={menu === 3 ? "mobile-active" : "mobile-p"}>
-                    Live casino
+                    Vip Club
                   </p>
                 </button>
               </li>
               <li>
                 <button type="button" onClick={() => hanldMenu(4)}>
-                  <DPGameIcon className="moblie-icon" />
+                  <Support
+                    width="25px"
+                    height="25px"
+                    className="moblie-icon"
+                    style={
+                      menu === 4 ? { color: "#d7ca63" } : { color: "white" }
+                    }
+                  />
                   <p className={menu === 4 ? "mobile-active" : "mobile-p"}>
-                    Games
+                    Tìm kiếm
                   </p>
                 </button>
               </li>
