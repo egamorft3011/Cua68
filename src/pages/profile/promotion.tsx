@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef  } from "react";
 import {
   Box,
   Grid,
@@ -11,12 +11,14 @@ import {
   Button,
   IconButton,
 } from "@mui/material";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import useAuth from "@/hook/useAuth";
 import Image from "next/image";
 import { contentInstance } from "@/configs/CustomizeAxios";
 import Swal from "sweetalert";
 import { AxiosResponse } from "axios";
 import CloseIcon from "@mui/icons-material/Close";
+
 
 // Define API response interfaces
 interface Promotion {
@@ -134,97 +136,141 @@ const PromotionsPage: React.FC = () => {
     setSelectedPromotion(null);
   };
 
+  const [index, setIndex] = React.useState(0);
+  const [open, setOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState(null);
+
+  const handleOpen = (item: any) => {
+    setSelected(item);
+    setOpen(true);
+  };
+
+  const handleClose = () => setOpen(false);
+
+  const handlePrev = () => setIndex((prev) => (prev > 0 ? prev - 1 : promotions.length - 1));
+  const handleNext = () => setIndex((prev) => (prev + 1) % promotions.length);
+
   return (
-    <Box sx={{ p: 2, backgroundColor: "none", minHeight: "100vh" }}>
-      {loading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
-          <Typography sx={{ color: "#fff" }}>Đang tải...</Typography>
-        </Box>
-      ) : (
-        <Grid container spacing={2} className="promo-container">
-          {promotions.map((promotion) => (
-            <Grid item xs={12} sm={6} md={6} key={promotion.id}>
-              <Card
-                sx={{
-                   cursor: "pointer",
-                  "&:hover": { boxShadow: "0 6px 12px rgba(0,0,0,0.3)" },
-                }}
-                onClick={() => handleCardClick(promotion.id)}
-              >
-                <CardMedia
-                  component="img"
-                   image={promotion.thumbnail}
-                  alt={promotion.title}
-                sx={{
-                  height: { xs: 143, sm: 143, md: 240 },  }}                
-                  />
-
-                <CardContent sx={{ p: 1, bgcolor: "#fff" }}>
-                  <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                    {promotion.title}
-                  </Typography>
-                  <Typography variant="caption" display="block">
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      )}
-
-      {/* Promotion Details Modal */}
-      <Modal open={modalOpen} onClose={handleCloseModal}>
+    <Box
+      sx={{
+        backgroundImage: 'url(https://zbet.tv/assets/images/components/common/vip-club/bg-promotion.webp)',
+        backgroundSize: 'cover',
+        display: 'flex',
+        p: 2,
+        overflow: 'hidden',
+        minHeight: 360,
+        borderRadius: 3,
+        flexDirection: 'column',
+      }}
+    >
+      {/* Header */}
+      <Box sx={{ display: "flex", alignItems: "center", mb: 2, px: 2 }}>
+        <Box
+          component="img"
+          src="https://zbet.tv/assets/images/components/common/vip-club/icon-promotion.webp"
+          sx={{ width: 24, height: 24, mr: 1 }}
+        />
+        <Typography variant="h6" color="white" fontWeight="bold">
+          Khuyến mãi
+        </Typography>
+        <Box flexGrow={1} />
+        <Typography variant="body2" color="#00ff66" sx={{ textDecoration: "underline", cursor: 'pointer' }}>
+          Xem thêm
+        </Typography>
+      </Box>
+      <Box sx={{ display: "flex", alignItems: "center", mb: 2, px: 2 }}>
         <Box
           sx={{
-            // position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: { xs: "90%", sm: 600 },
-            bgcolor: "#382525",
-            color: "#fff",
-            borderRadius: 2,
-            boxShadow: 24,
-            p: 4,
-            maxHeight: "80vh",
-            overflowY: "auto",
-            position: "relative",
+            width: '30%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <img
+            src="https://zbet.tv/assets/images/components/common/vip-club/model.webp"
+            alt="model"
+            style={{ maxWidth: '100%', height: 'auto' }}
+          />
+        </Box>
+
+        <Box
+          sx={{
+            width: '70%',
+            position: 'relative',
+            display: 'flex',
+            gap: 2,
+            overflow: 'hidden',
           }}
         >
           <IconButton
-            onClick={handleCloseModal}
-            sx={{
-              position: "absolute",
-              top: 8,
-              right: 8,
-              color: "#fff",
-              "&:hover": { bgcolor: "rgba(255, 255, 255, 0.1)" },
-            }}
+            onClick={handlePrev}
+            sx={{ position: 'absolute', left: 0, top: '40%', zIndex: 1, backgroundColor: '#00000055', color: '#fff' }}
           >
-            <CloseIcon/>
+            <ChevronLeft />
           </IconButton>
-          {selectedPromotion ? (
-            <>
-              <Box sx={{ mb: 2, textAlign: "center" }}>
-                <Image
-                  src={selectedPromotion.thumbnail}
-                  alt={selectedPromotion.title}
-                  width={300}
-                  height={200}
-                  style={{ width: "100%", height: "auto", objectFit: "cover", borderRadius: 8 }}
-                />
-              </Box>
-              <Box
-                className="content"
-                dangerouslySetInnerHTML={{ __html: selectedPromotion.content }}
-                sx={{ mb: 2 }}
-              />
-              <Typography variant="body2" sx={{ mb: 2 }}>
+
+          {promotions.slice(index, index + 2).map((item, idx) => (
+            <Box
+              key={idx}
+              sx={{
+                width: '50%',
+                background: item.thumbnail
+                  ? `url(${item.thumbnail}) center/cover`
+                  : '#f1c40f',
+                borderRadius: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                p: 2,
+                minHeight: 300,
+                cursor: 'pointer',
+                color: '#fff',
+                position: 'relative',
+                boxShadow: 3,
+              }}
+              onClick={() => handleOpen(item)}
+            >
+              <Typography variant="h6" fontWeight="bold">
+                {item.title}
               </Typography>
-            </>
-          ) : (
-            <Typography>Đang tải...</Typography>
-          )}
+              <Button
+                variant="contained"
+                sx={{ mt: 1, backgroundColor: '#00C853', borderRadius: 5 }}
+              >
+                Tìm hiểu ngay
+              </Button>
+            </Box>
+          ))}
+
+          <IconButton
+            onClick={handleNext}
+            sx={{ position: 'absolute', right: 0, top: '40%', zIndex: 1, backgroundColor: '#00000055', color: '#fff' }}
+          >
+            <ChevronRight />
+          </IconButton>
+        </Box>
+      </Box>
+
+      <Modal open={open} onClose={handleClose}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '80%',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 2,
+            maxHeight: '90vh',
+            overflowY: 'auto',
+          }}
+        >
+          <Typography variant="h5" mb={2}>
+            Test
+          </Typography>
         </Box>
       </Modal>
     </Box>
