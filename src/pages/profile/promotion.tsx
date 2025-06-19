@@ -19,7 +19,6 @@ import Swal from "sweetalert";
 import { AxiosResponse } from "axios";
 import CloseIcon from "@mui/icons-material/Close";
 
-
 // Define API response interfaces
 interface Promotion {
   id: number;
@@ -51,6 +50,8 @@ const PromotionsPage: React.FC = () => {
   const [selectedPromotion, setSelectedPromotion] = useState<PromotionDetails | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Fetch all promotions
   const getPromotionData = async () => {
@@ -136,19 +137,35 @@ const PromotionsPage: React.FC = () => {
     setSelectedPromotion(null);
   };
 
-  const [index, setIndex] = React.useState(0);
-  const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState(null);
-
   const handleOpen = (item: any) => {
-    setSelected(item);
-    setOpen(true);
+    setSelectedPromotion(item);
+    setModalOpen(true);
   };
 
-  const handleClose = () => setOpen(false);
+  const handlePrev = () => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : promotions.length - 1));
+    setTimeout(() => setIsTransitioning(false), 300);
+  };
 
-  const handlePrev = () => setIndex((prev) => (prev > 0 ? prev - 1 : promotions.length - 1));
-  const handleNext = () => setIndex((prev) => (prev + 1) % promotions.length);
+  const handleNext = () => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => (prev + 1) % promotions.length);
+    setTimeout(() => setIsTransitioning(false), 300);
+  };
+
+  const getVisiblePromotions = () => {
+    if (promotions.length === 0) return [];
+    
+    const visibleItems = [];
+    for (let i = 0; i < 3; i++) {
+      const index = (currentIndex + i) % promotions.length;
+      visibleItems.push(promotions[index]);
+    }
+    return visibleItems;
+  };
 
   return (
     <Box
@@ -178,6 +195,7 @@ const PromotionsPage: React.FC = () => {
           Xem thêm
         </Typography>
       </Box>
+
       <Box sx={{ display: "flex", alignItems: "center", mb: 2, px: 2 }}>
         <Box
           sx={{
@@ -199,60 +217,185 @@ const PromotionsPage: React.FC = () => {
             width: '70%',
             position: 'relative',
             display: 'flex',
-            gap: 2,
             overflow: 'hidden',
+            borderRadius: 2,
           }}
         >
+          {/* Navigation Buttons */}
           <IconButton
             onClick={handlePrev}
-            sx={{ position: 'absolute', left: 0, top: '40%', zIndex: 1, backgroundColor: '#00000055', color: '#fff' }}
+            disabled={isTransitioning}
+            sx={{ 
+              position: 'absolute', 
+              left: 8, 
+              top: '50%', 
+              transform: 'translateY(-50%)',
+              zIndex: 2, 
+              backgroundColor: 'rgba(0,0,0,0.3)', 
+              color: '#fff',
+              width: 40,
+              height: 40,
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                backgroundColor: 'rgba(0,0,0,0.6)',
+                transform: 'translateY(-50%) scale(1.1)',
+              },
+              '&:disabled': {
+                opacity: 0.5,
+              }
+            }}
           >
             <ChevronLeft />
           </IconButton>
 
-          {promotions.slice(index, index + 2).map((item, idx) => (
-            <Box
-              key={idx}
-              sx={{
-                width: '50%',
-                background: item.thumbnail
-                  ? `url(${item.thumbnail}) center/cover`
-                  : '#f1c40f',
-                borderRadius: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-end',
-                p: 2,
-                minHeight: 300,
-                cursor: 'pointer',
-                color: '#fff',
-                position: 'relative',
-                boxShadow: 3,
-              }}
-              onClick={() => handleOpen(item)}
-            >
-              <Typography variant="h6" fontWeight="bold">
-                {item.title}
-              </Typography>
-              <Button
-                variant="contained"
-                sx={{ mt: 1, backgroundColor: '#00C853', borderRadius: 5 }}
-              >
-                Tìm hiểu ngay
-              </Button>
-            </Box>
-          ))}
-
           <IconButton
             onClick={handleNext}
-            sx={{ position: 'absolute', right: 0, top: '40%', zIndex: 1, backgroundColor: '#00000055', color: '#fff' }}
+            disabled={isTransitioning}
+            sx={{ 
+              position: 'absolute', 
+              right: 8, 
+              top: '50%', 
+              transform: 'translateY(-50%)',
+              zIndex: 2, 
+              backgroundColor: 'rgba(0,0,0,0.3)', 
+              color: '#fff',
+              width: 40,
+              height: 40,
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                backgroundColor: 'rgba(0,0,0,0.6)',
+                transform: 'translateY(-50%) scale(1.1)',
+              },
+              '&:disabled': {
+                opacity: 0.5,
+              }
+            }}
           >
             <ChevronRight />
           </IconButton>
+
+          {/* Promotions Container */}
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              transition: isTransitioning ? 'transform 0.3s ease-in-out' : 'none',
+              gap: 1,
+            }}
+          >
+            {getVisiblePromotions().map((item, idx) => (
+              <Box
+                key={`${item.id}-${currentIndex}-${idx}`}
+                sx={{
+                  width: idx === 0 ? '45%' : idx === 1 ? '45%' : '20%',
+                  backgroundImage: `url('${item.thumbnail}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
+                  borderRadius: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end',
+                  p: idx < 2 ? 2 : 1,
+                  minHeight: 300,
+                  cursor: 'pointer',
+                  color: '#fff',
+                  position: 'relative',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+                  transition: 'all 0.3s ease',
+                  opacity: idx === 2 ? 0.7 : 1,
+                  transform: idx === 2 ? 'scale(0.95)' : 'scale(1)',
+                  '&:hover': {
+                    transform: idx === 2 ? 'scale(0.98)' : 'scale(1.02)',
+                    boxShadow: '0 12px 40px rgba(0,0,0,0.4)',
+                  },
+                  overflow: 'hidden',
+                }}
+                onClick={() => handleOpen(item)}
+              >
+                {/* Gradient Overlay */}
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    zIndex: 1,
+                  }}
+                />
+                
+                {/* Content */}
+                <Box sx={{
+                    position: 'relative',
+                    zIndex: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {idx < 2 && (
+                    <>
+                      {/* <Typography 
+                        variant="h6" 
+                        fontWeight="bold"
+                        sx={{
+                          fontSize: '1.1rem',
+                          lineHeight: 1.3,
+                          mb: 1,
+                          textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
+                        }}
+                      >
+                        {item.title}
+                      </Typography> */}
+                      <Button
+                        variant="contained"
+                        sx={{ 
+                          mt: 1, 
+                          backgroundColor: '#00C853', 
+                          borderRadius: 5,
+                          px: 3,
+                          py: 1,
+                          fontWeight: 'bold',
+                          textTransform: 'none',
+                          boxShadow: '0 4px 15px rgba(0,200,83,0.4)',
+                          '&:hover': {
+                            backgroundColor: '#00A843',
+                            boxShadow: '0 6px 20px rgba(0,200,83,0.6)',
+                          }
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpen(item);
+                        }}
+                      >
+                        Tìm hiểu ngay
+                      </Button>
+                    </>
+                  )}
+                  
+                  {idx === 2 && (
+                    <Typography 
+                      variant="body2" 
+                      fontWeight="bold"
+                      sx={{
+                        fontSize: '0.9rem',
+                        textAlign: 'center',
+                        textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
+                      }}
+                    >
+                      {/* {item.title.length > 30 ? `${item.title.substring(0, 30)}...` : item.title} */}
+                    </Typography>
+                  )}
+                </Box>
+              </Box>
+            ))}
+          </Box>
         </Box>
       </Box>
 
-      <Modal open={open} onClose={handleClose}>
+      {/* Modal */}
+      <Modal open={modalOpen} onClose={handleCloseModal}>
         <Box
           sx={{
             position: 'absolute',
@@ -260,6 +403,7 @@ const PromotionsPage: React.FC = () => {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             width: '80%',
+            maxWidth: '600px',
             bgcolor: 'background.paper',
             boxShadow: 24,
             p: 4,
@@ -268,9 +412,58 @@ const PromotionsPage: React.FC = () => {
             overflowY: 'auto',
           }}
         >
-          <Typography variant="h5" mb={2}>
-            Test
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+            <Typography variant="h5" fontWeight="bold">
+              {selectedPromotion?.title || 'Chi tiết khuyến mãi'}
+            </Typography>
+            <IconButton onClick={handleCloseModal}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+          
+          {selectedPromotion?.thumbnail && (
+            <Box
+              component="img"
+              src={selectedPromotion.thumbnail}
+              sx={{
+                width: '100%',
+                height: 200,
+                objectFit: 'cover',
+                borderRadius: 1,
+                mb: 2,
+              }}
+            />
+          )}
+          
+          <Typography variant="body1" sx={{ mb: 3 }}>
+            {selectedPromotion?.content || 'Đang tải nội dung...'}
           </Typography>
+          
+          <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+            <Button 
+              variant="outlined" 
+              onClick={handleCloseModal}
+              sx={{ borderRadius: 2 }}
+            >
+              Đóng
+            </Button>
+            {selectedPromotion && (
+              <Button 
+                variant="contained" 
+                color="primary"
+                onClick={() => registerPromotion(selectedPromotion.id)}
+                sx={{ 
+                  borderRadius: 2,
+                  backgroundColor: '#00C853',
+                  '&:hover': {
+                    backgroundColor: '#00A843',
+                  }
+                }}
+              >
+                Đăng ký ngay
+              </Button>
+            )}
+          </Box>
         </Box>
       </Modal>
     </Box>
