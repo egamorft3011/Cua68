@@ -137,7 +137,7 @@ const PromotionsPage: React.FC = () => {
   };
 
   const handleNext = () => {
-    if (isTransitioning || currentIndex >= promotions.length - 3) return;
+    if (isTransitioning || currentIndex >= promotions.length - 1) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => prev + 1);
     setTimeout(() => setIsTransitioning(false), 300);
@@ -145,7 +145,7 @@ const PromotionsPage: React.FC = () => {
 
   const getVisiblePromotions = () => {
     if (promotions.length === 0) return [];
-    return promotions.slice(currentIndex, currentIndex + 3);
+    return promotions.slice(currentIndex, Math.min(currentIndex + 3, promotions.length))
   };
 
   return (
@@ -231,7 +231,7 @@ const PromotionsPage: React.FC = () => {
 
           <IconButton
             onClick={handleNext}
-            disabled={isTransitioning || currentIndex >= promotions.length - 3}
+            disabled={isTransitioning || currentIndex >= promotions.length - 2}
             sx={{ 
               position: 'absolute', 
               right: 8, 
@@ -261,7 +261,7 @@ const PromotionsPage: React.FC = () => {
             sx={{
               display: 'flex',
               width: '100%',
-              transform: `translateX(-${currentIndex * (100 / 3)}%)`,
+              transform: `translateX(-${currentIndex * 42}%)`,
               transition: isTransitioning ? 'transform 0.3s ease-in-out' : 'none',
               gap: 1,
             }}
