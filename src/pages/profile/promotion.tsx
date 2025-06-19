@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef  } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Grid,
@@ -11,7 +11,6 @@ import {
   Button,
   IconButton,
 } from "@mui/material";
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import useAuth from "@/hook/useAuth";
 import Image from "next/image";
 import { contentInstance } from "@/configs/CustomizeAxios";
@@ -50,8 +49,6 @@ const PromotionsPage: React.FC = () => {
   const [selectedPromotion, setSelectedPromotion] = useState<PromotionDetails | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Fetch all promotions
   const getPromotionData = async () => {
@@ -137,333 +134,97 @@ const PromotionsPage: React.FC = () => {
     setSelectedPromotion(null);
   };
 
-  const handleOpen = (item: any) => {
-    setSelectedPromotion(item);
-    setModalOpen(true);
-  };
-
-  const handlePrev = () => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : promotions.length - 1));
-    setTimeout(() => setIsTransitioning(false), 300);
-  };
-
-  const handleNext = () => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrentIndex((prev) => (prev + 1) % promotions.length);
-    setTimeout(() => setIsTransitioning(false), 300);
-  };
-
-  const getVisiblePromotions = () => {
-    if (promotions.length === 0) return [];
-    
-    const visibleItems = [];
-    for (let i = 0; i < 3; i++) {
-      const index = (currentIndex + i) % promotions.length;
-      visibleItems.push(promotions[index]);
-    }
-    return visibleItems;
-  };
-
   return (
-    <Box
-      sx={{
-        backgroundImage: 'url(https://zbet.tv/assets/images/components/common/vip-club/bg-promotion.webp)',
-        backgroundSize: 'cover',
-        display: 'flex',
-        p: 2,
-        overflow: 'hidden',
-        minHeight: 360,
-        borderRadius: 3,
-        flexDirection: 'column',
-      }}
-    >
-      {/* Header */}
-      <Box sx={{ display: "flex", alignItems: "center", mb: 2, px: 2 }}>
-        <Box
-          component="img"
-          src="https://zbet.tv/assets/images/components/common/vip-club/icon-promotion.webp"
-          sx={{ width: 24, height: 24, mr: 1 }}
-        />
-        <Typography variant="h6" color="white" fontWeight="bold">
-          Khuyến mãi
-        </Typography>
-        <Box flexGrow={1} />
-        <Typography variant="body2" color="#00ff66" sx={{ textDecoration: "underline", cursor: 'pointer' }}>
-          Xem thêm
-        </Typography>
-      </Box>
-
-      <Box sx={{ display: "flex", alignItems: "center", mb: 2, px: 2 }}>
-        <Box
-          sx={{
-            width: '30%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <img
-            src="https://zbet.tv/assets/images/components/common/vip-club/model.webp"
-            alt="model"
-            style={{ maxWidth: '100%', height: 'auto' }}
-          />
+    <Box sx={{ p: 2, backgroundColor: "none", minHeight: "100vh" }}>
+      {loading ? (
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
+          <Typography sx={{ color: "#fff" }}>Đang tải...</Typography>
         </Box>
-
-        <Box
-          sx={{
-            width: '70%',
-            position: 'relative',
-            display: 'flex',
-            overflow: 'hidden',
-            borderRadius: 2,
-          }}
-        >
-          {/* Navigation Buttons */}
-          <IconButton
-            onClick={handlePrev}
-            disabled={isTransitioning}
-            sx={{ 
-              position: 'absolute', 
-              left: 8, 
-              top: '50%', 
-              transform: 'translateY(-50%)',
-              zIndex: 2, 
-              backgroundColor: 'rgba(0,0,0,0.3)', 
-              color: '#fff',
-              width: 40,
-              height: 40,
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                backgroundColor: 'rgba(0,0,0,0.6)',
-                transform: 'translateY(-50%) scale(1.1)',
-              },
-              '&:disabled': {
-                opacity: 0.5,
-              }
-            }}
-          >
-            <ChevronLeft />
-          </IconButton>
-
-          <IconButton
-            onClick={handleNext}
-            disabled={isTransitioning}
-            sx={{ 
-              position: 'absolute', 
-              right: 8, 
-              top: '50%', 
-              transform: 'translateY(-50%)',
-              zIndex: 2, 
-              backgroundColor: 'rgba(0,0,0,0.3)', 
-              color: '#fff',
-              width: 40,
-              height: 40,
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                backgroundColor: 'rgba(0,0,0,0.6)',
-                transform: 'translateY(-50%) scale(1.1)',
-              },
-              '&:disabled': {
-                opacity: 0.5,
-              }
-            }}
-          >
-            <ChevronRight />
-          </IconButton>
-
-          {/* Promotions Container */}
-          <Box
-            sx={{
-              display: 'flex',
-              width: '100%',
-              transition: isTransitioning ? 'transform 0.3s ease-in-out' : 'none',
-              gap: 1,
-            }}
-          >
-            {getVisiblePromotions().map((item, idx) => (
-              <Box
-                key={`${item.id}-${currentIndex}-${idx}`}
+      ) : (
+        <Grid container spacing={2} className="promo-container">
+          {promotions.map((promotion) => (
+            <Grid item xs={12} sm={6} md={6} key={promotion.id}>
+              <Card
                 sx={{
-                  width: idx === 0 ? '45%' : idx === 1 ? '45%' : '20%',
-                  backgroundImage: `url('${item.thumbnail}')`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat',
-                  borderRadius: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-end',
-                  p: idx < 2 ? 2 : 1,
-                  minHeight: 300,
-                  cursor: 'pointer',
-                  color: '#fff',
-                  position: 'relative',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-                  transition: 'all 0.3s ease',
-                  opacity: idx === 2 ? 0.7 : 1,
-                  transform: idx === 2 ? 'scale(0.95)' : 'scale(1)',
-                  '&:hover': {
-                    transform: idx === 2 ? 'scale(0.98)' : 'scale(1.02)',
-                    boxShadow: '0 12px 40px rgba(0,0,0,0.4)',
-                  },
-                  overflow: 'hidden',
+                   cursor: "pointer",
+                  "&:hover": { boxShadow: "0 6px 12px rgba(0,0,0,0.3)" },
                 }}
-                onClick={() => handleOpen(item)}
+                onClick={() => handleCardClick(promotion.id)}
               >
-                {/* Gradient Overlay */}
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    zIndex: 1,
-                  }}
-                />
-                
-                {/* Content */}
-                <Box sx={{
-                    position: 'relative',
-                    zIndex: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {idx < 2 && (
-                    <>
-                      {/* <Typography 
-                        variant="h6" 
-                        fontWeight="bold"
-                        sx={{
-                          fontSize: '1.1rem',
-                          lineHeight: 1.3,
-                          mb: 1,
-                          textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
-                        }}
-                      >
-                        {item.title}
-                      </Typography> */}
-                      <Button
-                        variant="contained"
-                        sx={{ 
-                          mt: 1, 
-                          backgroundColor: '#00C853', 
-                          borderRadius: 5,
-                          px: 3,
-                          py: 1,
-                          fontWeight: 'bold',
-                          textTransform: 'none',
-                          boxShadow: '0 4px 15px rgba(0,200,83,0.4)',
-                          '&:hover': {
-                            backgroundColor: '#00A843',
-                            boxShadow: '0 6px 20px rgba(0,200,83,0.6)',
-                          }
-                        }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleOpen(item);
-                        }}
-                      >
-                        Tìm hiểu ngay
-                      </Button>
-                    </>
-                  )}
-                  
-                  {idx === 2 && (
-                    <Typography 
-                      variant="body2" 
-                      fontWeight="bold"
-                      sx={{
-                        fontSize: '0.9rem',
-                        textAlign: 'center',
-                        textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
-                      }}
-                    >
-                      {/* {item.title.length > 30 ? `${item.title.substring(0, 30)}...` : item.title} */}
-                    </Typography>
-                  )}
-                </Box>
-              </Box>
-            ))}
-          </Box>
-        </Box>
-      </Box>
+                <CardMedia
+                  component="img"
+                   image={promotion.thumbnail}
+                  alt={promotion.title}
+                sx={{
+                  height: { xs: 143, sm: 143, md: 240 },  }}                
+                  />
 
-      {/* Modal */}
+                <CardContent sx={{ p: 1, bgcolor: "#fff" }}>
+                  <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                    {promotion.title}
+                  </Typography>
+                  <Typography variant="caption" display="block">
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
+
+      {/* Promotion Details Modal */}
       <Modal open={modalOpen} onClose={handleCloseModal}>
         <Box
           sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '80%',
-            maxWidth: '600px',
-            bgcolor: 'background.paper',
+            // position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: { xs: "90%", sm: 600 },
+            bgcolor: "#382525",
+            color: "#fff",
+            borderRadius: 2,
             boxShadow: 24,
             p: 4,
-            borderRadius: 2,
-            maxHeight: '90vh',
-            overflowY: 'auto',
+            maxHeight: "80vh",
+            overflowY: "auto",
+            position: "relative",
           }}
         >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-            <Typography variant="h5" fontWeight="bold">
-              {selectedPromotion?.title || 'Chi tiết khuyến mãi'}
-            </Typography>
-            <IconButton onClick={handleCloseModal}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
-          
-          {selectedPromotion?.thumbnail && (
-            <Box
-              component="img"
-              src={selectedPromotion.thumbnail}
-              sx={{
-                width: '100%',
-                height: 200,
-                objectFit: 'cover',
-                borderRadius: 1,
-                mb: 2,
-              }}
-            />
+          <IconButton
+            onClick={handleCloseModal}
+            sx={{
+              position: "absolute",
+              top: 8,
+              right: 8,
+              color: "#fff",
+              "&:hover": { bgcolor: "rgba(255, 255, 255, 0.1)" },
+            }}
+          >
+            <CloseIcon/>
+          </IconButton>
+          {selectedPromotion ? (
+            <>
+              <Box sx={{ mb: 2, textAlign: "center" }}>
+                <Image
+                  src={selectedPromotion.thumbnail}
+                  alt={selectedPromotion.title}
+                  width={300}
+                  height={200}
+                  style={{ width: "100%", height: "auto", objectFit: "cover", borderRadius: 8 }}
+                />
+              </Box>
+              <Box
+                className="content"
+                dangerouslySetInnerHTML={{ __html: selectedPromotion.content }}
+                sx={{ mb: 2 }}
+              />
+              <Typography variant="body2" sx={{ mb: 2 }}>
+              </Typography>
+            </>
+          ) : (
+            <Typography>Đang tải...</Typography>
           )}
-          
-          <Typography variant="body1" sx={{ mb: 3 }}>
-            {selectedPromotion?.content || 'Đang tải nội dung...'}
-          </Typography>
-          
-          <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
-            <Button 
-              variant="outlined" 
-              onClick={handleCloseModal}
-              sx={{ borderRadius: 2 }}
-            >
-              Đóng
-            </Button>
-            {selectedPromotion && (
-              <Button 
-                variant="contained" 
-                color="primary"
-                onClick={() => registerPromotion(selectedPromotion.id)}
-                sx={{ 
-                  borderRadius: 2,
-                  backgroundColor: '#00C853',
-                  '&:hover': {
-                    backgroundColor: '#00A843',
-                  }
-                }}
-              >
-                Đăng ký ngay
-              </Button>
-            )}
-          </Box>
         </Box>
       </Modal>
     </Box>

@@ -8,7 +8,7 @@ import { contentInstance } from '@/configs/CustomizeAxios';
 import swal from 'sweetalert';
 import { StarIcon, VipIcon } from '@/shared/Svgs/Svg.component';
 import { useRouter } from 'next/navigation';
-import Promotion from "./promotion";
+import PromotionVipTab from "./promotionVipTab";
 
 interface VipData {
   current_vip: number;
@@ -617,14 +617,14 @@ const VipProgress: React.FC = () => {
           </Box>
         </Box>
 
-        <Box>
+        <Box sx={{ width: '100%' }}>
           <Typography
             variant="h5"
             sx={{ fontWeight: 600, color: "white", mb: 1 }}
           >
             Danh sách khuyến mãi
           </Typography>
-          <Promotion />
+          <PromotionVipTab />
         </Box>
         <Box sx={{ 
           background: '#350f0f',
