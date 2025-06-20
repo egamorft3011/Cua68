@@ -1,17 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation"; 
 import {
   Box,
   Typography,
-  Modal,
   Button,
   IconButton,
 } from "@mui/material";
 import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import Swal from "sweetalert";
 import { AxiosResponse } from "axios";
-import CloseIcon from "@mui/icons-material/Close";
 import { contentInstance } from "@/configs/CustomizeAxios";
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 // Define API response interfaces
 interface Promotion {
@@ -41,11 +41,11 @@ interface ApiResponse<T> {
 
 const PromotionsPage: React.FC = () => {
   const [promotions, setPromotions] = useState<Promotion[]>([]);
-  const [selectedPromotion, setSelectedPromotion] = useState<PromotionDetails | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const router = useRouter();
+  const isMobile = useMediaQuery('(max-width:576px)');
 
   // Fetch all promotions
   const getPromotionData = async () => {
@@ -53,7 +53,7 @@ const PromotionsPage: React.FC = () => {
     try {
       const response = await contentInstance.get("/api/promotion", {
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
       });
       if (response.status) {
@@ -65,25 +65,6 @@ const PromotionsPage: React.FC = () => {
       Swal("Lỗi", error.response?.msg || "Có lỗi xảy ra khi tải danh sách khuyến mãi", "error");
     } finally {
       setLoading(false);
-    }
-  };
-
-  // Fetch promotion details by ID
-  const getPromotionInfo = async (id: number) => {
-    try {
-      const response = await contentInstance.get(`/api/promotion/promotion-info/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.status) {
-        setSelectedPromotion(response.data);
-        setModalOpen(true);
-      } else {
-        Swal("Không thể tải chi tiết khuyến mãi", "error");
-      }
-    } catch (error: any) {
-      Swal("Lỗi", error.response?.msg || "Có lỗi xảy ra khi tải chi tiết khuyến mãi", "error");
     }
   };
 
@@ -120,13 +101,9 @@ const PromotionsPage: React.FC = () => {
     getPromotionData();
   }, []);
 
-  const handleOpen = (item: any) => {
-    getPromotionInfo(item.id);
-  };
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
-    setSelectedPromotion(null);
+  const handleOpen = (item: Promotion) => {
+    router.push(`/promotion/detail/?promotionID=${item.id}`);
+    window.scrollTo(0, 0);
   };
 
   const handlePrev = () => {
@@ -137,7 +114,7 @@ const PromotionsPage: React.FC = () => {
   };
 
   const handleNext = () => {
-    if (isTransitioning || currentIndex >= promotions.length - 1) return;
+    if (isTransitioning || currentIndex >= promotions.length - (isMobile ? 1 : 2)) return;
     setIsTransitioning(true);
     setCurrentIndex((prev) => prev + 1);
     setTimeout(() => setIsTransitioning(false), 300);
@@ -145,19 +122,19 @@ const PromotionsPage: React.FC = () => {
 
   const getVisiblePromotions = () => {
     if (promotions.length === 0) return [];
-    return promotions.slice(currentIndex, Math.min(currentIndex + 3, promotions.length))
+    return promotions.slice(currentIndex, Math.min(currentIndex + 3, promotions.length));
   };
 
   return (
     <Box
       sx={{
-        backgroundImage: 'url(https://zbet.tv/assets/images/components/common/vip-club/bg-promotion.webp)',
-        backgroundSize: 'cover',
-        display: 'flex',
+        backgroundImage: "url(https://zbet.tv/assets/images/components/common/vip-club/bg-promotion.webp)",
+        backgroundSize: "cover",
+        display: "flex",
         p: 2,
-        overflow: 'hidden',
+        overflow: "hidden",
         borderRadius: 3,
-        flexDirection: 'column',
+        flexDirection: "column",
       }}
     >
       {/* Header */}
@@ -171,33 +148,38 @@ const PromotionsPage: React.FC = () => {
           Khuyến mãi
         </Typography>
         <Box flexGrow={1} />
-        <Typography variant="body2" color="#00ff66" sx={{ textDecoration: "underline", cursor: 'pointer' }}>
+        <Typography
+          variant="body2"
+          color="#00ff66"
+          sx={{ textDecoration: "underline", cursor: "pointer" }}
+          onClick={() => router.push("/promotion")}
+        >
           Xem thêm
         </Typography>
       </Box>
 
-      <Box sx={{ display: "flex", alignItems: "center", mb: 2, px: 2 }}>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
         <Box
           sx={{
-            width: '30%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            width: "30%",
+            alignItems: "center",
+            justifyContent: "center",
+            display: { xs: "none", sm: "flex" },
           }}
         >
           <img
             src="https://zbet.tv/assets/images/components/common/vip-club/model.webp"
             alt="model"
-            style={{ maxWidth: '100%', height: 'auto' }}
+            style={{ maxWidth: "100%", height: "auto" }}
           />
         </Box>
 
         <Box
           sx={{
-            width: '70%',
-            position: 'relative',
-            display: 'flex',
-            overflow: 'hidden',
+            width: { xs: "100%", sm: "70%" },
+            position: "relative",
+            display: "flex",
+            overflow: "hidden",
             borderRadius: 2,
           }}
         >
@@ -205,25 +187,25 @@ const PromotionsPage: React.FC = () => {
           <IconButton
             onClick={handlePrev}
             disabled={isTransitioning || currentIndex === 0}
-            sx={{ 
-              position: 'absolute', 
-              left: 8, 
-              top: '50%', 
-              transform: 'translateY(-50%)',
-              zIndex: 2, 
-              backgroundColor: 'rgba(0,0,0,0.3)', 
-              color: '#fff',
+            sx={{
+              position: "absolute",
+              left: 8,
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 2,
+              backgroundColor: "rgba(0,0,0,0.3)",
+              color: "#fff",
               width: 40,
               height: 40,
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                backgroundColor: '#00C853',
-                transform: 'translateY(-50%) scale(1.1)',
-                boxShadow: '0 4px 15px rgba(0,200,83,0.5)',
+              transition: "all 0.3s ease",
+              "&:hover": {
+                backgroundColor: "#00C853",
+                transform: "translateY(-50%) scale(1.1)",
+                boxShadow: "0 4px 15px rgba(0,200,83,0.5)",
               },
-              '&:disabled': {
+              "&:disabled": {
                 opacity: 0.5,
-              }
+              },
             }}
           >
             <ChevronLeft />
@@ -231,26 +213,26 @@ const PromotionsPage: React.FC = () => {
 
           <IconButton
             onClick={handleNext}
-            disabled={isTransitioning || currentIndex >= promotions.length - 2}
-            sx={{ 
-              position: 'absolute', 
-              right: 8, 
-              top: '50%', 
-              transform: 'translateY(-50%)',
-              zIndex: 2, 
-              backgroundColor: 'rgba(0,0,0,0.3)', 
-              color: '#fff',
+            disabled={isTransitioning || currentIndex >= promotions.length - (isMobile ? 1 : 2)}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 2,
+              backgroundColor: "rgba(0,0,0,0.3)",
+              color: "#fff",
               width: 40,
               height: 40,
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                backgroundColor: '#00C853',
-                transform: 'translateY(-50%) scale(1.1)',
-                boxShadow: '0 4px 15px rgba(0,200,83,0.5)',
+              transition: "all 0.3s ease",
+              "&:hover": {
+                backgroundColor: "#00C853",
+                transform: "translateY(-50%) scale(1.1)",
+                boxShadow: "0 4px 15px rgba(0,200,83,0.5)",
               },
-              '&:disabled': {
+              "&:disabled": {
                 opacity: 0.5,
-              }
+              },
             }}
           >
             <ChevronRight />
@@ -259,10 +241,13 @@ const PromotionsPage: React.FC = () => {
           {/* Promotions Container */}
           <Box
             sx={{
-              display: 'flex',
-              width: '100%',
-              transform: `translateX(-${currentIndex * 42}%)`,
-              transition: isTransitioning ? 'transform 0.3s ease-in-out' : 'none',
+              display: "flex",
+              width: "100%",
+              transform: {
+                xs: `translateX(-${currentIndex * 101}%)`,
+                sm: `translateX(-${currentIndex * 42}%)`,
+              },
+              transition: isTransitioning ? "transform 0.3s ease-in-out" : "none",
               gap: 1,
             }}
           >
@@ -270,37 +255,37 @@ const PromotionsPage: React.FC = () => {
               <Box
                 key={`${item.id}-${idx}`}
                 sx={{
-                  flex: '0 0 42%',
-                  height: '380px',
+                  flex: { xs: "0 0 100%", sm: "0 0 42%" },
+                  height: "380px",
                   backgroundImage: `url('${item.thumbnail}')`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
                   borderRadius: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-end',
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
                   p: 2,
                   minHeight: 300,
-                  cursor: 'pointer',
-                  color: '#fff',
-                  position: 'relative',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-                  transition: 'all 0.3s ease',
+                  cursor: "pointer",
+                  color: "#fff",
+                  position: "relative",
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
+                  transition: "all 0.3s ease",
                   opacity: 1,
-                  transform: 'scale(1)',
-                  '&:hover': {
-                    transform: 'scale(1.02)',
-                    boxShadow: '0 12px 40px rgba(0,0,0,0.4)',
+                  transform: "scale(1)",
+                  "&:hover": {
+                    transform: "scale(1.02)",
+                    boxShadow: "0 12px 40px rgba(0,0,0,0.4)",
                   },
-                  overflow: 'hidden',
+                  overflow: "hidden",
                 }}
                 onClick={() => handleOpen(item)}
               >
                 {/* Gradient Overlay */}
                 <Box
                   sx={{
-                    position: 'absolute',
+                    position: "absolute",
                     top: 0,
                     left: 0,
                     right: 0,
@@ -308,132 +293,46 @@ const PromotionsPage: React.FC = () => {
                     zIndex: 1,
                   }}
                 />
-                
+
                 {/* Content */}
-                <Box sx={{
-                    position: 'relative',
+                <Box
+                  sx={{
+                    position: "relative",
                     zIndex: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
                   }}
                 >
                   <Button
-                        variant="contained"
-                        sx={{ 
-                          mt: 1, 
-                          backgroundColor: '#00C853', 
-                          borderRadius: 5,
-                          px: 3,
-                          py: 1,
-                          fontWeight: 'bold',
-                          textTransform: 'none',
-                          boxShadow: '0 4px 15px rgba(0,200,83,0.4)',
-                          '&:hover': {
-                            backgroundColor: '#00A843',
-                            boxShadow: '0 6px 20px rgba(0,200,83,0.6)',
-                          }
-                        }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleOpen(item);
-                        }}
-                      >
-                        Tìm hiểu ngay
-                      </Button>
-                  
-                  {/* {idx === 2 && (
-                    <Typography 
-                      variant="body2" 
-                      fontWeight="bold"
-                      sx={{
-                        fontSize: '0.9rem',
-                        textAlign: 'center',
-                        textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
-                      }}
-                    >
-                      {item.title.length > 30 ? `${item.title.substring(0, 30)}...` : item.title}
-                    </Typography>
-                  )} */}
+                    variant="contained"
+                    sx={{
+                      mt: 1,
+                      backgroundColor: "#00C853",
+                      borderRadius: 5,
+                      px: 3,
+                      py: 1,
+                      fontWeight: "bold",
+                      textTransform: "none",
+                      boxShadow: "0 4px 15px rgba(0,200,83,0.4)",
+                      "&:hover": {
+                        backgroundColor: "#00A843",
+                        boxShadow: "0 6px 20px rgba(0,200,83,0.6)",
+                      },
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleOpen(item);
+                    }}
+                  >
+                    Tìm hiểu ngay
+                  </Button>
                 </Box>
               </Box>
             ))}
           </Box>
         </Box>
       </Box>
-
-      {/* Modal */}
-      <Modal open={modalOpen} onClose={handleCloseModal}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '80%',
-            maxWidth: '600px',
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: 4,
-            borderRadius: 2,
-            maxHeight: '90vh',
-            overflowY: 'auto',
-          }}
-        >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-            <Typography variant="h5" fontWeight="bold">
-              {selectedPromotion?.title || 'Chi tiết khuyến mãi'}
-            </Typography>
-            <IconButton onClick={handleCloseModal}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
-          
-          {selectedPromotion?.thumbnail && (
-            <Box
-              component="img"
-              src={selectedPromotion.thumbnail}
-              sx={{
-                width: '100%',
-                height: 200,
-                objectFit: 'cover',
-                borderRadius: 1,
-                mb: 2,
-              }}
-            />
-          )}
-          
-          <Typography variant="body1" sx={{ mb: 3 }}>
-            {selectedPromotion?.content || 'Đang tải nội dung...'}
-          </Typography>
-          
-          <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
-            <Button 
-              variant="outlined" 
-              onClick={handleCloseModal}
-              sx={{ borderRadius: 2 }}
-            >
-              Đóng
-            </Button>
-            {selectedPromotion && (
-              <Button 
-                variant="contained" 
-                color="primary"
-                onClick={() => registerPromotion(selectedPromotion.id)}
-                sx={{ 
-                  borderRadius: 2,
-                  backgroundColor: '#00C853',
-                  '&:hover': {
-                    backgroundColor: '#00A843',
-                  }
-                }}
-              >
-                Đăng ký ngay
-              </Button>
-            )}
-          </Box>
-        </Box>
-      </Modal>
     </Box>
   );
 };

@@ -811,6 +811,17 @@ export default function Deposit(props: TabPProps) {
               <TransactionHistory value={props.history ?? "transaction"} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={3}>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: { xs: 150, md: 250 },
+                  backgroundImage: "url('https://z1.zbet.tv/bmp/61397dba1944b1ec02b087a53471a123/hero_banner/vi/event-banner.webp?HMEOp?a=2')",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  borderRadius: 2,
+                  mb: 3,
+                }}
+              />
               <Typography
                 variant="h5"
                 sx={{ fontWeight: 600, color: "white", mb: 1 }}
