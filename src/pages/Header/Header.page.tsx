@@ -198,11 +198,7 @@ export default function HeaderPage(props: propUser) {
                   Đăng ký
                 </button>
                 <button className="agentList" onClick={() => router.push('/agency')}>Đại lý</button>
-                <DialogLogin
-                  activeTab={activeTab}
-                  onClose={handleClose}
-                  open={show}
-                />
+
               </div>
             )}
           </div>

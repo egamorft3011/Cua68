@@ -128,6 +128,7 @@ const DialogLogin = (props: propPopup) => {
       onClose={props.onClose}
       TransitionComponent={Transition}
       sx={{
+        zIndex: 99999,
         "& .MuiPaper-root": {
           width: { xs: "90%", sm: "95%" },
           height: { xs: "auto", sm: "auto" },
