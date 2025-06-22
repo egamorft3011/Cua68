@@ -128,7 +128,7 @@ const PromotionsPage: React.FC = () => {
   return (
     <Box
       sx={{
-        backgroundImage: "url(https://zbet.tv/assets/images/components/common/vip-club/bg-promotion.webp)",
+        backgroundImage: "url(/assets/bg-promotion.webp)",
         backgroundSize: "cover",
         display: "flex",
         p: 2,
@@ -141,7 +141,7 @@ const PromotionsPage: React.FC = () => {
       <Box sx={{ display: "flex", alignItems: "center", mb: 2, px: 2 }}>
         <Box
           component="img"
-          src="https://zbet.tv/assets/images/components/common/vip-club/icon-promotion.webp"
+          src="/assets/icon-promotion.webp"
           sx={{ width: 24, height: 24, mr: 1 }}
         />
         <Typography variant="h6" color="white" fontWeight="bold">
@@ -168,7 +168,7 @@ const PromotionsPage: React.FC = () => {
           }}
         >
           <img
-            src="https://zbet.tv/assets/images/components/common/vip-club/model.webp"
+            src="/assets/model.webp"
             alt="model"
             style={{ maxWidth: "100%", height: "auto" }}
           />
