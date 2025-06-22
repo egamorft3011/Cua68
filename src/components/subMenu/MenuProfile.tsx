@@ -130,7 +130,9 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
           borderRadius: "8px",
         }}
       >
-      
+        <Typography sx={{ color: "white", fontSize: 14 }}>
+          <NotificationBell />
+        </Typography>
         {/* Nút Rút, Nạp và Icon Menu */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           {/* Nút Rút */}
@@ -145,14 +147,14 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
               textTransform: "none",
               fontSize: "12px",
               width: "80px",
-              height: "40px",
+              height: "30px",
               border: "none",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
             }}
           >
-            <RutMenuIcon />
+            <RutMenuIcon width={'20px'} height={'20px'}/>
             RÚT
           </button>
 
@@ -169,13 +171,15 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
               border: "none",
               fontSize: "12px",
               width: "80px",
-              height: "40px",
+              height: "30px",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
+              gap: "5px"
             }}
           >
-            <BankMenuIcon />
+            <BankMenuIcon width={'20px'} height={'20px'}/>
+
             ĐẠI LÝ
           </button>
 
@@ -190,13 +194,14 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
               border: "none",
               fontSize: "12px",
               width: "80px",
-              height: "40px",
+              height: "30px",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
+              gap: "5px"
             }}
           >
-            <VipIcon />
+            <VipIcon width={'20px'} height={'20px'}/>
             VIP
           </button>
         </Box>
@@ -289,18 +294,16 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
               border: "none",
               fontSize: "12px",
               width: "80px",
-              height: "40px",
+              height: "30px",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
             }}
           >
-            <NapMenuIcon />
+            <NapMenuIcon width={'20px'} height={'20px'}/>
             NẠP
           </button>
-          <Typography sx={{ color: "white", fontSize: 14 }}>
-            <NotificationBell />
-          </Typography>
+          
           {/* Icon mở menu */}
           <Tooltip title="">
             <button

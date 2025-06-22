@@ -171,7 +171,7 @@ const DialogLogin = (props: propPopup) => {
               </div>
 
               {activeTab === 0 ? (
-                <div className="form-content">
+                <div className="form-content login">
                   <label>Tên đăng nhập</label>
                   <input
                     type="text"
@@ -224,7 +224,7 @@ const DialogLogin = (props: propPopup) => {
                   </button>
                 </div>
               ) : (
-                <div className="form-content">
+                <div className="form-content register">
                   <label>Tên đăng nhập</label>
                   <input
                     type="text"

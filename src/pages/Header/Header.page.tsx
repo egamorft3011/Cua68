@@ -132,11 +132,6 @@ export default function HeaderPage(props: propUser) {
                   <NoticationIconMobile width="24px" height="24px" />
                 </button> */}
                 <button className="agentList" onClick={() => router.push('/agency')}>Đại lý</button>
-                <DialogLogin
-                  activeTab={activeTab}
-                  onClose={handleClose}
-                  open={show}
-                />
                 <button className="vip" onClick={() => router.push('/vip/privileges/')}>Vip</button>
                 <div className="split"></div>
                 <button
@@ -145,11 +140,6 @@ export default function HeaderPage(props: propUser) {
                 >
                   Đăng Nhập
                 </button>
-                <DialogLogin
-                  activeTab={activeTab}
-                  onClose={handleClose}
-                  open={show}
-                />
                 <button
                   className="register"
                   style={{ cursor: "pointer" }}
@@ -157,6 +147,11 @@ export default function HeaderPage(props: propUser) {
                 >
                   Đăng ký
                 </button>
+                <DialogLogin
+                  activeTab={activeTab}
+                  onClose={handleClose}
+                  open={show}
+                />
               </div>
             )}
           </div>

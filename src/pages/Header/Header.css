@@ -115,13 +115,13 @@ header {
 }
 
 .header-right .header-right-menu .login {
-    width: 120px;
-    height: 40px;
+    width: 80px;
+    height: 30px;
     background-image: url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn);
     color: white;
     border-radius: 20px;
     border: none;
-    font-size: 17px;
+    font-size: 12px;
     font-weight: 700;
 }
 
@@ -140,13 +140,13 @@ header {
 }
 
 .header-right .header-right-menu .register {
-    width: 120px;
-    height: 40px;
+    width: 80px;
+    height: 30px;
     border-radius: 20px;
     background-image: url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #1f50d6 0deg, #4a02ff 89.73deg, #003daf 180.18deg, #2b1fd6 1turn);
     color: white;
     border: none;
-    font-size: 17px;
+    font-size: 12px;
     font-weight: 700;
 }
 
@@ -155,24 +155,24 @@ header {
 }
 
 .header-right .header-right-menu .agentList {
-    width: 120px;
-    height: 40px;
+    width: 80px;
+    height: 30px;
     border-radius: 20px;
     background-image: url(/images/bg-btn.png), conic-gradient( from 0deg at 50% 50%, #ff9900 0deg, #ff6600 90deg, #ff3300 180deg, #ff6600 270deg, #ff9900 360deg );
     color: white;
     border: none;
-    font-size: 17px;
+    font-size: 12px;
     font-weight: 700;
 }
 
 .header-right .header-right-menu .vip {
-    width: 120px;
-    height: 40px;
+    width: 80px;
+    height: 30px;
     border-radius: 20px;
     background-image: url(/images/bg-btn.png), linear-gradient(135deg, rgb(47, 13, 0), rgb(167, 75, 0));
     color: #fff;
     border: none;
-    font-size: 17px;
+    font-size: 12px;
     font-weight: 700;
 }
 
@@ -488,7 +488,7 @@ header {
     }
 
     .header-right-ios {
-        margin: 0;
+        margin: 10px 0 0 0;
     }
 
     .header-right {
@@ -542,13 +542,13 @@ header {
     }
 
     .header-right-ios .header-right-menu .login {
-        width: 80px;
-        font-size: 12px;
+        width: 70px;
+        font-size: 10px;
     }
 
     .header-right-ios .header-right-menu .register {
-        width: 80px;
-        font-size: 12px;
+        width: 70px;
+        font-size: 10px;
     }
 
     .header-right .header-right-menu .login {
@@ -562,13 +562,12 @@ header {
     }
 
     .header-right-menu .agentList {
-        width: 80px;
+        width: 70px;
         border-radius: 20px;
         background-image: url(/images/bg-btn.png), conic-gradient( from 0deg at 50% 50%, #ff9900 0deg, #ff6600 90deg, #ff3300 180deg, #ff6600 270deg, #ff9900 360deg );
         color: white;
         border: none;
-        font-size: 12px;
-        font-weight: 700;
+        font-size: 10px;
     }
 
     .header-right-menu .agentList:hover {

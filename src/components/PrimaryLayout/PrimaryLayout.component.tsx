@@ -17,13 +17,16 @@ import {
   Menu,
   Event,
   History,
-  LocalOffer,
+  Campaign,
+  Diamond,
+  ManageSearch,
 } from "@mui/icons-material";
 import LoadingComponent from "../Loading";
 import { getMe } from "@/services/User.service";
 import { GameConfig } from "@/configs/GameConfig";
 import { getWalletGameByUser, walletTransfer } from "@/services/Wallet.service";
 import MenuPopupComponent from "../popup/MenuPopup.component";
+import SearchPopupComponent from "../popup/SearchPopup.component";
 import SupportPopupComponent from "../popup/SupportPopup.component";
 import "./PrimaryLayout.css";
 import {
@@ -35,11 +38,12 @@ import {
 import { Button } from "@mui/material";
 import MiniGameComponent from "../popup/MiniGameComponent";
 import MiniGameIframeComponent from "../popup/MiniGameIframeComponent";
-import Draggable from "react-draggable"
+import Draggable from "react-draggable";
 import { pageInfo } from "@/services/Info.service";
 import { PageConfig } from "@/interface/PageConfig.interface";
 import FloatingRefund from "../popup/RefundComponent";
 import axios from "axios";
+
 // Lazy load các component ít ưu tiên
 const SidebarPage = dynamic(() => import("../../pages/Sidebar/Sidebar.page"), {
   ssr: false,
@@ -65,6 +69,14 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
   const [isIframeOpen, setIsIframeOpen] = useState(false);
   const nodeRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [openSearch, setOpenSearch] = useState(false);
+
+  // Tạo danh sách game từ GameConfig
+  const games = GameConfig.map((item) => ({
+    id: item.code,
+    name: item.name,
+    link: `/game/${item.code}`, // Điều chỉnh link theo route của bạn
+  }));
 
   const handleOpenMiniGame = () => {
     if (!isDragging) {
@@ -99,25 +111,35 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
     setIsIframeOpen(false);
   };
 
+  const handleClose = () => setOpen(false);
+
   const hanldMenu = (menu: number) => {
     setMenu(menu);
     setOpenSupport(false);
 
     switch (menu) {
-      case 1:
-        router.replace("/sport");
+    case 1:
+        if (user) {
+          router.replace("/profile/account-deposit/");
+        } else {
+          swal("Vui lòng đăng nhập!", "", "error");
+        }
         break;
       case 2:
-        router.replace("/");
+        router.replace("/promotion");
         break;
       case 3:
-        router.replace("/livecasino");
+        if (user) {
+          router.replace("/vip");
+        } else {
+          router.replace("/vip/privileges/");
+        }
         break;
       case 4:
-        router.replace("/tablegame");
+        setOpenSearch(true);
         break;
       case 5:
-        router.replace("/promotion");
+        setOpen(true);
         break;
     }
   };
@@ -132,8 +154,8 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
         }
         setUser(res.user);
         if (res?.user) {
-          await widrawals(); // Thực hiện widrawals
-          const updatedRes: any = await getMe(); // Gọi lại API sau khi hoàn thành
+          await widrawals();
+          const updatedRes: any = await getMe();
           setUser(updatedRes?.user);
         }
       } catch (error) {
@@ -158,7 +180,7 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
       }
     });
 
-    await Promise.allSettled(withdrawalPromises); // Đợi tất cả promise, kể cả lỗi
+    await Promise.allSettled(withdrawalPromises);
   };
 
   return (
@@ -167,12 +189,12 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
         <LoadingComponent />
       ) : (
         <div className="container">
-          <HeaderPage user={user} pageConfig={pageConfig}/>
+          <HeaderPage user={user} pageConfig={pageConfig} />
           <div className="menu-sidebar-left">
-            <SidebarPage pageConfig={pageConfig}/>
+            <SidebarPage pageConfig={pageConfig} />
           </div>
           <main>{children}</main>
-          <FooterPage pageConfig={pageConfig}/>
+          <FooterPage pageConfig={pageConfig} />
           <nav className="menu-mobile">
             <ul>
               <li>
@@ -181,9 +203,7 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
                     width="25px"
                     height="25px"
                     className="moblie-icon"
-                    style={
-                      menu === 5 ? { color: "#d7ca63" } : { color: "white" }
-                    }
+                    style={menu === 5 ? { color: "#d7ca63" } : { color: "white" }}
                   />
                   <p className={menu === 5 ? "mobile-active" : "mobile-p"}>
                     Danh mục
@@ -192,13 +212,11 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
               </li>
               <li>
                 <button type="button" onClick={() => hanldMenu(2)}>
-                  <Event
+                  <Campaign
                     width="25px"
                     height="25px"
                     className="moblie-icon"
-                    style={
-                      menu === 2 ? { color: "#d7ca63" } : { color: "white" }
-                    }
+                    style={menu === 2 ? { color: "#d7ca63" } : { color: "white" }}
                   />
                   <p className={menu === 2 ? "mobile-active" : "mobile-p"}>
                     Ưu đãi
@@ -221,13 +239,11 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
               </li>
               <li>
                 <button type="button" onClick={() => hanldMenu(3)}>
-                  <History
+                  <Diamond
                     width="25px"
                     height="25px"
                     className="moblie-icon"
-                    style={
-                      menu === 3 ? { color: "#d7ca63" } : { color: "white" }
-                    }
+                    style={menu === 3 ? { color: "#d7ca63" } : { color: "white" }}
                   />
                   <p className={menu === 3 ? "mobile-active" : "mobile-p"}>
                     Vip Club
@@ -236,13 +252,11 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
               </li>
               <li>
                 <button type="button" onClick={() => hanldMenu(4)}>
-                  <Support
+                  <ManageSearch
                     width="25px"
                     height="25px"
                     className="moblie-icon"
-                    style={
-                      menu === 4 ? { color: "#d7ca63" } : { color: "white" }
-                    }
+                    style={menu === 4 ? { color: "#d7ca63" } : { color: "white" }}
                   />
                   <p className={menu === 4 ? "mobile-active" : "mobile-p"}>
                     Tìm kiếm
@@ -252,19 +266,27 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
             </ul>
           </nav>
 
-          {/* <MenuPopupComponent
+          <MenuPopupComponent
             open={open}
             onClose={handleClose}
-            title="Category"
-          /> */}
+            title="Danh mục"
+          />
 
           <SupportPopupComponent
             open={openSupport}
             onClose={() => setOpenSupport(false)}
             title="Support"
           />
-          {/* Refund */}
-          { user ? <FloatingRefund /> : <></>}
+
+          {/* Thêm SearchPopupComponent */}
+          <SearchPopupComponent
+            open={openSearch}
+            onClose={() => setOpenSearch(false)}
+            title="Tìm Kiếm Game"
+            games={games}
+          />
+
+          {user ? <FloatingRefund /> : <></>}
         </div>
       )}
     </>

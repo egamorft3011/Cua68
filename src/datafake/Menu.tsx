@@ -70,18 +70,12 @@ export const MenuWebsite = [
 export const MenuMobile = [
   {
     id: "1",
-    link: "/",
-    title: "Home",
-    icon: <HomeMobileIcon width="20px" height="20px" className="icon-header" />,
-  },
-  {
-    id: "2",
     link: "/sport",
-    title: "Sport",
+    title: "Thể Thao",
     icon: <SportIcon width="20px" height="20px" className="icon-header" />,
   },
   {
-    id: "3",
+    id: "2",
     link: "/livecasino",
     title: "Live Casino",
     icon: (
@@ -94,37 +88,44 @@ export const MenuMobile = [
     ),
   },
   {
-    id: "4",
-    link: "/gamecasio",
-    title: "Card Games",
-    icon: (
-      <CasinoCardsIcon width="20px" height="20px" className="icon-header" />
-    ),
-  },
-  {
-    id: "5",
+    id: "3",
     link: "/slots",
     title: "Nổ hũ",
     icon: <SlotsIcon width="20px" height="20px" className="icon-header" />,
   },
+  {
+    id: "4",
+    link: "/fish",
+    title: "Bắn Cá",
+    icon: <FishIcon width="20px" height="20px" className="icon-header" />,
+    
+  },
+  {
+    id: "5",
+    link: "/chicken",
+    title: "Đá gà",
+    icon: <ChickenIcon width="20px" height="20px" className="icon-header" />,
+  },
 
   {
     id: "6",
-    link: "/fish",
-    title: "Fish",
-    icon: <FishIcon width="20px" height="20px" className="icon-header" />,
+    link: "/lotto",
+    title: "Xổ số",
+    icon: <LottoIcon width="20px" height="20px" className="icon-header" />,
   },
   {
     id: "7",
     link: "/lotto",
-    title: "Lotto",
-    icon: <LottoIcon width="20px" height="20px" className="icon-header" />,
+    title: "Lô đề ",
+    icon: <SpinsIcon width="20px" height="20px" className="icon-header" />,
   },
   {
     id: "8",
-    link: "/chicken",
-    title: "Chicken Fight",
-    icon: <ChickenIcon width="20px" height="20px" className="icon-header" />,
+    link: "/gamecasio",
+    title: "Game Bài",
+    icon: (
+      <CasinoCardsIcon width="20px" height="20px" className="icon-header" />
+    ),
   },
 ];
 
