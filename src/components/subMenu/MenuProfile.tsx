@@ -130,42 +130,10 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
           borderRadius: "8px",
         }}
       >
-        {/* Username và Số dư */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Typography sx={{ color: "white", fontSize: 14 }}>
-            <NotificationBell />
-          </Typography>
-          <Typography sx={{ color: "white", fontSize: 14 }}>
-            {user?.username ?? "huyn196Ebfa5"}
-          </Typography>
-          <Typography sx={{ color: "#fbc16c", fontSize: 14 }}>
-            {formatCurrency(user?.coin ?? 0)}
-          </Typography>
-        </Box>
-
+      
         {/* Nút Rút, Nạp và Icon Menu */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           {/* Nút Rút */}
-          {/* Icon mở menu */}
-          <Tooltip title="">
-            <button
-              onClick={handleClick}
-              style={{
-                border: "none",
-                borderRadius: "0",
-                background: "none",
-                cursor: "pointer",
-              }}
-              aria-controls={open ? "account-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-            >
-              <Avatar
-                src="/images/avatar-4.webp"
-                sx={{ width: 32, height: 32 }}
-              ></Avatar>
-            </button>
-          </Tooltip>
           <button
             onClick={() => router.push("/profile/account-withdraw")}
             style={{
@@ -175,9 +143,9 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
               color: "white",
               borderRadius: "20px",
               textTransform: "none",
-              fontSize: "14px",
-              width: "122px",
-              height: "38px",
+              fontSize: "12px",
+              width: "80px",
+              height: "40px",
               border: "none",
               alignItems: "center",
               justifyContent: "center",
@@ -186,29 +154,6 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
           >
             <RutMenuIcon />
             RÚT
-          </button>
-
-          {/* Nút Nạp */}
-          <button
-            onClick={() => router.push("/profile/account-deposit")}
-            style={{
-              display: "flex",
-              backgroundImage:
-                "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #1f50d6 0deg, #4a02ff 89.73deg, #003daf 180.18deg, #2b1fd6 1turn)",
-
-              color: "white",
-              borderRadius: "20px",
-              border: "none",
-              fontSize: "14px",
-              width: "122px",
-              height: "38px",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-            }}
-          >
-            <NapMenuIcon />
-            NẠP
           </button>
 
           {/* Nút Đại lý */}
@@ -222,9 +167,9 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
               color: "white",
               borderRadius: "20px",
               border: "none",
-              fontSize: "14px",
-              width: "122px",
-              height: "38px",
+              fontSize: "12px",
+              width: "80px",
+              height: "40px",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
@@ -232,6 +177,27 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
           >
             <BankMenuIcon />
             ĐẠI LÝ
+          </button>
+
+          {/* Nút Vip */}
+          <button
+            onClick={() => router.push("/vip")}
+            style={{
+              display: "flex",
+              background: "linear-gradient(135deg, #2f0d00, #a74b00)",
+              color: "white",
+              borderRadius: "20px",
+              border: "none",
+              fontSize: "12px",
+              width: "80px",
+              height: "40px",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+            }}
+          >
+            <VipIcon />
+            VIP
           </button>
         </Box>
 
@@ -291,6 +257,71 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
             );
           })}
         </Menu>
+
+        <Box
+          component="span"
+          sx={{
+            height: "30px",
+            borderRight: "0.01rem solid",
+            borderColor: "var(--theme-color-line)",
+          }}
+        />
+
+
+        {/* Username và Số dư */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Typography sx={{ color: "white", fontSize: 14 }}>
+            {user?.username ?? "huyn196Ebfa5"}
+          </Typography>
+          <Typography sx={{ color: "#fbc16c", fontSize: 14 }}>
+            {formatCurrency(user?.coin ?? 0)}
+          </Typography>
+          {/* Nút Nạp */}
+          <button
+            onClick={() => router.push("/profile/account-deposit")}
+            style={{
+              display: "flex",
+              backgroundImage:
+                "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #1f50d6 0deg, #4a02ff 89.73deg, #003daf 180.18deg, #2b1fd6 1turn)",
+
+              color: "white",
+              borderRadius: "20px",
+              border: "none",
+              fontSize: "12px",
+              width: "80px",
+              height: "40px",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+            }}
+          >
+            <NapMenuIcon />
+            NẠP
+          </button>
+          <Typography sx={{ color: "white", fontSize: 14 }}>
+            <NotificationBell />
+          </Typography>
+          {/* Icon mở menu */}
+          <Tooltip title="">
+            <button
+              onClick={handleClick}
+              style={{
+                border: "none",
+                borderRadius: "0",
+                background: "none",
+                cursor: "pointer",
+              }}
+              aria-controls={open ? "account-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+            >
+              <Avatar
+                src="/images/avatar-4.webp"
+                sx={{ width: 32, height: 32 }}
+              ></Avatar>
+            </button>
+          </Tooltip>
+        </Box>
       </Box>
     </React.Fragment>
   );

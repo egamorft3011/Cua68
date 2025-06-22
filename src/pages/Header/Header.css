@@ -211,9 +211,7 @@ header {
 }
 
 .header-right span {
-    height: 30px;
     margin-left: 10px;
-    border-right: .01rem solid var(--theme-color-line);
 }
 
 .profile {
