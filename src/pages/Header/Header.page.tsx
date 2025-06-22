@@ -30,7 +30,6 @@ import { GameConfig } from "@/configs/GameConfig";
 import { NoticationIconMobile } from "@/shared/Svgs/Svg.component";
 import { pageInfo } from "@/services/Info.service";
 import { PageConfig } from "@/interface/PageConfig.interface";
-import NotificationBell from '@/components/subMenu/NotificationBell';
 
 
 interface propUser {
@@ -132,14 +131,25 @@ export default function HeaderPage(props: propUser) {
                 {/* <button className="header-noti" type="button">
                   <NoticationIconMobile width="24px" height="24px" />
                 </button> */}
-                <NotificationBell />
+                <button className="agentList" onClick={() => router.push('/agency')}>Đại lý</button>
+                <DialogLogin
+                  activeTab={activeTab}
+                  onClose={handleClose}
+                  open={show}
+                />
+                <button className="vip" onClick={() => router.push('/vip/privileges/')}>Vip</button>
+                <div className="split"></div>
                 <button
                   className="login"
                   onClick={() => handleSetActiveTab(0)} // Use memoized function
                 >
                   Đăng Nhập
                 </button>
-
+                <DialogLogin
+                  activeTab={activeTab}
+                  onClose={handleClose}
+                  open={show}
+                />
                 <button
                   className="register"
                   style={{ cursor: "pointer" }}
@@ -147,12 +157,6 @@ export default function HeaderPage(props: propUser) {
                 >
                   Đăng ký
                 </button>
-                <button className="agentList" onClick={() => router.push('/agency')}>Đại lý</button>
-                <DialogLogin
-                  activeTab={activeTab}
-                  onClose={handleClose}
-                  open={show}
-                />
               </div>
             )}
           </div>

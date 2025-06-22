@@ -165,8 +165,25 @@ header {
     font-weight: 700;
 }
 
+.header-right .header-right-menu .vip {
+    width: 120px;
+    height: 40px;
+    border-radius: 20px;
+    background-image: url(/images/bg-btn.png), linear-gradient(135deg, rgb(47, 13, 0), rgb(167, 75, 0));
+    color: #fff;
+    border: none;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+
 .header-right .header-right-menu .agentList:hover {
     background: linear-gradient(#eb4141, #b70b3c);
+}
+
+.header-right .header-right-menu .vip:hover {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
 }
 
 .header-right-ios .header-right-menu .login {
@@ -373,6 +390,11 @@ header {
     gap: 10px;
 }
 
+.header-right-menu.non-login .split{
+    height: 30px;
+    border-right: .01rem solid var(--theme-color-line);
+}
+
 @media(max-width: 1356px) {
     .main-header {
         width: 100%;
@@ -552,8 +574,6 @@ header {
     .header-right-menu .agentList:hover {
         background: linear-gradient(#eb4141, #b70b3c);
     }
-
-
 
 
 }
