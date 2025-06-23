@@ -21,6 +21,8 @@ import {
 import React, { useEffect, useState } from "react";
 import "./profile.css";
 import axios from "axios";
+import { useMediaQuery, useTheme } from "@mui/material";
+
 
 interface Agent {
   stt: number;
@@ -34,6 +36,8 @@ const AgentList: React.FC = () => {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md")); 
 
   // Gọi API khi component mount
   useEffect(() => {
@@ -73,7 +77,7 @@ const AgentList: React.FC = () => {
   // Hàm hiển thị biểu tượng liên hệ
   const renderContactIcons = (contacts: string[]) => {
     if (!contacts || contacts.length === 0) {
-      return <span>Chưa có</span>;
+      return 'Chưa có';
     }
 
     return contacts.map((contact, index) => {
@@ -94,20 +98,14 @@ const AgentList: React.FC = () => {
 
   return (
     <Box sx={{ backgroundColor: '#401c1c', padding: '20px', borderRadius: '10px', color: '#fff' }}>
-      <Typography variant="h4" sx={{ textAlign: 'center', color: '#ffd700', marginBottom: '10px' }}>
+      <Typography  variant={isMobile ? 'h5' : 'h4'} sx={{ textAlign: 'center', color: '#ffd700', marginBottom: '10px',  fontWeight: 700, }}>
         DANH SÁCH ĐẠI LÝ
       </Typography>
 
       {/* Wrapper cho bảng với thanh cuộn ngang trên mobile */}
       <Box
         sx={{
-          overflowX: 'auto', // Thêm thanh cuộn ngang
           width: '100%',
-          // Media query để chỉ áp dụng trên mobile (dưới 600px)
-          '@media (max-width: 600px)': {
-            overflowX: 'auto',
-            whiteSpace: 'nowrap', // Ngăn các phần tử xuống dòng
-          },
         }}
       >
         {/* Tiêu đề cột */}
@@ -118,7 +116,12 @@ const AgentList: React.FC = () => {
             color: '#ffd700',
             marginBottom: '5px',
             padding: '10px',
-            display: 'flex',
+            display: {
+                  xs: 'none',
+                  sm: 'none',
+                  md: 'flex',
+                  lg: 'flex',
+                },
             justifyContent: 'space-between',
             minWidth: '600px', // Đảm bảo bảng có chiều rộng tối thiểu
           }}
@@ -137,54 +140,91 @@ const AgentList: React.FC = () => {
             key={agent.stt}
             sx={{
               backgroundColor: '#5d2d2d',
-              width: '100%',
               borderRadius: 5,
               color: 'white',
-              marginBottom: '5px',
+              marginBottom: '8px',
               padding: '10px',
               display: 'flex',
-              justifyContent: 'space-between',
-              minWidth: '600px', // Đảm bảo mỗi hàng có cùng chiều rộng với tiêu đề
+              flexDirection: isMobile ? 'column' : 'row',
+              justifyContent: isMobile ? 'flex-start' : 'space-between',
+              alignItems: isMobile ? 'flex-start' : 'center',
+              minWidth: isMobile ? '100%' : '600px',
             }}
           >
-            <Typography sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-              {`${agent.stt} ⭐⭐`}
-            </Typography>
-            <Typography sx={{ flex: 2, display: 'flex', alignItems: 'center' }}>
-              {agent.daiLy}
-            </Typography>
-            <Typography sx={{ flex: 2, display: 'flex', alignItems: 'center' }}>
-              {agent.nickname}
-            </Typography>
-            <Typography sx={{ flex: 2, display: 'flex', alignItems: 'center' }}>
-              {agent.phone}
-            </Typography>
-            <Typography sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-              {renderContactIcons(agent.contact)}
-            </Typography>
-            <Typography sx={{ flex: 1 }}>
-              <Button
-                sx={{
-                  display: "flex",
-                  background: "#4c0101",
-                  color: "white",
-                  borderRadius: "5px",
-                  textTransform: "none",
-                  fontSize: "14px",
-                  width: "auto",
-                  height: "38px",
-                  border: "none",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  justifyItems: "center",
-                  cursor: "pointer",
-                  fontWeight: 600,
-                  margin: 0,
-                }}
-              >
-                Rút tiền
-              </Button>
-            </Typography>
+            {isMobile ? (
+              <>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    width: '100%',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography sx={{ fontWeight: 600, color: 'white' }}>{`${agent.stt}`}</Typography>
+                  <Typography sx={{ fontWeight: 600, color: 'white' }}>{agent.daiLy}</Typography>
+                  <Button
+                    sx={{
+                      background: "#4c0101",
+                      color: "white",
+                      borderRadius: "5px",
+                      textTransform: "none",
+                      fontSize: "14px",
+                      padding: "4px 10px",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Rút tiền
+                  </Button>
+                </Box>
+
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    fontSize: '16px',
+                    color: '#ddd',
+                    width: '100%',
+                    marginTop: '6px',
+                    gap: '2px',
+                  }}
+                >
+                  <Typography sx={{ fontSize: '16px' }}>
+                    <strong>Nickname:</strong> {agent.nickname}
+                  </Typography>
+                  <Typography sx={{ fontSize: '16px' }}>
+                    <strong>SĐT:</strong> {agent.phone}
+                  </Typography>
+                  <Typography sx={{ fontSize: '16px' }}>
+                    <strong>Liên hệ:</strong> {renderContactIcons(agent.contact)}
+                  </Typography>
+                </Box>
+              </>
+
+            ) : (
+              <>
+                <Typography sx={{ flex: 1 }}>{`${agent.stt} ⭐⭐`}</Typography>
+                <Typography sx={{ flex: 2 }}>{agent.daiLy}</Typography>
+                <Typography sx={{ flex: 2 }}>{agent.nickname}</Typography>
+                <Typography sx={{ flex: 2 }}>{agent.phone}</Typography>
+                <Typography sx={{ flex: 1 }}>{renderContactIcons(agent.contact)}</Typography>
+                <Typography sx={{ flex: 1 }}>
+                  <Button
+                    sx={{
+                      background: "#4c0101",
+                      color: "white",
+                      borderRadius: "5px",
+                      textTransform: "none",
+                      fontSize: "16px",
+                      width: "100%",
+                      fontWeight: 600,
+                    }}
+                  >
+                    Rút tiền
+                  </Button>
+                </Typography>
+              </>
+            )}
           </Box>
         ))}
       </Box>

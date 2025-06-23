@@ -795,9 +795,6 @@ export default function Deposit(props: TabPProps) {
         </CustomTabPanel>
         {!user && (
           <CustomTabPanel value={value} index={1}>
-            <Typography variant="h5" sx={{ fontWeight: 600, color: "white", mb: 1 }}>
-              Danh Sách Đại Lý
-            </Typography>
             <AgentList />
           </CustomTabPanel>
         )}
