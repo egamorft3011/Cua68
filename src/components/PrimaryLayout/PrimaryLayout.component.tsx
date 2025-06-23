@@ -58,7 +58,7 @@ interface PrimaryLayoutProps {
 }
 
 export default function PrimaryLayoutComponent({ children, pageConfig }: PrimaryLayoutProps) {
-  const [menu, setMenu] = useState(2);
+  const [menu, setMenu] = useState<number | undefined>(undefined);
   const router = useRouter();
   const path = usePathname();
   const [open, setOpen] = useState(false);
@@ -166,6 +166,21 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
     };
 
     initialize();
+
+    // Cập nhật state `menu` dựa trên URL hiện tại
+    const updateMenuState = () => {
+      if (path?.startsWith("/profile/account-deposit")) {
+        setMenu(1);
+      } else if (path?.startsWith("/promotion")) {
+        setMenu(2);
+      } else if (path?.startsWith("/vip")) {
+        setMenu(3);
+      } else {
+        setMenu(undefined); // Reset menu nếu không khớp với bất kỳ menu nào
+      }
+    };
+
+    updateMenuState();
   }, [path, router]);
 
   const widrawals = async () => {
