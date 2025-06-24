@@ -243,8 +243,8 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
                   <Image
                     className="img-nap"
                     src={"/images/icon-deposit.svg"}
-                    width={50}
-                    height={50}
+                    width={45}
+                    height={45}
                     alt=""
                   />
                   <p className={menu === 1 ? "mobile-active" : "mobile-p"}>
