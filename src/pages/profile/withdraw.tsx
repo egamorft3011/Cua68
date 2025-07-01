@@ -137,15 +137,12 @@ export default function Withdraw({ goToTab }: WithdrawProps) {
           setLoad(false);
           swal(
             "Rút tiền",
-            "Tạo lệnh rút tiền thành công",
-            "Vui lòng kiểm tra lịch sử giao dịch",
+            "Tạo lệnh rút tiền thành công. Hệ thống sẽ tự động chuyển tiền vào tài khoản của bạn",
             "success"
           );
-          router.push("/profile/transaction-history/");
         } else {
           setLoad(false);
           swal("Rút tiền", res.msg, "error");
-          router.refresh();
         }
       });
     } else {
