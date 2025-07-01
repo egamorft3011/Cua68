@@ -216,6 +216,52 @@ export default function SlotsPage() {
           ))}
         </Box>
         <SlotsGameItemPage GameType={GameType} ProductType={ProductType} />
+        <Box
+          ref={gameSlotsMenuRef}
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            textAlign: "center",
+            gap: "10px",
+            paddingBottom: "20px",
+            justifyContent: "flex-start",
+          }}
+        >
+          {GameSlotsMenu.map((item) => (
+            <Button
+              data-id={item.id} // Thêm data-id
+              onClick={() => {
+                setGameType(item.gameType);
+                setProductType(item.productType);
+                setAcctiveMenu(item.id);
+              }}
+              sx={{
+                display: "flex",
+                width: "calc(100% / 6 - 10px)",
+                flexShrink: 0,
+                background:
+                  item?.id === acctiveMenu
+                    ? "#ff0000"
+                    : "linear-gradient(180deg, #592929, #4f2323);",
+                border: "1px solid #4c0101",
+                color: "white",
+                gap: "5px",
+                fontSize: { xs: "12px", sm: "14px" },
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                "&:hover": {
+                  background: "#ff0000",
+                },
+              }}
+              key={item.id}
+            >
+              {item.icon}
+              {item.title}
+            </Button>
+          ))}
+        </Box>
       </Box>
     </Box>
   );
