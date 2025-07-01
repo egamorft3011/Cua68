@@ -19,7 +19,7 @@ import {
   History,
   Campaign,
   Diamond,
-  ManageSearch,
+  AccountCircleOutlined,
 } from "@mui/icons-material";
 import LoadingComponent from "../Loading";
 import { getMe } from "@/services/User.service";
@@ -32,10 +32,9 @@ import "./PrimaryLayout.css";
 import {
   CasioIcon,
   DPGameIcon,
-  SearchIcon,
   SportsIcon,
 } from "@/shared/Svgs/Svg.component";
-import { Button } from "@mui/material";
+import { Button, Drawer, Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Avatar, IconButton, Typography } from "@mui/material";
 import MiniGameComponent from "../popup/MiniGameComponent";
 import MiniGameIframeComponent from "../popup/MiniGameIframeComponent";
 import Draggable from "react-draggable";
@@ -43,6 +42,23 @@ import { pageInfo } from "@/services/Info.service";
 import { PageConfig } from "@/interface/PageConfig.interface";
 import FloatingRefund from "../popup/RefundComponent";
 import axios from "axios";
+import { userResponse } from "@/interface/user.interface";
+import { formatCurrency } from "@/utils/formatMoney";
+import {
+  BankMenuIcon,
+  GiftMenuIcon,
+  HistoryBetMenuIcon,
+  HistoryMenuIcon,
+  HoanIcon,
+  LiveChatMenuIcon,
+  LogoutMenuIcon,
+  NapMenuIcon,
+  P2PMenuIcon,
+  ProfileIcon,
+  RutMenuIcon,
+  VipIcon,
+} from "@/shared/Svgs/Svg.component";
+import CloseIcon from "@mui/icons-material/Close";
 
 // Lazy load các component ít ưu tiên
 const SidebarPage = dynamic(() => import("../../pages/Sidebar/Sidebar.page"), {
@@ -55,27 +71,28 @@ const FooterPage = dynamic(() => import("@/pages/Footer/Footer.page"), {
 interface PrimaryLayoutProps {
   children: React.ReactNode;
   pageConfig: PageConfig;
+  user?: userResponse; // Add user prop to match MenuProfileMobile
 }
 
-export default function PrimaryLayoutComponent({ children, pageConfig }: PrimaryLayoutProps) {
+export default function PrimaryLayoutComponent({ children, pageConfig, user }: PrimaryLayoutProps) {
   const [menu, setMenu] = useState<number | undefined>(undefined);
   const router = useRouter();
   const path = usePathname();
   const [open, setOpen] = useState(false);
   const [openSupport, setOpenSupport] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [currentUser, setUser] = useState<any>(null);
   const [load, setLoad] = useState(true);
   const [isMiniGameOpen, setIsMiniGameOpen] = useState(false);
   const [isIframeOpen, setIsIframeOpen] = useState(false);
   const nodeRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [openSearch, setOpenSearch] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false); // Add drawer state
 
   // Tạo danh sách game từ GameConfig
   const games = GameConfig.map((item) => ({
     id: item.code,
     name: item.name,
-    link: `/game/${item.code}`, // Điều chỉnh link theo route của bạn
+    link: `/game/${item.code}`,
   }));
 
   const handleOpenMiniGame = () => {
@@ -113,13 +130,212 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
 
   const handleClose = () => setOpen(false);
 
+  // Drawer handling functions
+  const handleClick = () => {
+    setDrawerOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+  };
+
+  const menuItems = [
+    {
+      text: "Quản lý tài khoản",
+      icon: <ProfileIcon />,
+      onClick: () => router.push("/profile"),
+    },
+    {
+      text: "Quản lý ngân hàng",
+      icon: <BankMenuIcon />,
+      onClick: () => router.push("/profile"),
+    },
+    {
+      text: "Khuyến mãi",
+      icon: <GiftMenuIcon />,
+      onClick: () => router.push("/promotion"),
+    },
+    {
+      text: "Hoàn Tiền",
+      icon: <HoanIcon />,
+      onClick: () => router.push("/profile/account-withdraw"),
+    },
+    {
+      text: "Cấp độ VIP",
+      icon: <VipIcon />,
+      onClick: () => router.push("/vip"),
+    },
+    {
+      text: "Lịch sử giao dịch",
+      icon: <HistoryMenuIcon />,
+      onClick: () => router.push("/profile/transaction-history"),
+    },
+    {
+      text: "Lịch sử cược",
+      icon: <HistoryBetMenuIcon />,
+      onClick: () => router.push("/profile/betting-history"),
+    },
+    {
+      text: "Live chat 24/7",
+      icon: <LiveChatMenuIcon />,
+      onClick: () => window.open(pageConfig.contact.telegram, "_blank"),
+    },
+  ];
+
+  const drawerList = () => (
+    <Box
+      id="drawer-list"
+      sx={{
+        width: 350,
+        background: "#4f2323",
+        color: "white",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+      role="presentation"
+    >
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "16px",
+          borderBottom: "1px solid #562f2f",
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <Avatar src="/images/avatar-4.webp" sx={{ width: 40, height: 40 }} />
+          <Box>
+            <Typography sx={{ fontSize: "16px", fontWeight: "bold" }}>
+              {currentUser?.username || "huyn19e6bffa5"}
+            </Typography>
+            <Typography sx={{ fontSize: "12px", color: "#fbc16c" }}>
+              Ví của tui {formatCurrency(currentUser?.coin ?? 0)}
+            </Typography>
+          </Box>
+        </Box>
+        <IconButton onClick={handleDrawerClose}>
+          <CloseIcon sx={{ color: "white" }} />
+        </IconButton>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          gap: "12px",
+          padding: "16px",
+          borderBottom: "1px solid #562f2f",
+        }}
+      >
+        <Button
+          onClick={() => router.push("/profile/account-withdraw")}
+          sx={{
+            flex: 1,
+            backgroundImage:
+              "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
+            color: "white",
+            borderRadius: "20px",
+            textTransform: "none",
+            fontSize: "14px",
+            "&:hover": {
+              backgroundImage:
+                "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
+            },
+          }}
+        >
+          <RutMenuIcon />
+          RÚT
+        </Button>
+        <Button
+          onClick={() => router.replace("/profile/account-deposit")}
+          sx={{
+            flex: 1,
+            backgroundImage:
+              "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #1f50d6 0deg, #4a02ff 89.73deg, #003daf 180.18deg, #2b1fd6 1turn)",
+            color: "white",
+            borderRadius: "20px",
+            textTransform: "none",
+            fontSize: "14px",
+            "&:hover": {
+              background: "#e00000",
+            },
+          }}
+        >
+          <NapMenuIcon />
+          NẠP
+        </Button>
+      </Box>
+      <List sx={{ flex: 1 }}>
+        {menuItems.map((item) => (
+          <ListItem
+            key={item.text}
+            disablePadding
+            sx={{
+              padding: "0 4.2666666667vw 4.2666666667vw",
+            }}
+          >
+            <ListItemButton
+              onClick={() => {
+                item.onClick();
+                handleDrawerClose();
+              }}
+              sx={{
+                padding: "2.6666666667vw 0",
+                height: "12.8vw",
+                "&:hover": {
+                  background: "#2f3b56",
+                },
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: "40px" }}>{item.icon}</ListItemIcon>
+              <ListItemText
+                primary={item.text}
+                primaryTypographyProps={{
+                  fontSize: "3 invál4.7333333333vw !important",
+                  lineHeight: "5.3333333333vw !important",
+                  fontFamily: "Lexend, sans-serif !important",
+                  fontWeight: "400 !important",
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Box sx={{ padding: "16px", borderTop: "1px solid #562f2f" }}>
+        <Button
+          onClick={() => {
+            window.localStorage.removeItem("tokenCUA68");
+            window.localStorage.removeItem("txInfo");
+            window.location.href = "/";
+          }}
+          sx={{
+            width: "100%",
+            background: "transparent",
+            color: "white",
+            border: "1px solid #562f2f",
+            borderRadius: "8px",
+            textTransform: "none",
+            fontSize: "14px",
+            padding: "8px 0",
+            "&:hover": {
+              background: "#562f2f",
+            },
+          }}
+        >
+          <LogoutMenuIcon />
+          ĐĂNG XUẤT
+        </Button>
+      </Box>
+    </Box>
+  );
+
   const hanldMenu = (menu: number) => {
     setMenu(menu);
     setOpenSupport(false);
 
     switch (menu) {
-    case 1:
-        if (user) {
+      case 1:
+        if (currentUser) {
           router.replace("/profile/account-deposit/");
         } else {
           swal("Vui lòng đăng nhập!", "", "error");
@@ -129,14 +345,14 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
         router.replace("/promotion");
         break;
       case 3:
-        if (user) {
+        if (currentUser) {
           router.replace("/vip");
         } else {
           router.replace("/vip/privileges/");
         }
         break;
       case 4:
-        setOpenSearch(true);
+        handleClick(); // Open drawer for account
         break;
       case 5:
         setOpen(true);
@@ -167,7 +383,6 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
 
     initialize();
 
-    // Cập nhật state `menu` dựa trên URL hiện tại
     const updateMenuState = () => {
       if (path?.startsWith("/profile/account-deposit")) {
         setMenu(1);
@@ -176,7 +391,7 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
       } else if (path?.startsWith("/vip")) {
         setMenu(3);
       } else {
-        setMenu(undefined); // Reset menu nếu không khớp với bất kỳ menu nào
+        setMenu(undefined);
       }
     };
 
@@ -204,7 +419,7 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
         <LoadingComponent />
       ) : (
         <div className="container">
-          <HeaderPage user={user} pageConfig={pageConfig} />
+          <HeaderPage user={currentUser} pageConfig={pageConfig} />
           <div className="menu-sidebar-left">
             <SidebarPage pageConfig={pageConfig} />
           </div>
@@ -267,14 +482,14 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
               </li>
               <li>
                 <button type="button" onClick={() => hanldMenu(4)}>
-                  <ManageSearch
+                  <AccountCircleOutlined
                     width="25px"
                     height="25px"
                     className="moblie-icon"
                     style={menu === 4 ? { color: "#d7ca63" } : { color: "white" }}
                   />
                   <p className={menu === 4 ? "mobile-active" : "mobile-p"}>
-                    Tìm kiếm
+                    Tài khoản
                   </p>
                 </button>
               </li>
@@ -293,15 +508,23 @@ export default function PrimaryLayoutComponent({ children, pageConfig }: Primary
             title="Support"
           />
 
-          {/* Thêm SearchPopupComponent */}
-          <SearchPopupComponent
-            open={openSearch}
-            onClose={() => setOpenSearch(false)}
-            title="Tìm Kiếm Game"
-            games={games}
-          />
+          <Drawer
+            anchor="right"
+            open={drawerOpen}
+            onClose={handleDrawerClose}
+            sx={{
+              zIndex: 9999999,
+              "& .MuiDrawer-paper": {
+                background: "#4f2323",
+                border: "none",
+                borderRadius: "0",
+              },
+            }}
+          >
+            {drawerList()}
+          </Drawer>
 
-          {user ? <FloatingRefund /> : <></>}
+          {currentUser ? <FloatingRefund /> : <></>}
         </div>
       )}
     </>

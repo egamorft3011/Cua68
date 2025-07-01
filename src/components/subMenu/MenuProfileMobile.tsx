@@ -374,7 +374,7 @@ export default function MenuProfileMobile(data: userProps) {
         sx={{
           zIndex: 9999999,
           "& .MuiDrawer-paper": {
-            background: " #3f1a1a",
+            background: " #4f2323",
             border: "none",
             borderRadius: "0",
           },
