@@ -88,6 +88,11 @@
   background: #643131; /* Màu khi hover */
 }
 
+.modal-content {
+  scrollbar-width: thin;
+  scrollbar-color: #2d1313 #4f2323;
+}
+
 .modal-arrow {
   position: absolute;
   top: 40px; /* Đặt tam giác ngay trên modal */

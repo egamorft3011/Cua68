@@ -178,8 +178,7 @@ export default function MenuProfile({ user, pageConfig }: UserProps) {
               gap: "5px"
             }}
           >
-            <BankMenuIcon width={'20px'} height={'20px'}/>
-
+            <BankMenuIcon width="20px" height="20px" fill1="#fff" fill2="#fff" />
             ĐẠI LÝ
           </button>
 
