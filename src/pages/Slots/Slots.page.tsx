@@ -171,7 +171,7 @@ export default function SlotsPage() {
             <Toolbar sx={{ justifyContent: 'space-between',  px: { xs: 1, sm: 2 }, minHeight: { xs: 48, sm: 64 } }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Image
-                    src={`/images/${ProductType}.png`} // Thay đổi theo ProductType
+                    src={`/images/${ProductType.toLowerCase()}.png`} // Thay đổi theo ProductType
                     alt={`${ProductType} Logo`}
                     width={60} // Đặt chiều rộng
                     height={60} // Đặt chiều cao
