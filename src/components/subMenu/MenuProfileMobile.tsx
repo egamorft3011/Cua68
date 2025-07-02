@@ -326,7 +326,7 @@ export default function MenuProfileMobile(data: userProps) {
             color: "white",
             borderRadius: "16px",
             padding: "4px 12px",
-            fontSize: "14px",
+            fontSize: "12px",
             textTransform: "none",
             "&:hover": {
               background: "#e00000",
@@ -346,7 +346,7 @@ export default function MenuProfileMobile(data: userProps) {
              color: "white",
             borderRadius: "16px",
             padding: "4px 12px",
-            fontSize: "14px",
+            fontSize: "12px",
             textTransform: "none",
           }}
         >
