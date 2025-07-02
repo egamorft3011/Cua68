@@ -76,8 +76,8 @@ export default function Withdraw({ goToTab }: WithdrawProps) {
     const rawValue = event.target.value.replace(/[^0-9]/g, "");
     const numericValue = rawValue ? parseInt(rawValue, 10) : null;
     setAmountMoney(numericValue ? formatCurrency(numericValue) : "");
-    // Validate: only allow values > 50,000
-    if (numericValue === null || numericValue > 50000) {
+
+    if (numericValue === null || numericValue > 200000) {
       setAmount(numericValue);
     } else {
       setAmount(null);
@@ -102,9 +102,24 @@ export default function Withdraw({ goToTab }: WithdrawProps) {
       const response = await getListUserBank();
       const availableBanks = response.data;
       console.log("availableBankList", availableBanks);
-      setBankUser(availableBanks[0]);
+
+      if (Array.isArray(availableBanks) && availableBanks.length > 0) {
+        setBankUser(availableBanks[0]);
+      } else {
+        setBankUser(null);
+        swal({
+          title: "Không tìm thấy ngân hàng",
+          text: "Vui lòng thêm tài khoản ngân hàng!",
+          icon: "warning",
+        }).then(() => {
+          // Chỉ điều hướng sau khi người dùng nhấn OK
+          router.push("/profile/");
+        });
+      }
     } catch (error) {
-      console.error("availableBankList is error", error);
+      console.error("Lỗi khi lấy danh sách ngân hàng:", error);
+      setBankUser(null);
+      swal("Lỗi", "Không thể tải danh sách ngân hàng. Vui lòng thử lại sau.", "error");
     }
   };
   const CheckPass = async () => {
@@ -311,7 +326,7 @@ export default function Withdraw({ goToTab }: WithdrawProps) {
                   fullWidth
                   value={amountMoney} // Display formatted input with commas
                   onChange={handleAmountMoney}
-                  placeholder="Từ 50,000đ trở lên"
+                  placeholder="Từ 200,000đ trở lên"
                   inputProps={{
                     inputMode: "numeric", // Optimize for numeric input on mobile
                   }}

@@ -124,7 +124,7 @@ export default function MainProfile() {
           console.log(res.data.length);
           if (res?.status === true) {
             setLoad(false);
-            swal("Thêm ngân hàng", "Thêm ngân hàng mới thành công", "Success");
+            swal("Thêm ngân hàng", "Thêm ngân hàng mới thành công", "success");
           } else {
             setLoad(false);
             swal("Thêm ngân hàng", res.msg, "error");
