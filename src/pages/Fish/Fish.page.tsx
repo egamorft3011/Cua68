@@ -94,7 +94,7 @@ export default function FishPage() {
               },
             }}
           >
-            <Box
+            {/* <Box
               ref={listMenuRef}
               sx={{
                 display: "flex",
@@ -210,7 +210,8 @@ export default function FishPage() {
                   {item.title}
                 </Button>
               ))}
-            </Box>
+            </Box> */}
+            <Box sx={{mb: '20px'}}></Box>
             <FishGameItemPage />
           </Box>
         </Box>

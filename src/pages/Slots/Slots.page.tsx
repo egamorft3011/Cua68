@@ -11,19 +11,35 @@ import {
   Tooltip,
   IconButton,
   useMediaQuery,
+  AppBar,
+  Toolbar,
+  InputBase,
+  Container,
 } from "@mui/material";
+import { Info, CardGiftcard, AttachMoney, Casino, History, Search } from '@mui/icons-material';
 import { getListGame } from "@/services/GameApi.service";
 import { GameSlotsMenu, ListMenu } from "@/datafake/Menu";
 import SlotsGameItemPage from "./SlotsGameItem.page";
+import { styled } from "@mui/system";
+import { useRouter } from 'next/navigation';
 
 export default function SlotsPage() {
   const [GameType, setGameType] = useState<string>("RNG");
   const [ProductType, setProductType] = useState<string>("JL");
-  const [acctiveMenu, setAcctiveMenu] = useState<string>("1");
+  const [activeMenu, setActiveMenu] = useState<string>("1");
   const listMenuRef = useRef<HTMLDivElement>(null);
   const gameSlotsMenuRef = useRef<HTMLDivElement>(null);
-  // Sử dụng media query string thay vì theme.breakpoints
+  const router = useRouter();
   const isMobile = useMediaQuery("(max-width: 600px)"); // Breakpoint xs thường là 600px
+
+  const [activeTab, setActiveTab] = useState('all');
+  
+    const tabs = [
+      { id: 'all', label: 'Trò chơi hot nhất'},
+      { id: 'new', label: 'Trò chơi mới nhất'},
+      { id: 'fish', label: 'Chuyên gia bắn cá'},
+      { id: 'other', label: 'Trò chơi khác'}
+    ];
 
   // Hàm cuộn item active vào giữa màn hình
   const scrollToCenter = (
@@ -52,14 +68,14 @@ export default function SlotsPage() {
   // Cuộn menu active vào giữa khi activeMenu thay đổi hoặc component mount
   useEffect(() => {
     if (isMobile) {
-      // Chờ DOM render hoàn tất
       const timer = setTimeout(() => {
         scrollToCenter(listMenuRef, "2"); // Cuộn ListMenu đến id="4"
-        scrollToCenter(gameSlotsMenuRef, acctiveMenu); // Cuộn GameSlotsMenu
+        scrollToCenter(gameSlotsMenuRef, activeMenu); // Cuộn GameSlotsMenu
       }, 100);
       return () => clearTimeout(timer); // Dọn dẹp timer
     }
-  }, [acctiveMenu, isMobile]);
+  }, [activeMenu, isMobile]);
+
   return (
     <Box
       sx={{
@@ -98,125 +114,6 @@ export default function SlotsPage() {
         }}
       >
         <Box
-          ref={listMenuRef}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            textAlign: "center",
-            flexWrap: "nowrap",
-            overflowX: "auto",
-            gap: "15px",
-            paddingBottom: "20px",
-            marginTop: {
-              xs: 0,
-              sm: "-40px",
-            },
-            justifyContent: { xs: "flex-start", sm: "center" },
-            WebkitOverflowScrolling: "touch",
-            "&::-webkit-scrollbar": {
-              display: "none",
-            },
-            "-ms-overflow-style": "none",
-            "scrollbar-width": "none",
-          }}
-        >
-          {ListMenu.map((item) => (
-            <Button
-              data-id={item.id}
-              onClick={() => {}}
-              sx={{
-                minWidth: "160px",
-                maxWidth: "200px",
-                flexShrink: 0,
-                background:
-                  item?.id == "2"
-                    ? "#ff0000"
-                    : "linear-gradient(180deg, #592929, #4f2323);",
-                border: "1px solid #4c0101",
-                color: "white",
-                gap: "5px",
-                fontSize: { xs: "12px", sm: "14px" },
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-                display: "grid",
-                gridTemplateRows: "1fr 1fr",
-                justifyItems: "center",
-                "&:hover": {
-                  background: "#ff0000",
-                },
-              }}
-              key={item.id}
-              href={item.link}
-            >
-              {cloneElement(
-                item.icon,
-                item?.id == "2"
-                  ? {
-                      fill: "#FFFFFF",
-                    }
-                  : {}
-              )}
-              {item.title}
-            </Button>
-          ))}
-        </Box>
-        <Box
-          ref={gameSlotsMenuRef}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            textAlign: "center",
-            flexWrap: "nowrap",
-            overflowX: "auto",
-            gap: "10px",
-            paddingBottom: "20px",
-            justifyContent: { xs: "flex-start", sm: "center" },
-            WebkitOverflowScrolling: "touch",
-            "&::-webkit-scrollbar": {
-              display: "none",
-            },
-            "-ms-overflow-style": "none",
-            "scrollbar-width": "none",
-          }}
-        >
-          {GameSlotsMenu.map((item) => (
-            <Button
-              data-id={item.id} // Thêm data-id
-              onClick={() => {
-                setGameType(item.gameType);
-                setProductType(item.productType);
-                setAcctiveMenu(item.id);
-              }}
-              sx={{
-                display: "flex",
-                minWidth: "164px",
-                maxWidth: "200px",
-                flexShrink: 0,
-                background:
-                  item?.id === acctiveMenu
-                    ? "#ff0000"
-                    : "linear-gradient(180deg, #592929, #4f2323);",
-                border: "1px solid #4c0101",
-                color: "white",
-                gap: "5px",
-                fontSize: { xs: "12px", sm: "14px" },
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-                "&:hover": {
-                  background: "#ff0000",
-                },
-              }}
-              key={item.id}
-            >
-              {item.icon}
-              {item.title}
-            </Button>
-          ))}
-        </Box>
-        <SlotsGameItemPage GameType={GameType} ProductType={ProductType} />
-        <Box
           ref={gameSlotsMenuRef}
           sx={{
             display: "flex",
@@ -230,18 +127,18 @@ export default function SlotsPage() {
         >
           {GameSlotsMenu.map((item) => (
             <Button
-              data-id={item.id} // Thêm data-id
+              data-id={item.id}
               onClick={() => {
                 setGameType(item.gameType);
                 setProductType(item.productType);
-                setAcctiveMenu(item.id);
+                setActiveMenu(item.id);
               }}
               sx={{
                 display: "flex",
                 width: "calc(100% / 6 - 10px)",
                 flexShrink: 0,
                 background:
-                  item?.id === acctiveMenu
+                  item?.id === activeMenu
                     ? "#ff0000"
                     : "linear-gradient(180deg, #592929, #4f2323);",
                 border: "1px solid #4c0101",
@@ -262,6 +159,129 @@ export default function SlotsPage() {
             </Button>
           ))}
         </Box>
+        <Box sx={{ 
+          background: '#350f0f',
+          borderRadius: '8px',
+          color: 'white',
+          width: '100%',
+          pb: { xs: 4, sm: 6 } 
+        }}>
+          {/* Header */}
+          <AppBar position="static" elevation={0} sx={{ backgroundColor: 'transparent', height: 'auto !important'}}>
+            <Toolbar sx={{ justifyContent: 'space-between',  px: { xs: 1, sm: 2 }, minHeight: { xs: 48, sm: 64 } }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Image
+                    src={`/images/${ProductType}.png`} // Thay đổi theo ProductType
+                    alt={`${ProductType} Logo`}
+                    width={60} // Đặt chiều rộng
+                    height={60} // Đặt chiều cao
+                    style={{ objectFit: 'contain' }} // Giữ tỷ lệ ảnh
+                  />
+
+              </Box>
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center',
+                backgroundColor: 'rgba(255,255,255,0.1)',
+                borderRadius: '15px',
+                px: 1,
+                py: 0.5
+              }}>
+                <InputBase
+                  placeholder="Vui lòng nhập tên trò chơi"
+                  sx={{
+                    color: 'white',
+                    fontSize: { xs: '10px', sm: '12px' },
+                    '& .MuiInputBase-input': {
+                      padding: '8px 12px',
+                      width: { xs: '150px', sm: '200px' }
+                    }
+                  }}
+                />
+                <IconButton sx={{ color: '#ffd700' }}>
+                  <Search />
+                </IconButton>
+              </Box>
+            </Toolbar>
+          </AppBar>
+
+          {/* Navigation Tabs */}
+          <Container sx={{ paddingLeft: '0 !important', paddingRight: '0 !important' }}>
+            <Box sx={{ 
+              display: 'flex', 
+              gap: 1,
+              mb: { xs: 2, sm: 4 },
+              flexDirection: { xs: 'column', sm: 'row' },
+              alignItems: { xs: 'center', sm: 'flex-start' },
+              background: 'rgba(255,255,255,0.1)',
+              padding: '10px 200px'
+            }}>
+              {tabs.map((tab) => (
+                <Button
+                  key={tab.id}
+                  variant={activeTab === tab.id ? "contained" : "outlined"}
+
+                  onClick={() => setActiveTab(tab.id)}
+                  sx={{
+                    borderRadius: '25px',
+                    px: { xs: 2, sm: 3 },
+                    py: { xs: 0.5, sm: 1 },
+                    textTransform: 'none',
+                    fontSize: { xs: '10px', sm: '12px' },
+                    width: { xs: '100%', sm: 'auto' }, // Full width on mobile
+                    maxWidth: { xs: 300, sm: 'none' }, // Limit width on mobile
+                    backgroundColor: activeTab === tab.id ? '#901d1d' : 'transparent',
+                    borderColor: activeTab === tab.id ? '#901d1d' : 'rgba(255,255,255,0.3)',
+                    color: activeTab === tab.id ? 'white' : 'rgba(255,255,255,0.8)',
+                    '&:hover': {
+                      backgroundColor: activeTab === tab.id ? '#901d1d' : 'rgba(255,255,255,0.1)',
+                      borderColor: activeTab === tab.id ? '#901d1d' : 'rgba(255,255,255,0.5)',
+                    }
+                  }}
+                >
+                  {tab.label}
+                </Button>
+              ))}
+            </Box>
+
+            {/* Main Content */}
+            <Box sx={{ 
+              display: 'flex', 
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              minHeight: '50vh',
+              textAlign: 'center',
+              px: { xs: 2, sm: 0 }
+            }}>
+              <Box sx={{ width: '100%', textAlign: 'left', px: '50px !important', mb: '20px' }}>
+                <Box
+                  sx={{
+                    backgroundColor: '#ffd700',
+                    color: '#fff',
+                    borderRadius: '8px 8px 0 0',
+                    textTransform: 'none',
+                    padding: '4px 16px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    display: 'inline-block',
+                  }}
+                >
+                  Trò Chơi Mới Nhất
+                </Box>
+                <Box
+                  sx={{
+                    height: '2px',
+                    backgroundColor: '#ffd700',
+                    width: '100%',
+                  }}
+                />
+              </Box>
+              <SlotsGameItemPage GameType={GameType} ProductType={ProductType} />
+            </Box>
+          </Container>
+        </Box>
+        {/* <SlotsGameItemPage GameType={GameType} ProductType={ProductType} /> */}
       </Box>
     </Box>
   );
