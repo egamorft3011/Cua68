@@ -159,8 +159,9 @@ export default function Withdraw({ goToTab }: WithdrawProps) {
           router.push("/profile/transaction-history/");
         } else {
           setLoad(false);
-          swal("Rút tiền", res.msg, "error");
-          router.refresh();
+          swal("Rút tiền123", res.msg, "error").then(() => {
+            window.location.reload();
+          });
         }
       });
     } else {
