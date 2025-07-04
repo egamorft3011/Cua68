@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, SyntheticEvent  } from 'react';
+import React, { useState, SyntheticEvent } from 'react';
 import { Box, Typography, Tabs, Tab, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import Image from 'next/image';
 import { formatCurrency } from '@/utils/formatMoney';
@@ -60,9 +60,10 @@ const VipPrivilegesPage = () => {
   const [activeTab, setActiveTab] = useState(0);
 
   const handleTabChange = (_: SyntheticEvent, newValue: number) => {
-  setActiveTab(newValue);
-};
+    setActiveTab(newValue);
+  };
 
+  const currentVip = vipLevels[activeTab];
 
   return (
     <Box
@@ -174,7 +175,7 @@ const VipPrivilegesPage = () => {
                       height={50}
                       style={{ objectFit: 'contain' }}
                     />
-                    <Typography sx={{ fontSize: { xs: '14px', md: '16px' }, fontWeight: 'bold' }}>
+                    <Typography sx={{ fontSize: { xs: '14px', md: '16px' }, fontWeight: 'bold', color: activeTab + 1 === vip.level ? '#fff' : 'rgba(255,255,255,0.6)' }}>
                       VIP {vip.level}
                     </Typography>
                   </Box>
@@ -183,14 +184,43 @@ const VipPrivilegesPage = () => {
             ))}
           </Tabs>
 
-          {/* VIP Information Table */}
+          {/* VIP Information */}
+          {/* Block layout for mobile (xs) */}
           <Box
             sx={{
-              overflowX: 'auto',
+              mt: 2,
+              display: { xs: 'block', md: 'none' }, // Hiển thị block trên mobile
+              color: '#fff',
+              textAlign: 'left',
+              background: 'linear-gradient(135deg, #4c1f1f, #350f0f)',
               borderRadius: '8px',
-              mt: 0,
+              padding: 2,
             }}
           >
+            <Typography sx={{ mb: 1, fontWeight: 'bold', display: 'flex', gap: 1 }}>
+              <Box sx={{ color: '#fff' }}>Tên VIP:</Box>
+              <Box sx={{ color: '#ffff00' }}>VIP {currentVip.level}</Box>
+            </Typography>
+            <Typography sx={{ mb: 1, fontWeight: 'bold', display: 'flex', gap: 1 }}>
+              <Box sx={{ color: '#fff' }}>Tổng nạp yêu cầu:</Box>
+              <Box sx={{ color: '#ffff00' }}>{formatCurrency(currentVip.depositRequirement)}</Box>
+            </Typography>
+            <Typography sx={{ mb: 1, fontWeight: 'bold', display: 'flex', gap: 1 }}>
+              <Box sx={{ color: '#fff' }}>Thưởng thăng cấp:</Box>
+              <Box sx={{ color: '#ffff00' }}>{formatCurrency(currentVip.upgradeReward)}</Box>
+            </Typography>
+            <Typography sx={{ mb: 1, fontWeight: 'bold', display: 'flex', gap: 1 }}>
+              <Box sx={{ color: '#fff' }}>Thưởng tháng:</Box>
+              <Box sx={{ color: '#ffff00' }}>{formatCurrency(currentVip.monthlyReward)}</Box>
+            </Typography>
+            <Typography sx={{ fontWeight: 'bold', display: 'flex', gap: 1 }}>
+              <Box sx={{ color: '#fff' }}>Bonus cứu trợ:</Box>
+              <Box sx={{ color: '#ffff00' }}>{currentVip.reliefBonus}</Box>
+            </Typography>
+          </Box>
+
+          {/* Table layout for desktop (md and up) */}
+          <Box sx={{ display: { xs: 'none', md: 'block', marginTop: 20 } }}> {/* Hiển thị table trên PC */}
             <Table
               sx={{
                 width: '100%',
@@ -198,7 +228,8 @@ const VipPrivilegesPage = () => {
                 minWidth: '600px',
                 borderRadius: '8px',
                 overflow: 'hidden',
-                border: 'none', // Loại bỏ border của table
+                border: 'none',
+                background: 'linear-gradient(135deg, #4c1f1f, #350f0f)',
               }}
             >
               <TableHead>
@@ -206,10 +237,10 @@ const VipPrivilegesPage = () => {
                   <TableCell
                     sx={{
                       fontWeight: 'bold',
-                      background: 'linear-gradient(135deg, #4c1f1f, #350f0f)', // Cập nhật background giống tab
                       color: '#fff',
                       textAlign: 'center',
-                      border: 'none', // Loại bỏ border của cell
+                      border: 'none',
+                      background: 'linear-gradient(135deg, #4c1f1f, #350f0f)',
                     }}
                   >
                     Tên VIP
@@ -217,10 +248,10 @@ const VipPrivilegesPage = () => {
                   <TableCell
                     sx={{
                       fontWeight: 'bold',
-                      background: 'linear-gradient(135deg, #4c1f1f, #350f0f)', // Cập nhật background giống tab
                       color: '#fff',
                       textAlign: 'center',
-                      border: 'none', // Loại bỏ border của cell
+                      border: 'none',
+                      background: 'linear-gradient(135deg, #4c1f1f, #350f0f)',
                     }}
                   >
                     Tổng nạp yêu cầu
@@ -228,10 +259,10 @@ const VipPrivilegesPage = () => {
                   <TableCell
                     sx={{
                       fontWeight: 'bold',
-                      background: 'linear-gradient(135deg, #4c1f1f, #350f0f)', // Cập nhật background giống tab
                       color: '#fff',
                       textAlign: 'center',
-                      border: 'none', // Loại bỏ border của cell
+                      border: 'none',
+                      background: 'linear-gradient(135deg, #4c1f1f, #350f0f)',
                     }}
                   >
                     Thưởng thăng cấp
@@ -239,10 +270,10 @@ const VipPrivilegesPage = () => {
                   <TableCell
                     sx={{
                       fontWeight: 'bold',
-                      background: 'linear-gradient(135deg, #4c1f1f, #350f0f)', // Cập nhật background giống tab
                       color: '#fff',
                       textAlign: 'center',
-                      border: 'none', // Loại bỏ border của cell
+                      border: 'none',
+                      background: 'linear-gradient(135deg, #4c1f1f, #350f0f)',
                     }}
                   >
                     Thưởng tháng
@@ -250,10 +281,10 @@ const VipPrivilegesPage = () => {
                   <TableCell
                     sx={{
                       fontWeight: 'bold',
-                      background: 'linear-gradient(135deg, #4c1f1f, #350f0f)', // Cập nhật background giống tab
                       color: '#fff',
                       textAlign: 'center',
-                      border: 'none', // Loại bỏ border của cell
+                      border: 'none',
+                      background: 'linear-gradient(135deg, #4c1f1f, #350f0f)',
                     }}
                   >
                     Bonus cứu trợ
@@ -262,20 +293,20 @@ const VipPrivilegesPage = () => {
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell sx={{ background: 'linear-gradient(135deg, #4c1f1f, #350f0f)', color: '#fff', textAlign: 'center', border: 'none' }}>
-                    VIP {vipLevels[activeTab].level}
+                  <TableCell sx={{ color: '#ffff00',  fontWeight: 'bold', textAlign: 'center', border: 'none', background: 'linear-gradient(135deg, #4c1f1f, #350f0f)' }}>
+                    VIP {currentVip.level}
                   </TableCell>
-                  <TableCell sx={{ background: 'linear-gradient(135deg, #4c1f1f, #350f0f)', color: '#fff', textAlign: 'center', border: 'none' }}>
-                    {formatCurrency(vipLevels[activeTab].depositRequirement)}
+                  <TableCell sx={{ color: '#ffff00',  fontWeight: 'bold', textAlign: 'center', border: 'none', background: 'linear-gradient(135deg, #4c1f1f, #350f0f)' }}>
+                    {formatCurrency(currentVip.depositRequirement)}
                   </TableCell>
-                  <TableCell sx={{ background: 'linear-gradient(135deg, #4c1f1f, #350f0f)', color: '#fff', textAlign: 'center', border: 'none' }}>
-                    {formatCurrency(vipLevels[activeTab].upgradeReward)}
+                  <TableCell sx={{ color: '#ffff00',  fontWeight: 'bold', textAlign: 'center', border: 'none', background: 'linear-gradient(135deg, #4c1f1f, #350f0f)' }}>
+                    {formatCurrency(currentVip.upgradeReward)}
                   </TableCell>
-                  <TableCell sx={{ background: 'linear-gradient(135deg, #4c1f1f, #350f0f)', color: '#fff', textAlign: 'center', border: 'none' }}>
-                    {formatCurrency(vipLevels[activeTab].monthlyReward)}
+                  <TableCell sx={{ color: '#ffff00',  fontWeight: 'bold', textAlign: 'center', border: 'none', background: 'linear-gradient(135deg, #4c1f1f, #350f0f)' }}>
+                    {formatCurrency(currentVip.monthlyReward)}
                   </TableCell>
-                  <TableCell sx={{ background: 'linear-gradient(135deg, #4c1f1f, #350f0f)', color: '#fff', textAlign: 'center', border: 'none' }}>
-                    {vipLevels[activeTab].reliefBonus}
+                  <TableCell sx={{ color: '#ffff00',  fontWeight: 'bold', textAlign: 'center', border: 'none', background: 'linear-gradient(135deg, #4c1f1f, #350f0f)' }}>
+                    {currentVip.reliefBonus}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -283,7 +314,7 @@ const VipPrivilegesPage = () => {
           </Box>
         </Box>
 
-        {/* VIP Rules */}
+       {/* VIP Rules */}
         <Box
           sx={{
             background: '#350f0f',
@@ -293,18 +324,18 @@ const VipPrivilegesPage = () => {
           }}
         >
           <Typography
-            variant="h5"
+            variant="h4"
             sx={{
-              color: '#ff0000',
-              fontSize: { xs: '20px', md: '28px' },
-              fontWeight: 'bold',
+              color: '#fff',
               textAlign: 'center',
-              mb: 3,
+              fontWeight: 'bold',
+              mb: 4,
+              fontSize: { xs: '24px', md: '36px' },
               textTransform: 'uppercase',
-              textShadow: '1px 1px 2px rgba(0, 0, 0, 0.2)',
+              textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
             }}
           >
-            Quy Tắc
+            VIP Club - Đẳng cấp VIP
           </Typography>
           <Box sx={{ fontSize: { xs: '14px', md: '18px' }, lineHeight: 1.8, color: '#fff' }}>
             <Typography
@@ -319,49 +350,34 @@ const VipPrivilegesPage = () => {
               Chào mừng Quý thành viên đến với CLUB VIP của CUA68!
             </Typography>
             <Typography sx={{ mb: 2 }}>
-              <span style={{ color: 'red', fontWeight: 'bold' }}>※ Đối tượng áp dụng:</span> Tất cả Hội viên của CUA68
+              <span style={{ color: '#fff', fontWeight: 'bold' }}>※ Đối tượng áp dụng:</span> VIP Club là chương trình đặc biệt dành riêng cho Khách hàng thân thiết của CUA68, mang đến những trải nghiệm cá cược đẳng cấp với nhiều đặc quyền hấp dẫn. Chương trình được thiết kế với 5 danh hiệu thành viên: Tân Thủ, Chuyên Nghiệp, Cao Thủ, Huyền Thoại và Đỗ Thánh, giúp Khách hàng từng bước chinh phục những phần thưởng giá trị.
             </Typography>
             <Typography sx={{ mb: 2 }}>
-              <span style={{ color: 'red', fontWeight: 'bold' }}>※ Thời gian bắt đầu:</span> 01-01-2022
+              <span style={{ color: '#fff', fontWeight: 'bold' }}>※ Cách thăng cấp:</span> Ở mỗi danh hiệu, Khách hàng sẽ trải qua 10 cấp (level) khác nhau. Khi hoàn thành yêu cầu tại cấp 10, Khách hàng sẽ được thăng cấp với phần thưởng tương ứng. Cấp bậc càng cao – đặc quyền càng lớn, phần thưởng càng hấp dẫn!
             </Typography>
             <Typography sx={{ mb: 2 }}>
-              <span style={{ color: 'red', fontWeight: 'bold' }}>※ Nội dung khuyến mãi:</span> Với mong muốn mang lại cho Quý khách hàng
-              những trải nghiệm đẳng cấp và các ưu đãi đặc biệt VIP dành riêng cho Quý khách hàng luôn đồng hành và
-              gắn bó cùng CUA68. Chương trình VIP CLUB của CUA68 là chương trình khuyến mãi đặc biệt ưu đãi cho Quý
-              thành viên VIP dựa điểm nạp tích lũy và tổng cược hợp lệ tích luỹ của Quý thành viên, mỗi cấp bậc sẽ
-              có từng mức ưu đãi khác nhau và cấp VIP càng cao nhận được càng nhiều ưu đãi.
+              <span style={{ color: '#fff', fontWeight: 'bold' }}>※ Point và cách nhận point:</span> Point là điểm thưởng mà Khách hàng tích lũy khi tham gia cá cược tại CUA68 và được dùng để tham gia minigame, đổi thưởng cùng nhiều đặc quyền hấp dẫn khác. Có 3 cách để nhận điểm:
+            </Typography>
+            <Typography sx={{ mb: 2, pl: 2 }}>
+              - <span style={{ color: '#fff' }}>Thưởng Thăng Cấp:</span> Khi đạt đủ tổng cược hợp lệ, Khách hàng sẽ được thăng cấp và nhận điểm thưởng tương ứng. Ví dụ: Khách hàng ở cấp Chuyên Nghiệp (Level 10), khi đạt tổng cược 54,000,000,000 VNĐ, sẽ được thăng lên cấp Cao Thủ (Level 1) và nhận 4,388 điểm thưởng thăng cấp.
+            </Typography>
+            <Typography sx={{ mb: 2, pl: 2 }}>
+              - <span style={{ color: '#fff' }}>Thưởng Tuần:</span> Vào thứ hai hàng tuần, Khách hàng sẽ nhận được 1% tổng cược hợp lệ của cấp hiện tại dưới dạng điểm thưởng. Ví dụ: Khách hàng ở cấp Chuyên Nghiệp (Level 10), tổng cược của cấp này là 39,000,000,000 VNĐ. Nếu trong tuần đạt 1% tổng cược, sẽ nhận 388 điểm thưởng. <span style={{ color: '#fff' }}>Lưu ý:</span> Điểm thưởng sẽ được cộng vào tài khoản vào thứ hai mỗi tuần và tổng cược hợp lệ được tính là của tuần trước đó.
+            </Typography>
+            <Typography sx={{ mb: 2, pl: 2 }}>
+              - <span style={{ color: '#fff' }}>Thưởng Tháng:</span> Vào ngày đầu tiên của tháng, Khách hàng sẽ nhận được 5% tổng cược hợp lệ của cấp hiện tại dưới dạng điểm thưởng. Ví dụ: Khách hàng ở cấp Chuyên Nghiệp (Level 10), tổng cược của cấp này là 39,000,000,000 VNĐ. Nếu trong tháng, Khách hàng đạt 5% tổng cược, sẽ nhận 1,588 điểm thưởng. <span style={{ color: '#fff' }}>Lưu ý:</span> Điểm thưởng sẽ được cộng vào tài khoản vào ngày đầu tháng và tổng cược hợp lệ được tính là của tháng trước đó.
             </Typography>
             <Typography sx={{ mb: 2 }}>
-              <span style={{ color: 'red', fontWeight: 'bold' }}>※ Cách thăng cấp và nhận phần thưởng theo cấp VIP:</span> Khi đạt được
-              tổng cược hợp lệ tích luỹ và tổng nạp tích luỹ như sau, Hệ thống tự động thăng cấp ngay khi đủ điều kiện
-              VIP và tiến hành phát ưu đãi theo cấp bậc tương ứng.
+              <span style={{ color: '#fff', fontWeight: 'bold' }}>※ Điều khoản và điều kiện:</span>
             </Typography>
-            <Typography sx={{ mb: 2 }}>
-              <span style={{ color: 'red', fontWeight: 'bold' }}>※ Ví dụ:</span> Quý thành viên khi có tổng nạp là 12.000.000 điểm thì
-              sẽ tương ứng với VIP1, nhận được phần quà thăng cấp là 68.000 điểm và thưởng hàng tháng là 18.000 điểm.
+            <Typography sx={{ mb: 2, pl: 2 }}>
+              - <span style={{ color: '#fff' }}>Chương trình áp dụng cho tất cả Khách hàng đang tham gia cá cược tại CUA68.</span>
             </Typography>
-            <Typography sx={{ mb: 2 }}>
-              ※ Quà thăng cấp sẽ được tiến hành phát ngay khi Quý thành viên thăng cấp. Thưởng hàng tháng sẽ được
-              phát vào 12h00 ngày 01 hàng tháng. Tất cả khuyến mãi chỉ yêu cầu 1 vòng cược là có thể rút tiền.
-              Khuyến mãi VIP không áp dụng cho xổ số.
+            <Typography sx={{ mb: 2, pl: 2 }}>
+              - <span style={{ color: '#fff' }}>CUA68 có quyền thay đổi, điều chỉnh hoặc hủy bỏ phần thưởng của bạn nếu phát hiện bất kỳ sự gian lận nào.</span>
             </Typography>
-            <Typography sx={{ mb: 2 }}>
-              <span style={{ color: 'red', fontWeight: 'bold' }}>※ Chú ý:</span> Với mỗi cấp bậc VIP, một thành viên chỉ nhận được
-              khuyến mãi thăng cấp 1 lần duy nhất cho mỗi cấp bậc.
-            </Typography>
-            <Typography sx={{ mb: 2 }}>
-              ※ Thành viên sau khi được thăng cấp trong vòng 90 ngày kể từ ngày thăng cấp phải duy trì cược hợp lệ
-              duy trì tương ứng như trên mới có thể giữ nguyên cấp, nếu trong vòng 90 ngày không hoàn thành cược hợp
-              lệ duy trì sẽ bị giáng xuống 1 cấp, và cứ tương tự như vậy.
-            </Typography>
-            <Typography sx={{ mb: 2 }}>
-              ※ Tất cả các chương trình ưu đãi của CUA68 đều được thiết kế đặc biệt dành cho người chơi. Nếu phát
-              hiện bất kỳ nhóm hoặc cá nhân nào có hành vi gian lận để nhận tiền thưởng CUA68 có quyền đóng băng
-              hoặc hủy bỏ tài khoản và số dư tài khoản của nhóm hoặc cá nhân đó.
-            </Typography>
-            <Typography sx={{ mb: 2 }}>
-              ※ CUA68 có quyền giải thích cuối cùng về các sự kiện và quyền sửa đổi hoặc chấm dứt sự kiện mà không
-              cần thông báo, áp dụng đối với tất cả các ưu đãi.
+            <Typography sx={{ mb: 2, pl: 2 }}>
+              - <span style={{ color: '#fff' }}>Mọi thắc mắc xin vui lòng liên hệ bộ phận CSKH để biết thêm chi tiết.</span>
             </Typography>
           </Box>
         </Box>
