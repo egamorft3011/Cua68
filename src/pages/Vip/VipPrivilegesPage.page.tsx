@@ -350,35 +350,61 @@ const VipPrivilegesPage = () => {
               Chào mừng Quý thành viên đến với CLUB VIP của CUA68!
             </Typography>
             <Typography sx={{ mb: 2 }}>
-              <span style={{ color: '#fff', fontWeight: 'bold' }}>※ Đối tượng áp dụng:</span> VIP Club là chương trình đặc biệt dành riêng cho Khách hàng thân thiết của CUA68, mang đến những trải nghiệm cá cược đẳng cấp với nhiều đặc quyền hấp dẫn. Chương trình được thiết kế với 5 danh hiệu thành viên: Tân Thủ, Chuyên Nghiệp, Cao Thủ, Huyền Thoại và Đỗ Thánh, giúp Khách hàng từng bước chinh phục những phần thưởng giá trị.
+              <Typography sx={{ color: '#fff', fontWeight: 'bold' }}>※ Đối tượng áp dụng:</Typography>{" "}
+              VIP Club là chương trình đặc biệt dành riêng cho Khách hàng thân thiết của CUA68, mang đến những trải nghiệm cá cược đẳng cấp với nhiều đặc quyền hấp dẫn. Chương trình được thiết kế với 5 danh hiệu thành viên: Tân Thủ, Chuyên Nghiệp, Cao Thủ, Huyền Thoại và Đỗ Thánh, giúp Khách hàng từng bước chinh phục những phần thưởng giá trị.
             </Typography>
+
             <Typography sx={{ mb: 2 }}>
-              <span style={{ color: '#fff', fontWeight: 'bold' }}>※ Cách thăng cấp:</span> Ở mỗi danh hiệu, Khách hàng sẽ trải qua 10 cấp (level) khác nhau. Khi hoàn thành yêu cầu tại cấp 10, Khách hàng sẽ được thăng cấp với phần thưởng tương ứng. Cấp bậc càng cao – đặc quyền càng lớn, phần thưởng càng hấp dẫn!
+              <Typography sx={{ color: '#fff', fontWeight: 'bold' }}>※ Cách thăng cấp:</Typography>{" "}
+              Ở mỗi danh hiệu, Khách hàng sẽ trải qua 10 cấp (level) khác nhau. Khi hoàn thành yêu cầu tại cấp 10, Khách hàng sẽ được thăng cấp với phần thưởng tương ứng. Cấp bậc càng cao – đặc quyền càng lớn, phần thưởng càng hấp dẫn!
             </Typography>
+
             <Typography sx={{ mb: 2 }}>
-              <span style={{ color: '#fff', fontWeight: 'bold' }}>※ Point và cách nhận point:</span> Point là điểm thưởng mà Khách hàng tích lũy khi tham gia cá cược tại CUA68 và được dùng để tham gia minigame, đổi thưởng cùng nhiều đặc quyền hấp dẫn khác. Có 3 cách để nhận điểm:
+              <Typography sx={{ color: '#fff', fontWeight: 'bold' }}>※ Point và cách nhận point:</Typography>{" "}
+              Point là điểm thưởng mà Khách hàng tích lũy khi tham gia cá cược tại CUA68 và được dùng để tham gia minigame, đổi thưởng cùng nhiều đặc quyền hấp dẫn khác. Có 3 cách để nhận điểm:
             </Typography>
+
             <Typography sx={{ mb: 2, pl: 2 }}>
-              - <span style={{ color: '#fff' }}>Thưởng Thăng Cấp:</span> Khi đạt đủ tổng cược hợp lệ, Khách hàng sẽ được thăng cấp và nhận điểm thưởng tương ứng. Ví dụ: Khách hàng ở cấp Chuyên Nghiệp (Level 10), khi đạt tổng cược 54,000,000,000 VNĐ, sẽ được thăng lên cấp Cao Thủ (Level 1) và nhận 4,388 điểm thưởng thăng cấp.
+              <Typography sx={{ color: '#fff' }}>- Thưởng Thăng Cấp:</Typography>{" "}
+              Khi đạt đủ tổng cược hợp lệ, Khách hàng sẽ được thăng cấp và nhận điểm thưởng tương ứng. Ví dụ: Khách hàng ở cấp Chuyên Nghiệp (Level 10), khi đạt tổng cược 54,000,000,000 VNĐ, sẽ được thăng lên cấp Cao Thủ (Level 1) và nhận 4,388 điểm thưởng thăng cấp.
             </Typography>
+
             <Typography sx={{ mb: 2, pl: 2 }}>
-              - <span style={{ color: '#fff' }}>Thưởng Tuần:</span> Vào thứ hai hàng tuần, Khách hàng sẽ nhận được 1% tổng cược hợp lệ của cấp hiện tại dưới dạng điểm thưởng. Ví dụ: Khách hàng ở cấp Chuyên Nghiệp (Level 10), tổng cược của cấp này là 39,000,000,000 VNĐ. Nếu trong tuần đạt 1% tổng cược, sẽ nhận 388 điểm thưởng. <span style={{ color: '#fff' }}>Lưu ý:</span> Điểm thưởng sẽ được cộng vào tài khoản vào thứ hai mỗi tuần và tổng cược hợp lệ được tính là của tuần trước đó.
+              <Typography sx={{ color: '#fff' }}>- Thưởng Tuần:</Typography>{" "}
+              Vào thứ hai hàng tuần, Khách hàng sẽ nhận được 1% tổng cược hợp lệ của cấp hiện tại dưới dạng điểm thưởng. Ví dụ: Khách hàng ở cấp Chuyên Nghiệp (Level 10), tổng cược của cấp này là 39,000,000,000 VNĐ. Nếu trong tuần đạt 1% tổng cược, sẽ nhận 388 điểm thưởng.{" "}
+              <Typography sx={{ color: '#fff' }}>Lưu ý:</Typography>{" "}
+              Điểm thưởng sẽ được cộng vào tài khoản vào thứ hai mỗi tuần và tổng cược hợp lệ được tính là của tuần trước đó.
             </Typography>
+
             <Typography sx={{ mb: 2, pl: 2 }}>
-              - <span style={{ color: '#fff' }}>Thưởng Tháng:</span> Vào ngày đầu tiên của tháng, Khách hàng sẽ nhận được 5% tổng cược hợp lệ của cấp hiện tại dưới dạng điểm thưởng. Ví dụ: Khách hàng ở cấp Chuyên Nghiệp (Level 10), tổng cược của cấp này là 39,000,000,000 VNĐ. Nếu trong tháng, Khách hàng đạt 5% tổng cược, sẽ nhận 1,588 điểm thưởng. <span style={{ color: '#fff' }}>Lưu ý:</span> Điểm thưởng sẽ được cộng vào tài khoản vào ngày đầu tháng và tổng cược hợp lệ được tính là của tháng trước đó.
+              <Typography sx={{ color: '#fff' }}>- Thưởng Tháng:</Typography>{" "}
+              Vào ngày đầu tiên của tháng, Khách hàng sẽ nhận được 5% tổng cược hợp lệ của cấp hiện tại dưới dạng điểm thưởng. Ví dụ: Khách hàng ở cấp Chuyên Nghiệp (Level 10), tổng cược của cấp này là 39,000,000,000 VNĐ. Nếu trong tháng, Khách hàng đạt 5% tổng cược, sẽ nhận 1,588 điểm thưởng.{" "}
+              <Typography sx={{ color: '#fff' }}>Lưu ý:</Typography>{" "}
+              Điểm thưởng sẽ được cộng vào tài khoản vào ngày đầu tháng và tổng cược hợp lệ được tính là của tháng trước đó.
             </Typography>
+
             <Typography sx={{ mb: 2 }}>
-              <span style={{ color: '#fff', fontWeight: 'bold' }}>※ Điều khoản và điều kiện:</span>
+              <Typography sx={{ color: '#fff', fontWeight: 'bold' }}>※ Điều khoản và điều kiện:</Typography>
             </Typography>
+
             <Typography sx={{ mb: 2, pl: 2 }}>
-              - <span style={{ color: '#fff' }}>Chương trình áp dụng cho tất cả Khách hàng đang tham gia cá cược tại CUA68.</span>
+              <Typography sx={{ color: '#fff' }}>
+              - Chương trình áp dụng cho tất cả Khách hàng đang tham gia cá cược tại CUA68.
+              </Typography>
             </Typography>
+
             <Typography sx={{ mb: 2, pl: 2 }}>
-              - <span style={{ color: '#fff' }}>CUA68 có quyền thay đổi, điều chỉnh hoặc hủy bỏ phần thưởng của bạn nếu phát hiện bất kỳ sự gian lận nào.</span>
+              <Typography sx={{ color: '#fff' }}>
+              - CUA68 có quyền thay đổi, điều chỉnh hoặc hủy bỏ phần thưởng của bạn nếu phát hiện bất kỳ sự gian lận nào.
+              </Typography>
             </Typography>
+
             <Typography sx={{ mb: 2, pl: 2 }}>
-              - <span style={{ color: '#fff' }}>Mọi thắc mắc xin vui lòng liên hệ bộ phận CSKH để biết thêm chi tiết.</span>
+              <Typography sx={{ color: '#fff' }}>
+              - Mọi thắc mắc xin vui lòng liên hệ bộ phận CSKH để biết thêm chi tiết.
+              </Typography>
             </Typography>
+
           </Box>
         </Box>
       </Box>
