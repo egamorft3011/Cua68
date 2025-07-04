@@ -7,57 +7,44 @@ import {
   Box,
   Typography,
   Button,
-  Pagination,
+  InputBase,
+  IconButton,
+  AppBar,
+  Toolbar,
+  Container,
   useMediaQuery,
 } from "@mui/material";
+import { Search } from "@mui/icons-material";
 import { getListGame } from "@/services/GameApi.service";
 import SlotsGameItemPage from "../Slots/SlotsGameItem.page";
-import { GameSlotsMenu, ListMenu } from "@/datafake/Menu";
+import { GameCasinoMenu, ListMenu } from "@/datafake/Menu";
 
 export default function GameCasinoPage() {
   const [acctiveMenu, setAcctiveMenu] = useState<string>("4");
   const [GameType, setGameType] = useState<string>("CHESS");
-  const [ProductType, setProductType] = useState<string>("JL");
+  const [ProductType, setProductType] = useState<string>("LCC");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const listMenuRef = useRef<HTMLDivElement>(null);
-  const gameSlotsMenuRef = useRef<HTMLDivElement>(null);
+  const GameCasinoMenuRef = useRef<HTMLDivElement>(null);
   // Sử dụng media query string thay vì theme.breakpoints
   const isMobile = useMediaQuery("(max-width: 600px)"); // Breakpoint xs thường là 600px
 
-  // Hàm cuộn item active vào giữa màn hình
-  const scrollToCenter = (
-    containerRef: React.RefObject<HTMLDivElement>,
-    itemId: string
-  ) => {
-    if (containerRef.current) {
-      const activeItem = containerRef.current.querySelector(
-        `[data-id="${itemId}"]`
-      );
-      if (activeItem instanceof HTMLElement) {
-        const containerWidth = containerRef.current.offsetWidth;
-        const itemWidth = activeItem.offsetWidth;
-        const itemOffsetLeft = activeItem.offsetLeft;
-        const scrollPosition =
-          itemOffsetLeft - (containerWidth - itemWidth) / 2;
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
 
-        containerRef.current.scrollTo({
-          left: scrollPosition,
-          behavior: "smooth",
-        });
-      }
+  const handleSearchSubmit = () => {
+    if (searchTerm.trim()) {
+      console.log("Tìm kiếm game:", searchTerm);
     }
   };
 
-  // Cuộn menu active vào giữa khi activeMenu thay đổi hoặc component mount
-  useEffect(() => {
-    if (isMobile) {
-      // Chờ DOM render hoàn tất
-      const timer = setTimeout(() => {
-        scrollToCenter(listMenuRef, "3"); // Cuộn ListMenu đến id="4"
-        scrollToCenter(gameSlotsMenuRef, acctiveMenu); // Cuộn GameSlotsMenu
-      }, 100);
-      return () => clearTimeout(timer); // Dọn dẹp timer
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      handleSearchSubmit();
     }
-  }, [acctiveMenu, isMobile]);
+  };
+
   return (
     <Box
       sx={{
@@ -79,7 +66,6 @@ export default function GameCasinoPage() {
         height={150}
         alt=""
         style={{ width: "100%" }}
-        className="banner-games"
         loading="lazy"
       />
       <Box
@@ -95,128 +81,63 @@ export default function GameCasinoPage() {
           },
         }}
       >
-        <Box
-          ref={listMenuRef}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            textAlign: "center",
-            flexWrap: "nowrap",
-            overflowX: "auto",
-            gap: "15px",
-            paddingBottom: {
-              xs: "5px",
-              sm: "20px",
-            },
-            marginTop: {
-              xs: 0,
-              sm: "-40px",
-            },
-            justifyContent: { xs: "flex-start", sm: "center" },
-            WebkitOverflowScrolling: "touch",
-            "&::-webkit-scrollbar": {
-              display: "none",
-            },
-            "-ms-overflow-style": "none",
-            "scrollbar-width": "none",
-          }}
-        >
-          {ListMenu.map((item) => (
-            <Button
-              data-id={item.id}
-              onClick={() => {}}
-              sx={{
-                minWidth: "160px",
-                maxWidth: "200px",
-                flexShrink: 0,
-                background:
-                  item?.id == "3"
-                    ? "#ff0000"
-                    : "linear-gradient(180deg, #592929, #4f2323);",
-                border: "1px solid #4c0101",
-                color: "white",
-                gap: "5px",
-                fontSize: { xs: "12px", sm: "14px" },
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-                display: "grid",
-                gridTemplateRows: "1fr 1fr",
-                justifyItems: "center",
-                "&:hover": {
-                  background: "#ff0000",
-                },
-              }}
-              key={item.id}
-              href={item.link}
-            >
-              {cloneElement(
-                item.icon,
-                item?.id == "3"
-                  ? {
-                      fill: "#FFFFFF",
-                    }
-                  : {}
-              )}
-              {item.title}
-            </Button>
-          ))}
+        <Box sx={{mb: '20px', display: { xs: "none", sm: "block" },}}></Box>
+        <Box sx={{ background: "#350f0f", borderRadius: 2, color: "white", p: 2 }}>
+          <AppBar position="static" elevation={0} sx={{ background: "transparent" }}>
+            <Toolbar sx={{ justifyContent: "space-between" }}>
+              <Box
+                sx={{
+                  display: { xs: "none", sm: "block" },
+                }}
+              >
+                <Image
+                  src={`/images/v8.png`}
+                  alt={'gamecasino'}
+                  width={60}
+                  height={60}
+                  style={{ objectFit: "contain" }}
+                />
+              </Box>
+              <Box sx={{ display: "flex", alignItems: "center", background: "rgba(255,255,255,0.1)", borderRadius: 3, p: 1 }}>
+                <InputBase
+                  placeholder="Tìm game..."
+                  value={searchTerm}
+                  onChange={handleSearch}
+                  onKeyPress={handleKeyPress}
+                  sx={{ color: "white", width: 200, px: 1 }}
+                />
+                <IconButton sx={{ color: "#ffd700" }} onClick={handleSearchSubmit}>
+                  <Search />
+                </IconButton>
+              </Box>
+            </Toolbar>
+          </AppBar>
+
+          <Container sx={{ px: 0, mt: 3 }}>
+            <Box sx={{ width: "100%", textAlign: "left", mb: 2 }}>
+              <Box
+                sx={{
+                  backgroundColor: "#ffd700",
+                  color: "#fff",
+                  borderRadius: "8px 8px 0 0",
+                  textTransform: "none",
+                  padding: "4px 16px",
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  display: "inline-block",
+                }}
+              >
+                {searchTerm ? `Kết quả tìm kiếm: "${searchTerm}"` : "Trò Chơi Hot Nhất"}
+              </Box>
+              <Box sx={{ height: "2px", background: "#ffd700", width: "100%" }} />
+            </Box>
+            <SlotsGameItemPage
+              GameType={GameType}
+              ProductType={ProductType}
+              searchTerm={searchTerm}
+            />
+          </Container>
         </Box>
-        <Box
-          ref={gameSlotsMenuRef}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            textAlign: "center",
-            flexWrap: "nowrap",
-            overflowX: "auto",
-            gap: "10px",
-            paddingBottom: "20px",
-            justifyContent: { xs: "flex-start", sm: "center" },
-            WebkitOverflowScrolling: "touch",
-            "&::-webkit-scrollbar": {
-              display: "none",
-            },
-            "-ms-overflow-style": "none",
-            "scrollbar-width": "none",
-          }}
-        >
-          {GameSlotsMenu.map((item) => (
-            <Button
-              data-id={item.id}
-              onClick={() => {
-                setGameType(item.gameType);
-                setProductType(item.productType);
-                setAcctiveMenu(item.id);
-              }}
-              sx={{
-                display: "flex",
-                minWidth: "164px",
-                maxWidth: "200px",
-                flexShrink: 0,
-                background:
-                  item?.id === acctiveMenu
-                    ? "#ff0000"
-                    : "linear-gradient(180deg, #592929, #4f2323);",
-                border: "1px solid #4c0101",
-                color: "white",
-                gap: "5px",
-                fontSize: { xs: "12px", sm: "14px" },
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-                "&:hover": {
-                  background: "#ff0000",
-                },
-              }}
-              key={item.id}
-            >
-              {item.icon}
-              {item.title}
-            </Button>
-          ))}
-        </Box>
-        <SlotsGameItemPage GameType={GameType} ProductType={ProductType} />
       </Box>
     </Box>
   );

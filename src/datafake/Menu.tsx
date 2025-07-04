@@ -231,59 +231,48 @@ export const ListMenu = [
 export const GameSlotsMenu = [
   {
     id: "1",
-    icon: (
-      <Image
-        src={"/images/icon-all-mb.webp"}
-        width={40}
-        height={40}
-        alt=""
-        style={{ width: "25px" }}
-      />
-    ),
-    title: "Tất cả ",
+    icon: <Image src={"/images/jl.png"} width={40} height={40} alt="" />,
+    title: "JILI ",
     productType: "JL",
     gameType: "RNG",
   },
   {
     id: "2",
-    icon: <Image src={"/images/cq9.png"} width={40} height={40} alt="" />,
-    title: "CQ9 ",
-    productType: "CQ9",
-    gameType: "RNG",
-  },
-  {
-    id: "3",
     icon: <Image src={"/images/pg.png"} width={40} height={40} alt="" />,
     title: "PG",
     productType: "PG",
     gameType: "RNG",
   },
   {
-    id: "4",
-    icon: <Image src={"/images/v8.png"} width={40} height={40} alt="" />,
-    title: "V8 ",
-    productType: "LCC",
-    gameType: "CHESS",
-  },
-  {
-    id: "5",
+    id: "3",
     icon: <Image src={"/images/ka.png"} width={40} height={40} alt="" />,
     title: "KA ",
     productType: "KA",
     gameType: "RNG",
   },
   {
-    id: "6",
-    icon: <Image src={"/images/jili.png"} width={40} height={40} alt="" />,
-    title: "JILI ",
-    productType: "JL",
+    id: "4",
+    icon: <Image src={"/images/cq9.png"} width={40} height={40} alt="" />,
+    title: "CQ9 ",
+    productType: "CQ9",
     gameType: "RNG",
   },
   {
-    id: "7",
+    id: "5",
     icon: <Image src={"/images/jdb.png"} width={40} height={40} alt="" />,
     title: "JDB ",
     productType: "JDB",
     gameType: "RNG",
   },
+];
+
+export const GameCasinoMenu = [
+  {
+    id: "1",
+    icon: <Image src={"/images/v8.png"} width={40} height={40} alt="" />,
+    title: "V8 ",
+    productType: "LCC",
+    gameType: "CHESS",
+  },
+
 ];

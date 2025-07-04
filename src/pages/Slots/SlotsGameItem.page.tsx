@@ -136,7 +136,7 @@ export default function SlotsGameItemPage({
     }
     
     return allGames.filter((game) => {
-      const gameName = game.gameName || game.name || game.tcgGameCode || game.productCode || "";
+      const gameName = game.gameName|| game.tcgGameCode || game.productCode || "";
       const gameDescription = game.description || "";
       
       return (

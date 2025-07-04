@@ -175,7 +175,7 @@ export default function LottoPage() {
             height={150}
             alt=""
             style={{ width: "100%" }}
-            className="banner-games"
+            // className="banner-games"
             loading="lazy"
           />
           <Box
@@ -191,125 +191,7 @@ export default function LottoPage() {
               },
             }}
           >
-            <Box
-              ref={listMenuRef}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                textAlign: "center",
-                flexWrap: "nowrap",
-                overflowX: "auto",
-                gap: "15px",
-                paddingBottom: {
-                  xs: "5px",
-                  sm: "20px",
-                },
-                marginTop: {
-                  xs: 0,
-                  sm: "-40px",
-                },
-                justifyContent: { xs: "flex-start", sm: "center" },
-                WebkitOverflowScrolling: "touch",
-                "&::-webkit-scrollbar": {
-                  display: "none",
-                },
-                "-ms-overflow-style": "none",
-                "scrollbar-width": "none",
-              }}
-            >
-              {ListMenu.map((item) => (
-                <Button
-                  data-id={item.id}
-                  onClick={() => {}}
-                  sx={{
-                    minWidth: "160px",
-                    maxWidth: "200px",
-                    flexShrink: 0,
-                    background:
-                      item?.id == "6"
-                        ? "#ff0000"
-                        : "linear-gradient(180deg, #592929, #4f2323);",
-                    border: "1px solid #4c0101",
-                    color: "white",
-                    gap: "5px",
-                    fontSize: { xs: "12px", sm: "14px" },
-                    textOverflow: "ellipsis",
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                    display: "grid",
-                    gridTemplateRows: "1fr 1fr",
-                    justifyItems: "center",
-                    "&:hover": {
-                      background: "#ff0000",
-                    },
-                  }}
-                  key={item.id}
-                  href={item.link}
-                >
-                  {cloneElement(
-                    item.icon,
-                    item?.id == "6"
-                      ? {
-                          fill: "#FFFFFF",
-                        }
-                      : {}
-                  )}
-                  {item.title}
-                </Button>
-              ))}
-            </Box>
-            <Box
-              ref={gameSlotsMenuRef}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                textAlign: "center",
-                flexWrap: "nowrap",
-                overflowX: "auto",
-                gap: "10px",
-                paddingBottom: "20px",
-                justifyContent: { xs: "flex-start", sm: "center" },
-                WebkitOverflowScrolling: "touch",
-                "&::-webkit-scrollbar": {
-                  display: "none",
-                },
-                "-ms-overflow-style": "none",
-                "scrollbar-width": "none",
-              }}
-            >
-              {GameSlotsMenu.map((item) => (
-                <Button
-                  data-id={item.id}
-                  onClick={() => {
-                    setAcctiveMenu(item.id);
-                  }}
-                  sx={{
-                    display: "flex",
-                    minWidth: "164px",
-                    maxWidth: "200px",
-                    flexShrink: 0,
-                    background:
-                      item?.id === acctiveMenu
-                        ? "#ff0000"
-                        : "linear-gradient(180deg, #592929, #4f2323);",
-                    border: "1px solid #4c0101",
-                    color: "white",
-                    gap: "5px",
-                    fontSize: { xs: "12px", sm: "14px" },
-                    textOverflow: "ellipsis",
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                    "&:hover": {
-                      background: "#ff0000",
-                    },
-                  }}
-                  key={item.id}
-                >
-                  {item.icon}
-                  {item.title}
-                </Button>
-              ))}
-            </Box>
+            <Box sx={{mb: '20px'}}></Box>
             <Box
               sx={{
                 display: "flex",
