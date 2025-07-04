@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import usePlayGame from "@/hook/usePlayGame";
 import SimpleBackdrop from "@/components/Loading/LoaddingPage";
@@ -29,6 +29,7 @@ const commonImgStyles = {
     filter: "blur(3px)",
   },
 };
+
 const commonTextBoxStyles = {
   position: "absolute",
   width: "100%",
@@ -42,6 +43,7 @@ const commonTextBoxStyles = {
   justifyContent: "center",
   pointerEvents: "none",
 };
+
 const commonCardStyles = {
   width: {
     xs: "105px",
@@ -67,10 +69,10 @@ const commonCardStyles = {
     transform: "scale(1.04) rotate(-1deg)",
   },
 };
+
 const buttonStyles = {
   backgroundImage:
     "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
-
   color: "white",
   padding: "4px 10px",
   border: "none",
@@ -83,42 +85,78 @@ const buttonStyles = {
   "&:hover": {
     backgroundImage:
       "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
-
     opacity: 1,
     filter: "none",
   },
 };
+
 type ItemProps = {
   GameType: string;
   ProductType: string;
+  searchTerm?: string; // Thêm prop searchTerm
 };
+
 export default function SlotsGameItemPage({
   ProductType,
   GameType,
+  searchTerm = "", // Thêm searchTerm với default value
 }: ItemProps) {
   const { loading, playGame } = usePlayGame();
   const [load, setLoad] = useState<boolean>(false);
   const [isPageLoading, setIsPageLoading] = useState<boolean>(false);
   const [gameTable, setGameTable] = useState<any[]>([]);
+  const [allGames, setAllGames] = useState<any[]>([]); // Lưu trữ toàn bộ games
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 30;
 
+  // Fetch games từ API
   useEffect(() => {
     setLoad(true);
     getListGame(ProductType, GameType).then((res) => {
       if (res.data.games.length > 30) {
         const gamesFromPosition20 = res.data.games.slice(29);
         console.log("res.data", res.data.games);
+        setAllGames(gamesFromPosition20); // Lưu toàn bộ games
         setGameTable(gamesFromPosition20);
         setLoad(false);
         setCurrentPage(1);
       } else {
+        setAllGames(res.data.games); // Lưu toàn bộ games
         setGameTable(res.data.games);
         setLoad(false);
         setCurrentPage(1);
       }
     });
   }, [ProductType, GameType]);
+
+  // Filter games theo searchTerm
+  const filteredGames = useMemo(() => {
+    if (!searchTerm.trim()) {
+      return allGames; // Trả về toàn bộ games nếu không có search term
+    }
+    
+    return allGames.filter((game) => {
+      const gameName = game.gameName || game.name || game.tcgGameCode || game.productCode || "";
+      const gameDescription = game.description || "";
+      
+      return (
+        gameName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        gameDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        game.tcgGameCode?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        game.productCode?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+  }, [allGames, searchTerm]);
+
+  // Reset về trang 1 khi searchTerm thay đổi
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+
+  // Cập nhật gameTable khi filteredGames thay đổi
+  useEffect(() => {
+    setGameTable(filteredGames);
+  }, [filteredGames]);
 
   // Tính toán item hiển thị
   const totalPages = Math.ceil(gameTable.length / itemsPerPage);
@@ -135,6 +173,8 @@ export default function SlotsGameItemPage({
     setTimeout(() => {
       setCurrentPage(page);
       setIsPageLoading(false);
+      // Cuộn lên đầu trang
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 1000);
   };
 
@@ -148,67 +188,141 @@ export default function SlotsGameItemPage({
         <></>
       ) : (
         <>
-          <Box
-            sx={{
-              display: "flex",
-              gap: "15px",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              marginBottom: "20px",
-            }}
-          >
-            {displayedGames.map((item: any, index) => (
-              <Box key={item.id} sx={commonCardStyles}>
-                <Box sx={commonImgStyles}>
-                  <Image
-                    src={item.icon}
-                    alt=""
-                    width={200}
-                    height={200}
-                    layout="responsive"
-                    placeholder="blur"
-                    loading="lazy"
-                    blurDataURL="/images/gallery-icon-picture-landscape-vector-sign-symbol_660702-224.avif"
-                    style={{
-                      height: "100%",
-                      width: "100%",
-                      objectFit: "cover",
-                    }}
-                    onError={() => handleImageError(index)} // Gọi hàm khi lỗi
-                  />
-                </Box>
+          {/* Hiển thị thông tin tìm kiếm */}
+          {searchTerm && (
+            <Box sx={{ 
+              textAlign: 'center', 
+              mb: 2,
+              color: 'white',
+              backgroundColor: 'rgba(255,255,255,0.1)',
+              padding: '10px',
+              borderRadius: '8px'
+            }}>
+              <Typography variant="body2">
+                {gameTable.length > 0 
+                  ? `Tìm thấy ${gameTable.length} trò chơi cho "${searchTerm}"`
+                  : `Không tìm thấy trò chơi nào cho "${searchTerm}"`
+                }
+              </Typography>
+            </Box>
+          )}
 
-                <Box sx={commonTextBoxStyles}>
-                  <Button
-                    sx={buttonStyles}
-                    onClick={() => playGame(item.tcgGameCode, item.productCode)}
-                  >
-                    Chơi ngay
-                  </Button>
-                </Box>
+          {/* Hiển thị games */}
+          {displayedGames.length > 0 ? (
+            <>
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "15px",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  marginBottom: "20px",
+                }}
+              >
+                {displayedGames.map((item: any, index) => (
+  <Box
+    key={`${item.id}-${index}`}
+    sx={{
+      width: { xs: "105px", sm: "170px" },
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: 1, // khoảng cách giữa ảnh và tên game
+    }}
+  >
+    {/* Box hình + overlay nút */}
+    <Box sx={commonCardStyles}>
+      <Box sx={commonImgStyles}>
+        <Image
+          src={item.icon}
+          alt={item.gameName || item.name || item.tcgGameCode || "Game"}
+          width={200}
+          height={200}
+          layout="responsive"
+          placeholder="blur"
+          loading="lazy"
+          blurDataURL="/images/gallery-icon-picture-landscape-vector-sign-symbol_660702-224.avif"
+          style={{
+            height: "100%",
+            width: "100%",
+            objectFit: "cover",
+          }}
+          onError={() => handleImageError(index)}
+        />
+      </Box>
+
+      <Box sx={commonTextBoxStyles}>
+        <Button
+          sx={buttonStyles}
+          onClick={() => playGame(item.tcgGameCode, item.productCode)}
+        >
+          Chơi ngay
+        </Button>
+      </Box>
+    </Box>
+
+    {/* ✅ Tên game nằm ngoài ảnh */}
+    <Typography
+      variant="body2"
+      sx={{
+        fontSize: { xs: "12px", sm: "14px" },
+        fontWeight: "bold",
+        textAlign: "center",
+        color: "white",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        maxWidth: "100%",
+      }}
+    >
+      {item.gameName || item.name || item.tcgGameCode}
+    </Typography>
+  </Box>
+))}
+
               </Box>
-            ))}
-          </Box>
-          <Pagination
-            count={totalPages}
-            page={currentPage}
-            onChange={handlePageChange}
-            color="primary"
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              "& .MuiPaginationItem-root": {
-                color: "white", // Mặc định chữ màu trắng
-              },
-              "& .Mui-selected": {
-                backgroundColor: "#b20707", // Nền màu xanh vàng khi active
-                color: "white", // Chữ màu trắng
-                "&:hover": {
-                  backgroundColor: "#4f1401", // Duy trì màu khi hover
-                },
-              },
-            }}
-          />
+
+              {/* Phân trang */}
+              {totalPages > 1 && (
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  color="primary"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    "& .MuiPaginationItem-root": {
+                      color: "white",
+                    },
+                    "& .Mui-selected": {
+                      backgroundColor: "#b20707",
+                      color: "white",
+                      "&:hover": {
+                        backgroundColor: "#4f1401",
+                      },
+                    },
+                  }}
+                />
+              )}
+            </>
+          ) : (
+            /* Hiển thị khi không có kết quả */
+            !loading && !load && searchTerm && (
+              <Box sx={{ 
+                textAlign: 'center', 
+                color: 'white',
+                py: 4
+              }}>
+                <Typography variant="h6" sx={{ mb: 2 }}>
+                  Không tìm thấy trò chơi nào
+                </Typography>
+                <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                  Hãy thử tìm kiếm với từ khóa khác
+                </Typography>
+              </Box>
+            )
+          )}
         </>
       )}
     </>
