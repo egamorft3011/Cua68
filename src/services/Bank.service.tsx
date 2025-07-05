@@ -103,16 +103,24 @@ const withdrawalsUser = (
   bankNumber: string,
   bankProvide: string,
   amount: number,
-  passwd: string
+  passwd: string,
+  agencyId?: string
 ) => {
-  return contentInstance.post("/api/payment/createRequestWithdraw", {
+  const data: any = {
     bankProvide,
     bankName,
     bankNumber,
     amount,
     passwd,
-  });
+  };
+
+  if (agencyId) {
+    data.agency = agencyId;
+  }
+
+  return contentInstance.post("/api/payment/createRequestWithdraw", data);
 };
+
 export {
   getBettingHistory,
   getTransactionHistory,
