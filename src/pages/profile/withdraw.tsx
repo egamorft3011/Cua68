@@ -77,7 +77,7 @@ export default function Withdraw({ goToTab }: WithdrawProps) {
     const numericValue = rawValue ? parseInt(rawValue, 10) : null;
     setAmountMoney(numericValue ? formatCurrency(numericValue) : "");
 
-    if (numericValue === null || numericValue > 200000) {
+    if (numericValue === null || numericValue >= 200000) {
       setAmount(numericValue);
     } else {
       setAmount(null);
@@ -111,10 +111,8 @@ export default function Withdraw({ goToTab }: WithdrawProps) {
           title: "Không tìm thấy ngân hàng",
           text: "Vui lòng thêm tài khoản ngân hàng!",
           icon: "warning",
-        }).then(() => {
-          // Chỉ điều hướng sau khi người dùng nhấn OK
-          router.push("/profile/");
         });
+        router.push("/profile/");
       }
     } catch (error) {
       console.error("Lỗi khi lấy danh sách ngân hàng:", error);
@@ -153,9 +151,9 @@ export default function Withdraw({ goToTab }: WithdrawProps) {
           swal(
             "Rút tiền",
             "Tạo lệnh rút tiền thành công",
-            "Vui lòng kiểm tra lịch sử giao dịch",
             "success"
           );
+          router.refresh();
           router.push("/profile/transaction-history/");
         } else {
           setLoad(false);
