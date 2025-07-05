@@ -25,6 +25,18 @@ const getTransactionHistory = (
   );
 };
 
+// get lịch sử giao dịchv2
+const getHistoryTransaction = (
+  page: number,
+  limit: number,
+  from: string,
+  to: string
+) => {
+  return contentInstance.get(
+    `/api/payment/history/transaction?page=${page}&limit=${limit}&from=${from}&to=${to}`
+  );
+};
+
 // Lấy tài khoản ngân hàng nạp tiền của admin
 const getListBankPayment = () => {
   return contentInstance.get("/api/payment/getListManualBank");
@@ -124,6 +136,7 @@ const withdrawalsUser = (
 export {
   getBettingHistory,
   getTransactionHistory,
+  getHistoryTransaction,
   withdrawalsUser,
   addBankUser,
   createQRBank,

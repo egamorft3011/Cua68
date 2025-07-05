@@ -1,13 +1,10 @@
 "use client";
 import {
-  Avatar,
   Box,
-  Button,
   Card,
   CardContent,
   Typography,
   Chip,
-  Tooltip,
   IconButton,
   useMediaQuery,
   useTheme,
@@ -16,57 +13,45 @@ import React, { useEffect, useState } from "react";
 import { ExpandMore, ExpandLess } from "@mui/icons-material";
 import { EmptyIcon } from "@/shared/Svgs/Svg.component";
 import "./profile.css";
-import { TransactionHistoryItem } from "@/interface/TransactionHistory.interface";
-import { getTransactionHistory } from "@/services/Bank.service";
+import { getHistoryTransaction } from "@/services/Bank.service";
+
+// Interface cho dữ liệu giao dịch mới
+interface HistoryTransactionItem {
+  id: number;
+  uid: number;
+  type: string;
+  amount: number;
+  before_amount: number;
+  after_amount: number;
+  info: string;
+  status: number; // 0: trừ tiền, 1: cộng tiền
+  createdAt: string;
+  updatedAt: string;
+}
 
 const formatDate = (date: Date): string => {
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+  const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${day}/${month}/${year}`;
 };
 
-const getStatusColor = (status: string) => {
-  switch (status.toLowerCase()) {
-    case 'success':
-    case 'thành công':
-      return {
-        backgroundColor: '#4caf50',
-        color: '#fff',
-      };
-    case 'pending':
-    case 'đang xử lý':
-    case 'chờ duyệt':
-      return {
-        backgroundColor: '#ff9800',
-        color: '#fff',
-      };
-    case 'error':
-    case 'lỗi':
-    case 'thất bại':
-      return {
-        backgroundColor: '#f44336',
-        color: '#fff',
-      };
-    default:
-      return {
-        backgroundColor: '#757575',
-        color: '#fff',
-      };
-  }
+const formatDateTime = (dateString: string): string => {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${hours}:${minutes} ${day}/${month}/${year}`;
 };
 
-const getVietnameseStatus = (status: string) => {
-  switch (status.toLowerCase()) {
-    case 'success':
-      return 'Thành công';
-    case 'pending':
-      return 'Chờ duyệt';
-    case 'error':
-      return 'Thất bại';
-    default:
-      return status;
-  }
+const getTransactionColor = (status: number) => {
+  return status === 1 ? "#4caf50" : "#f44336"; // Xanh cho cộng tiền, đỏ cho trừ tiền
+};
+
+const getTransactionSign = (status: number) => {
+  return status === 1 ? "+" : "-";
 };
 
 // Desktop Table Component
@@ -76,7 +61,7 @@ const DesktopTable = ({
   toggleRowExpansion, 
   truncateText 
 }: { 
-  rows: TransactionHistoryItem[], 
+  rows: HistoryTransactionItem[], 
   expandedRows: Set<number>, 
   toggleRowExpansion: (index: number) => void,
   truncateText: (text: string, maxLength?: number) => string
@@ -104,19 +89,19 @@ const DesktopTable = ({
         }}
       >
         <Typography sx={{ flex: "1 1 20%", whiteSpace: "nowrap" }}>
-          Tên Ngân Hàng
-        </Typography>
-        <Typography sx={{ flex: "1 1 20%", whiteSpace: "nowrap" }}>
-          Số tài khoản
-        </Typography>
-        <Typography sx={{ flex: "1 1 30%", whiteSpace: "nowrap" }}>
-          Nội dung
+          Thời gian giao dịch
         </Typography>
         <Typography sx={{ flex: "1 1 15%", whiteSpace: "nowrap" }}>
           Số tiền
         </Typography>
         <Typography sx={{ flex: "1 1 15%", whiteSpace: "nowrap" }}>
-          Trạng thái
+          Số dư cũ
+        </Typography>
+        <Typography sx={{ flex: "1 1 15%", whiteSpace: "nowrap" }}>
+          Số dư mới
+        </Typography>
+        <Typography sx={{ flex: "1 1 35%", whiteSpace: "nowrap" }}>
+          Ghi chú
         </Typography>
       </Box>
 
@@ -143,21 +128,45 @@ const DesktopTable = ({
                 alignItems: "center",
               }}
             >
-              <Typography sx={{ flex: "1 1 20%", whiteSpace: "nowrap" }}>
-                {t.bankName}
-              </Typography>
-              <Typography 
+              <Typography
                 sx={{ 
                   flex: "1 1 20%", 
                   whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
+                  fontSize: "0.85rem"
+                }}
+              >
+                {formatDateTime(t.createdAt)}
+              </Typography>
+              <Typography
+                fontWeight="bold"
+                sx={{ 
+                  flex: "1 1 15%", 
+                  whiteSpace: "nowrap",
+                  fontSize: "0.95rem",
+                  color: getTransactionColor(t.status)
+                }}
+              >
+                {getTransactionSign(t.status)}{new Intl.NumberFormat('vi-VN').format(Number(t.amount ?? 0))}
+              </Typography>
+              <Typography
+                sx={{ 
+                  flex: "1 1 15%", 
+                  whiteSpace: "nowrap",
                   fontSize: "0.9rem"
                 }}
               >
-                {t.bankNumber}
+                {new Intl.NumberFormat('vi-VN').format(Number(t.before_amount ?? 0))}
               </Typography>
-              <Box sx={{ flex: "1 1 30%", display: "flex", alignItems: "center", gap: 1 }}>
+              <Typography
+                sx={{ 
+                  flex: "1 1 15%", 
+                  whiteSpace: "nowrap",
+                  fontSize: "0.9rem"
+                }}
+              >
+                {new Intl.NumberFormat('vi-VN').format(Number(t.after_amount ?? 0))}
+              </Typography>
+              <Box sx={{ flex: "1 1 35%", display: "flex", alignItems: "center", gap: 1 }}>
                 <Typography 
                   sx={{ 
                     whiteSpace: expandedRows.has(i) ? "normal" : "nowrap",
@@ -165,11 +174,12 @@ const DesktopTable = ({
                     overflow: expandedRows.has(i) ? "visible" : "hidden",
                     textOverflow: expandedRows.has(i) ? "clip" : "ellipsis",
                     flex: 1,
+                    fontSize: "0.9rem"
                   }}
                 >
-                  {expandedRows.has(i) ? t.info : truncateText(t.info)}
+                  {expandedRows.has(i) ? t.info : truncateText(t.info, 50)}
                 </Typography>
-                {t.info.length > 10 && (
+                {t.info.length > 50 && (
                   <IconButton
                     size="small"
                     onClick={() => toggleRowExpansion(i)}
@@ -178,36 +188,13 @@ const DesktopTable = ({
                       "&:hover": {
                         color: "#fff",
                       },
-                      minWidth: "24px",
-                      height: "24px",
+                      minWidth: "20px",
+                      height: "20px",
                     }}
                   >
                     {expandedRows.has(i) ? <ExpandLess /> : <ExpandMore />}
                   </IconButton>
                 )}
-              </Box>
-              <Typography
-                fontWeight="bold"
-                color="success.main"
-                sx={{ 
-                  flex: "1 1 15%", 
-                  whiteSpace: "nowrap",
-                  fontSize: "0.95rem"
-                }}
-              >
-                {new Intl.NumberFormat('vi-VN').format(Number(t.amount ?? 0))}
-              </Typography>
-              <Box sx={{ flex: "1 1 15%", display: "flex", justifyContent: "flex-start" }}>
-                <Chip
-                  label={getVietnameseStatus(t.status)}
-                  size="small"
-                  sx={{
-                    ...getStatusColor(t.status),
-                    fontWeight: "bold",
-                    minWidth: "70px",
-                    fontSize: "0.75rem",
-                  }}
-                />
               </Box>
             </Box>
           </CardContent>
@@ -224,7 +211,7 @@ const MobileCards = ({
   toggleRowExpansion, 
   truncateText 
 }: { 
-  rows: TransactionHistoryItem[], 
+  rows: HistoryTransactionItem[], 
   expandedRows: Set<number>, 
   toggleRowExpansion: (index: number) => void,
   truncateText: (text: string, maxLength?: number) => string
@@ -241,31 +228,52 @@ const MobileCards = ({
         }}
       >
         <CardContent sx={{ p: 3 }}>
-          <Typography 
-            variant="h6" 
-            sx={{ 
-              color: "#fff", 
-              mb: 2, 
-              fontWeight: "bold",
-              fontSize: "1.1rem"
-            }}
-          >
-            {t.bankName}
-          </Typography>
-          
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Typography sx={{ color: "#ccc", fontSize: "0.9rem" }}>
-                Số tài khoản:
+                Thời gian:
+              </Typography>
+              <Typography sx={{ color: "#fff", fontWeight: "500", fontSize: "0.85rem" }}>
+                {formatDateTime(t.createdAt)}
+              </Typography>
+            </Box>
+
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography sx={{ color: "#ccc", fontSize: "0.9rem" }}>
+                Số tiền:
+              </Typography>
+              <Typography 
+                sx={{ 
+                  color: getTransactionColor(t.status),
+                  fontWeight: "bold",
+                  fontSize: "1rem"
+                }}
+              >
+                {getTransactionSign(t.status)}{new Intl.NumberFormat('vi-VN').format(Number(t.amount ?? 0))}
+              </Typography>
+            </Box>
+
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography sx={{ color: "#ccc", fontSize: "0.9rem" }}>
+                Số dư cũ:
               </Typography>
               <Typography sx={{ color: "#fff", fontWeight: "500" }}>
-                {t.bankNumber}
+                {new Intl.NumberFormat('vi-VN').format(Number(t.before_amount ?? 0))}
+              </Typography>
+            </Box>
+
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography sx={{ color: "#ccc", fontSize: "0.9rem" }}>
+                Số dư mới:
+              </Typography>
+              <Typography sx={{ color: "#fff", fontWeight: "500" }}>
+                {new Intl.NumberFormat('vi-VN').format(Number(t.after_amount ?? 0))}
               </Typography>
             </Box>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
               <Typography sx={{ color: "#ccc", fontSize: "0.9rem" }}>
-                Nội dung:
+                Ghi chú:
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Typography 
@@ -278,9 +286,9 @@ const MobileCards = ({
                     flex: 1,
                   }}
                 >
-                  {expandedRows.has(i) ? t.info : truncateText(t.info)}
+                  {expandedRows.has(i) ? t.info : truncateText(t.info, 30)}
                 </Typography>
-                {t.info.length > 10 && (
+                {t.info.length > 30 && (
                   <IconButton
                     size="small"
                     onClick={() => toggleRowExpansion(i)}
@@ -298,49 +306,6 @@ const MobileCards = ({
                 )}
               </Box>
             </Box>
-
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography sx={{ color: "#ccc", fontSize: "0.9rem" }}>
-                Số tiền:
-              </Typography>
-              <Typography 
-                sx={{ 
-                  color: "#4caf50",
-                  fontWeight: "bold",
-                  fontSize: "1rem"
-                }}
-              >
-                {new Intl.NumberFormat('vi-VN').format(Number(t.amount ?? 0))}
-              </Typography>
-            </Box>
-
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography sx={{ color: "#ccc", fontSize: "0.9rem" }}>
-                Trạng thái:
-              </Typography>
-              <Chip
-                label={getVietnameseStatus(t.status)}
-                size="small"
-                sx={{
-                  ...getStatusColor(t.status),
-                  fontWeight: "bold",
-                  minWidth: "70px",
-                  fontSize: "0.75rem",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-
-                  "& .MuiChip-label": {
-                    display: "inline",
-                    fontSize: "0.75rem",
-                    maxWidth: "100%",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  },
-                }}
-              />
-            </Box>
           </Box>
         </CardContent>
       </Card>
@@ -348,9 +313,9 @@ const MobileCards = ({
   </Box>
 );
 
-export default function TransactionHistoryPage() {
+export default function HistoryTransactionPage() {
   const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up('sm')); // Use 'sm' or adjust to your preferred breakpoint
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [total, setTotal] = useState(0);
@@ -370,17 +335,17 @@ export default function TransactionHistoryPage() {
     setExpandedRows(newExpandedRows);
   };
 
-  const [rows, setRows] = useState<TransactionHistoryItem[]>([]);
+  const [rows, setRows] = useState<HistoryTransactionItem[]>([]);
   const now = new Date();
   const sevenDaysAgo = new Date(now);
   sevenDaysAgo.setDate(now.getDate() - 7);
   const [fromDate, setFromDate] = useState<string>(formatDate(sevenDaysAgo));
   const [toDate, setToDate] = useState<string>(formatDate(now));
 
-  const fetchBettingHistory = async () => {
+  const fetchHistoryTransaction = async () => {
     try {
       if (!fromDate || !toDate) return;
-      const response = await getTransactionHistory(
+      const response = await getHistoryTransaction(
         page,
         limit,
         fromDate,
@@ -391,16 +356,16 @@ export default function TransactionHistoryPage() {
       setRows(dataExport);
       setTotal(total);
     } catch (error) {
-      console.error("Error fetching betting history:", error);
+      console.error("Error fetching history transaction:", error);
     }
   };
 
   useEffect(() => {
-    fetchBettingHistory();
+    fetchHistoryTransaction();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, fromDate, toDate]);
 
-  const truncateText = (text: string, maxLength: number = 20) => {
+  const truncateText = (text: string, maxLength: number = 25) => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + "...";
   };
