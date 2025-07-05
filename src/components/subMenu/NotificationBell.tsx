@@ -32,6 +32,11 @@ const formatDate = (dateString: string): string => {
     }
   };
 
+// Hàm format số lượng thông báo
+const formatNotificationCount = (count: number): string => {
+  return count > 9 ? '9+' : count.toString();
+};
+
 const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: initialCount = 0 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -209,26 +214,18 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
             notif.id === id ? { ...notif, isRead: true } : notif
           )
         );
+        
+        // Cập nhật unreadCount - chỉ trừ 1 và để React re-render
         setUnreadCount((prev) => (prev > 0 ? prev - 1 : 0));
 
-        // Cập nhật giao diện: Xóa unread-dot
+        // Xóa unread-dot
         const dotEl = document.getElementById(id);
         if (dotEl?.classList.contains('unread-dot')) {
           dotEl.classList.remove('unread-dot');
         }
 
-        // Cập nhật badge số lượng thông báo chưa đọc
-        const badgeEl = document.querySelector('.notification-badge') as HTMLElement;
-        if (badgeEl) {
-          let currentCount = parseInt(badgeEl.innerText, 10);
-          if (currentCount > 0) {
-            currentCount -= 1;
-            badgeEl.innerText = currentCount.toString();
-            if (currentCount === 0) {
-              badgeEl.style.display = 'none';
-            }
-          }
-        }
+        // LOẠI BỎ việc cập nhật badge bằng DOM manipulation
+        // Để React tự động cập nhật thông qua state change
       }
 
       // Chuyển hướng đến trang chi tiết thông báo
@@ -240,7 +237,7 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
     <div className="notification-wrapper" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <div className={`bell-container ${isModalOpen ? 'modal-open' : ''}`}>
         <img src="https://staticda88.com/images/icon-notif.svg?v=1f70d39" alt="Notification Bell" className="bell-icon" />
-        {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
+        {unreadCount > 0 && <span className="notification-badge">{formatNotificationCount(unreadCount)}</span>}
         <div className="modal-arrow"></div>
       </div>
 
