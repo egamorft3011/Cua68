@@ -27,7 +27,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
   createQRBank,
   createRequestManualBank,
@@ -55,12 +55,40 @@ interface TabPProps {
   value: number;
   history: string | null;
 }
+
+// URL to tab index mapping
+const URL_TO_TAB_MAP: { [key: string]: number } = {
+  "/profile/account-deposit/": 0,
+  "/profile/account-withdraw/": 1,
+  "/profile/transaction-history/": 2,
+  "/promotion/": 3,
+  "/vip/": 4,
+  "/agency/": 5,
+};
+
+// Tab index to URL mapping
+const TAB_TO_URL_MAP: { [key: number]: string } = {
+  0: "/profile/account-deposit/",
+  1: "/profile/account-withdraw/",
+  2: "/profile/transaction-history/",
+  3: "/promotion/",
+  4: "/vip/",
+  5: "/agency/",
+};
+
+// Non-authenticated user URL mapping
+const NON_AUTH_URL_MAP: { [key: number]: string } = {
+  0: "/promotion/",
+  1: "/agency/",
+};
+
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
+
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -76,6 +104,7 @@ function CustomTabPanel(props: TabPanelProps) {
     </div>
   );
 }
+
 const formatCurrency = (value: any) => {
   if (!value && value !== 0) return "";
   // Format as integer with comma separators
@@ -84,27 +113,91 @@ const formatCurrency = (value: any) => {
     maximumFractionDigits: 0,
   });
 };
+
 export default function Deposit(props: TabPProps) {
   const { user, loading } = useAuth();
   const [load, setLoad] = useState<boolean>(false);
   const [bankAdmin, setBankAdmin] = useState<any>();
   const [bankList, setBankList] = useState<any[]>([]);
   const router = useRouter();
+  const pathname = usePathname() ?? "";
   const [qrData, setQrData] = useState<any | null>(null);
   const [openPopup, setOpenPopup] = useState(false);
   const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 minutes in seconds
-  const [value, setValue] = useState(props.value ?? (user ? 0 : 0));
   const [amount, setAmount] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState<string>(""); // Track raw input
   const instructionsRef = useRef<HTMLDivElement>(null); // Ref for Instructions Grid
 
-  const agnecyBool = props.value === 5 ? 1 : 0;
+  // Initialize tab value based on current URL or props
+  const getInitialTabValue = () => {
+    // First check if URL matches any tab
+    const tabFromUrl = URL_TO_TAB_MAP[pathname];
+    if (tabFromUrl !== undefined) {
+      return user ? tabFromUrl : (tabFromUrl === 3 ? 0 : tabFromUrl === 5 ? 1 : 0);
+    }
+    
+    // Fallback to props value
+    const agnecyBool = props.value === 5 ? 1 : 0;
+    return user ? (props.value ?? 0) : agnecyBool;
+  };
+
+  const [value, setValue] = useState(getInitialTabValue());
+
+  // Update tab value when URL changes
   useEffect(() => {
-    setValue(user ? props.value : agnecyBool); // Default to Khuyến mãi (index 0) if not authenticated
-  }, [props.value, user]);
+    const tabFromUrl = URL_TO_TAB_MAP[pathname];
+    if (tabFromUrl !== undefined) {
+      const newValue = user ? tabFromUrl : (tabFromUrl === 3 ? 0 : tabFromUrl === 5 ? 1 : 0);
+      setValue(newValue);
+    }
+  }, [pathname, user]);
+
+  // Update tab value when user authentication changes
+  useEffect(() => {
+    if (!loading) { // Only update when loading is complete
+      const tabFromUrl = URL_TO_TAB_MAP[pathname];
+      if (tabFromUrl !== undefined) {
+        const newValue = user ? tabFromUrl : (tabFromUrl === 3 ? 0 : tabFromUrl === 5 ? 1 : 0);
+        setValue(newValue);
+      } else {
+        // If no URL match, use props value
+        const agnecyBool = props.value === 5 ? 1 : 0;
+        setValue(user ? (props.value ?? 0) : agnecyBool);
+      }
+    }
+  }, [props.value, user, loading, pathname]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+    
+    // Update URL based on tab selection
+    let newUrl: string;
+    if (user) {
+      newUrl = TAB_TO_URL_MAP[newValue];
+    } else {
+      newUrl = NON_AUTH_URL_MAP[newValue];
+    }
+    
+    if (newUrl && newUrl !== pathname) {
+      router.push(newUrl);
+    }
+  };
+
+  // Handle programmatic tab changes (like from buttons)
+  const handleTabChange = (newValue: number) => {
+    setValue(newValue);
+    
+    // Update URL based on tab selection
+    let newUrl: string;
+    if (user) {
+      newUrl = TAB_TO_URL_MAP[newValue];
+    } else {
+      newUrl = NON_AUTH_URL_MAP[newValue];
+    }
+    
+    if (newUrl && newUrl !== pathname) {
+      router.push(newUrl);
+    }
   };
 
   useEffect(() => {
@@ -327,7 +420,7 @@ export default function Deposit(props: TabPProps) {
             <BankMenuIcon
               width="23px"
               height="23px"
-              fill={value === 0 ? "white" : undefined}
+              fill={value === 1 ? "white" : undefined}
             />
           ),
           index: 1,
@@ -455,10 +548,9 @@ export default function Deposit(props: TabPProps) {
                       fontWeight: 600,
                       margin: "auto",
                     }}
-                    onClick={() => setValue(user ? 5 : 1)}
+                    onClick={() => handleTabChange(5)}
                   >
                    <BankMenuIcon />
-
                     Đại lý
                   </Button>
                 </Box>
@@ -801,10 +893,10 @@ export default function Deposit(props: TabPProps) {
         {user && (
           <>
             <CustomTabPanel value={value} index={1}>
-              <Withdraw goToTab={setValue} />
+              <Withdraw goToTab={handleTabChange} />
             </CustomTabPanel>
 
-            <CustomTabPanel value={value} index={2}>
+           <CustomTabPanel value={value} index={2}>
               <TransactionHistory value={props.history ?? "transaction"} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={3}>
