@@ -152,11 +152,11 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
       icon: <GiftMenuIcon />,
       onClick: () => router.push("/promotion"),
     },
-    {
-      text: "Hoàn Tiền",
-      icon: <HoanIcon />,
-      onClick: () => router.push("/profile/account-withdraw"),
-    },
+    // {
+    //   text: "Hoàn Tiền",
+    //   icon: <HoanIcon />,
+    //   onClick: () => router.push("/profile/account-withdraw"),
+    // },
     {
       text: "Cấp độ VIP",
       icon: <VipIcon />,
