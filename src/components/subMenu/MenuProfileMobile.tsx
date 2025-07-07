@@ -325,7 +325,7 @@ export default function MenuProfileMobile(data: userProps) {
               "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #d61f1f 0deg, #ff0202 89.73deg, #af0036 180.18deg, #d61f1f 1turn)",
             color: "white",
             borderRadius: "16px",
-
+            margin: "6px 0px",
             fontSize: "10px",
             textTransform: "none",
             "&:hover": {
