@@ -101,11 +101,11 @@ export default function MenuProfileMobile(data: userProps) {
       icon: <GiftMenuIcon />,
       onClick: () => route.push("/promotion"),
     },
-    {
-      text: "Hoàn Tiền",
-      icon: <HoanIcon />,
-      onClick: () => route.push("/profile/account-withdraw"),
-    },
+    // {
+    //   text: "Hoàn Tiền",
+    //   icon: <HoanIcon />,
+    //   onClick: () => route.push("/profile/account-withdraw"),
+    // },
     {
       text: "Cấp độ VIP",
       icon: <VipIcon />,
@@ -325,8 +325,8 @@ export default function MenuProfileMobile(data: userProps) {
               "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #d61f1f 0deg, #ff0202 89.73deg, #af0036 180.18deg, #d61f1f 1turn)",
             color: "white",
             borderRadius: "16px",
-            padding: "4px 12px",
-            fontSize: "12px",
+
+            fontSize: "10px",
             textTransform: "none",
             "&:hover": {
               background: "#e00000",
@@ -345,9 +345,9 @@ export default function MenuProfileMobile(data: userProps) {
 
              color: "white",
             borderRadius: "16px",
-            padding: "4px 12px",
-            fontSize: "12px",
+            fontSize: "10px",
             textTransform: "none",
+            margin: "6px 0px",
           }}
         >
           ĐẠI LÝ

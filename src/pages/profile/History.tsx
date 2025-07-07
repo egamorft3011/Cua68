@@ -15,6 +15,7 @@ import {
   BetsHistoryIcon,
   EmptyIcon,
   TransactionHistoryIcon,
+  HistoryBetMenuIcon,
 } from "@/shared/Svgs/Svg.component";
 import { getTransactionHistory } from "@/services/Bank.service";
 import { TransactionHistoryItem } from "@/interface/TransactionHistory.interface";
@@ -127,7 +128,7 @@ export default function TransactionHistory(prog: TabPProps) {
               },
             }}
           >
-            <TransactionHistoryIcon />
+            <HistoryBetMenuIcon />
             {!isMobile ? "Lịch sử Giao dịch" : "Giao dịch"}
           </Button>
         </ToggleButtonGroup>

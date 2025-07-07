@@ -28,6 +28,7 @@ import { getWalletGameByUser, walletTransfer } from "@/services/Wallet.service";
 import MenuPopupComponent from "../popup/MenuPopup.component";
 import SearchPopupComponent from "../popup/SearchPopup.component";
 import SupportPopupComponent from "../popup/SupportPopup.component";
+import DialogLogin from "../login/loginForm";
 import "./PrimaryLayout.css";
 import {
   CasioIcon,
@@ -60,7 +61,7 @@ import {
 } from "@/shared/Svgs/Svg.component";
 import CloseIcon from "@mui/icons-material/Close";
 
-// Lazy load các component ít ưu tiên
+// Lazy load components
 const SidebarPage = dynamic(() => import("../../pages/Sidebar/Sidebar.page"), {
   ssr: false,
 });
@@ -71,7 +72,7 @@ const FooterPage = dynamic(() => import("@/pages/Footer/Footer.page"), {
 interface PrimaryLayoutProps {
   children: React.ReactNode;
   pageConfig: PageConfig;
-  user?: userResponse; // Add user prop to match MenuProfileMobile
+  user?: userResponse;
 }
 
 export default function PrimaryLayoutComponent({ children, pageConfig, user }: PrimaryLayoutProps) {
@@ -80,20 +81,19 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
   const path = usePathname();
   const [open, setOpen] = useState(false);
   const [openSupport, setOpenSupport] = useState(false);
+  const [openLoginDialog, setOpenLoginDialog] = useState(false);
   const [currentUser, setUser] = useState<any>(null);
   const [load, setLoad] = useState(true);
   const [isMiniGameOpen, setIsMiniGameOpen] = useState(false);
   const [isIframeOpen, setIsIframeOpen] = useState(false);
   const nodeRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false); // Add drawer state
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Tạo danh sách game từ GameConfig
-  const games = GameConfig.map((item) => ({
-    id: item.code,
-    name: item.name,
-    link: `/game/${item.code}`,
-  }));
+  // Define handleClick before handleMenu
+  const handleClick = () => {
+    setDrawerOpen(true);
+  };
 
   const handleOpenMiniGame = () => {
     if (!isDragging) {
@@ -130,10 +130,7 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
 
   const handleClose = () => setOpen(false);
 
-  // Drawer handling functions
-  const handleClick = () => {
-    setDrawerOpen(true);
-  };
+  const handleLoginDialogClose = () => setOpenLoginDialog(false);
 
   const handleDrawerClose = () => {
     setDrawerOpen(false);
@@ -228,7 +225,14 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
         }}
       >
         <Button
-          onClick={() => router.push("/profile/account-withdraw")}
+          onClick={() => {
+            if (currentUser) {
+              router.push("/profile/account-withdraw");
+            } else {
+              setOpenLoginDialog(true);
+            }
+            handleDrawerClose();
+          }}
           sx={{
             flex: 1,
             backgroundImage:
@@ -247,7 +251,14 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
           RÚT
         </Button>
         <Button
-          onClick={() => router.replace("/profile/account-deposit")}
+          onClick={() => {
+            if (currentUser) {
+              router.push("/profile/account-deposit");
+            } else {
+              setOpenLoginDialog(true);
+            }
+            handleDrawerClose();
+          }}
           sx={{
             flex: 1,
             backgroundImage:
@@ -276,7 +287,11 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
           >
             <ListItemButton
               onClick={() => {
-                item.onClick();
+                if (["Quản lý tài khoản", "Quản lý ngân hàng", "Hoàn Tiền", "Lịch sử giao dịch", "Lịch sử cược"].includes(item.text) && !currentUser) {
+                  setOpenLoginDialog(true);
+                } else {
+                  item.onClick();
+                }
                 handleDrawerClose();
               }}
               sx={{
@@ -291,7 +306,7 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
               <ListItemText
                 primary={item.text}
                 primaryTypographyProps={{
-                  fontSize: "3 invál4.7333333333vw !important",
+                  fontSize: "3.7333333333vw !important",
                   lineHeight: "5.3333333333vw !important",
                   fontFamily: "Lexend, sans-serif !important",
                   fontWeight: "400 !important",
@@ -329,16 +344,19 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
     </Box>
   );
 
-  const hanldMenu = (menu: number) => {
+  // Renamed hanldMenu to handleMenu
+  const handleMenu = (menu: number) => {
     setMenu(menu);
     setOpenSupport(false);
 
     switch (menu) {
-      case 1:
+      case 1: // Nạp Tiền
         if (currentUser) {
           router.replace("/profile/account-deposit/");
         } else {
-          swal("Vui lòng đăng nhập!", "", "error");
+          swal("Vui lòng đăng nhập!", "", "error").then(() => {
+            setOpenLoginDialog(true);
+          });
         }
         break;
       case 2:
@@ -351,8 +369,14 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
           router.replace("/vip/privileges/");
         }
         break;
-      case 4:
-        handleClick(); // Open drawer for account
+      case 4: // Tài khoản
+        if (currentUser) {
+          handleClick(); // Call handleClick to open drawer
+        } else {
+          swal("Vui lòng đăng nhập!", "", "error").then(() => {
+            setOpenLoginDialog(true);
+          });
+        }
         break;
       case 5:
         setOpen(true);
@@ -365,6 +389,7 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
       try {
         const res: any = await getMe();
         if (path?.startsWith("/profile") && !res.user) {
+          // setOpenLoginDialog(true); // Uncomment if you want to show login dialog on profile access
           router.replace("/");
           return;
         }
@@ -428,7 +453,7 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
           <nav className="menu-mobile">
             <ul>
               <li>
-                <button type="button" onClick={() => hanldMenu(5)}>
+                <button type="button" onClick={() => handleMenu(5)}>
                   <Menu
                     width="25px"
                     height="25px"
@@ -441,7 +466,7 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
                 </button>
               </li>
               <li>
-                <button type="button" onClick={() => hanldMenu(2)}>
+                <button type="button" onClick={() => handleMenu(2)}>
                   <Campaign
                     width="25px"
                     height="25px"
@@ -454,7 +479,7 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
                 </button>
               </li>
               <li>
-                <button type="button" onClick={() => hanldMenu(1)}>
+                <button type="button" onClick={() => handleMenu(1)}>
                   <Image
                     className="img-nap"
                     src={"/images/icon-deposit.svg"}
@@ -468,7 +493,7 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
                 </button>
               </li>
               <li>
-                <button type="button" onClick={() => hanldMenu(3)}>
+                <button type="button" onClick={() => handleMenu(3)}>
                   <Diamond
                     width="25px"
                     height="25px"
@@ -481,7 +506,7 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
                 </button>
               </li>
               <li>
-                <button type="button" onClick={() => hanldMenu(4)}>
+                <button type="button" onClick={() => handleMenu(4)}>
                   <AccountCircleOutlined
                     width="25px"
                     height="25px"
@@ -506,6 +531,12 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
             open={openSupport}
             onClose={() => setOpenSupport(false)}
             title="Support"
+          />
+
+          <DialogLogin
+            activeTab={0}
+            open={openLoginDialog}
+            onClose={handleLoginDialogClose}
           />
 
           <Drawer

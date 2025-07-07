@@ -116,11 +116,11 @@ export default function MenuProfile({ user: initialUser, pageConfig }: UserProps
       icon: <RutIcon />,
       onClick: () => router.push('/profile/account-withdraw'),
     },
-    {
-      text: 'Hoàn Tiền',
-      icon: <HoanIcon />,
-      onClick: () => router.push('/profile/account-withdraw'),
-    },
+    // {
+    //   text: 'Hoàn Tiền',
+    //   icon: <HoanIcon />,
+    //   onClick: () => router.push('/profile/account-withdraw'),
+    // },
     {
       text: 'Khuyến mãi',
       icon: <GiftMenuIcon />,

@@ -904,7 +904,7 @@ export default function Deposit(props: TabPProps) {
                 sx={{
                   width: "100%",
                   height: { xs: 150, md: 250 },
-                  backgroundImage: "url('https://z1.zbet.tv/bmp/61397dba1944b1ec02b087a53471a123/hero_banner/vi/event-banner.webp?HMEOp?a=2')",
+                  backgroundImage: "url(/assets/event-banner.webp)",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   borderRadius: 2,

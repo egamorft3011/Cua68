@@ -218,7 +218,7 @@ export default function FishGameItemPage({
                   <Box
                     key={`${item.id}-${index}`}
                     sx={{
-                      width: { xs: "105px", sm: "170px" },
+                      width: { xs: "30%", sm: "170px" },
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",

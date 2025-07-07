@@ -45,7 +45,7 @@ const DesktopTable = ({ rows }: { rows: BetHistoryItem[] }) => (
     sx={{
       width: "100%",
       overflowX: "auto",
-      background: "#141b36",
+      background: "#361414",
       borderRadius: "10px",
     }}
   >
@@ -57,7 +57,7 @@ const DesktopTable = ({ rows }: { rows: BetHistoryItem[] }) => (
         py={2}
         color="#ccc"
         sx={{
-          background: "#1c2340",
+          background: "#401c1c",
           borderRadius: "10px 10px 0 0",
         }}
       >
@@ -79,9 +79,6 @@ const DesktopTable = ({ rows }: { rows: BetHistoryItem[] }) => (
         <Typography sx={{ width: "21%", fontSize: "12px", textAlign: "center" }}>
           Thời gian đặt cược
         </Typography>
-        <Typography sx={{ width: "15%", fontSize: "12px", textAlign: "center" }}>
-          Đơn vị tiền tệ
-        </Typography>
       </Box>
 
       {/* Rows */}
@@ -92,7 +89,7 @@ const DesktopTable = ({ rows }: { rows: BetHistoryItem[] }) => (
           px={2}
           py={2}
           sx={{
-            background: "#141b36",
+            background: "#361414",
             borderBottom: i < rows.length - 1 ? "1px solid rgba(56,67,117,.35)" : "none",
             color: "#fff",
             alignItems: "center",
@@ -123,9 +120,6 @@ const DesktopTable = ({ rows }: { rows: BetHistoryItem[] }) => (
           </Typography>
           <Typography sx={{ width: "21%", fontSize: "12px", textAlign: "center" }}>
             {t.betTime}
-          </Typography>
-          <Typography sx={{ width: "15%", fontSize: "12px", textAlign: "center" }}>
-            {t.currency}
           </Typography>
         </Box>
       ))}
@@ -203,20 +197,11 @@ const MobileCards = ({ rows }: { rows: BetHistoryItem[] }) => (
             </Box>
 
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography sx={{ color: "#ccc", fontSize: "0.9rem" }}>
+              <Typography sx={{ color: "#ccc", fontSize: "0.9rem" , whiteSpace: "nowrap"}}>
                 Thời gian đặt cược:
               </Typography>
-              <Typography sx={{ color: "#4caf50", fontWeight: "500" }}>
+              <Typography sx={{ color: "#4caf50", fontWeight: "500", textAlign: "right" }}>
                 {t.betTime}
-              </Typography>
-            </Box>
-
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography sx={{ color: "#ccc", fontSize: "0.9rem" }}>
-                Đơn vị tiền tệ:
-              </Typography>
-              <Typography sx={{ color: "#4caf50", fontWeight: "500" }}>
-                {t.currency}
               </Typography>
             </Box>
           </Box>
