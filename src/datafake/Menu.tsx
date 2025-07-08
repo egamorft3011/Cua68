@@ -136,30 +136,30 @@ export const MenuSupport = [
     link: "https://t.me/HitJuwa",
     icon: "/images/icon-telegram.webp",
   },
-  {
-    id: "2",
-    title: "Phone",
-    link: "tel:14699013597",
-    icon: "/images/icon-phone.webp",
-  },
-  {
-    id: "3",
-    title: "Youtube",
-    link: "#",
-    icon: "/images/icon-community.webp",
-  },
-  {
-    id: "4",
-    title: "Facebook",
-    link: "https://www.facebook.com/profile.php?id=61570404908772",
-    icon: "/images/icon-fb.webp",
-  },
-  {
-    id: "5",
-    title: "Chat",
-    link: "",
-    icon: "/images/icon-livechat.webp",
-  },
+  // {
+  //   id: "2",
+  //   title: "Phone",
+  //   link: "tel:14699013597",
+  //   icon: "/images/icon-phone.webp",
+  // },
+  // {
+  //   id: "3",
+  //   title: "Youtube",
+  //   link: "#",
+  //   icon: "/images/icon-community.webp",
+  // },
+  // {
+  //   id: "4",
+  //   title: "Facebook",
+  //   link: "https://www.facebook.com/profile.php?id=61570404908772",
+  //   icon: "/images/icon-fb.webp",
+  // },
+  // {
+  //   id: "5",
+  //   title: "Chat",
+  //   link: "",
+  //   icon: "/images/icon-livechat.webp",
+  // },
 ];
 
 export const PaymentMenuFooter = [
