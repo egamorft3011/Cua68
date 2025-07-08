@@ -55,28 +55,22 @@ export default function ClaimFunds() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            bgcolor: "#fff",
+            bgcolor: "transparent",
+            backgroundImage:
+              "linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(22, 0, 1, 1) 0%, rgba(39, 7, 0, 1) 100%)",
             borderRadius: 3,
             width: "95%",
             maxWidth: 600,
             p: 3,
             textAlign: "center",
             boxShadow: 24,
+            outline: "none",
+            border: "none",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <IconButton
-            onClick={() => setOpen(false)}
-            sx={{
-              position: "absolute",
-              top: 8,
-              right: 8,
-              backgroundColor: "#eee",
-              "&:hover": { backgroundColor: "#ccc" },
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-
           <Box
             component="img"
             src="/images/Icon_lixi/title.png"
@@ -112,10 +106,10 @@ export default function ClaimFunds() {
                         alt="Light Effect"
                         sx={{
                           position: "absolute",
-                          top: "-25%",
-                          left: "-25%",
-                          width: "150%",
-                          height: "150%",
+                          top: "-45%",
+                          left: "-65%",
+                          width: "230%",
+                          height: "auto",
                           zIndex: 0,
                           animation: "spin 3s linear infinite",
                           transformOrigin: "center",
@@ -141,7 +135,8 @@ export default function ClaimFunds() {
                           transform: "translate(-50%, -50%)",
                           fontSize: "12px",
                           fontWeight: "bold",
-                          background: "linear-gradient(to bottom, #ff3d00, #ff9100)",
+                          background:
+                            "linear-gradient(to bottom, #ff3d00, #ff9100)",
                           WebkitBackgroundClip: "text",
                           WebkitTextFillColor: "transparent",
                           zIndex: 2,
@@ -162,6 +157,18 @@ export default function ClaimFunds() {
               </Grid>
             ))}
           </Grid>
+
+          {/* Nút đóng nằm dưới */}
+          <IconButton
+            onClick={() => setOpen(false)}
+            sx={{
+              mt: 4,
+              backgroundColor: "#eee",
+              "&:hover": { backgroundColor: "#ccc" },
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
         </Box>
       </Modal>
 
@@ -176,7 +183,8 @@ export default function ClaimFunds() {
         }
 
         @keyframes pulseZoom {
-          0%, 100% {
+          0%,
+          100% {
             transform: scale(1);
           }
           50% {
