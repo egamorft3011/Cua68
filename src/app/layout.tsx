@@ -10,6 +10,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { pageInfo } from "@/services/Info.service";
 import { PageConfig } from "@/interface/PageConfig.interface";
 import Script from "next/script";
+import ClaimFunds from "@/components/subMenu/ClaimFunds";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -108,6 +109,8 @@ export default async function RootLayout({
             `
           }}
         />
+
+        <ClaimFunds />
       </body>
     </html>
   );
