@@ -297,3 +297,7 @@ input {
     position: fixed;
   }
 }
+
+#jaklcp-chat-container {
+  bottom: 200px !important;
+}

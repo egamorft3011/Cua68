@@ -86,10 +86,8 @@ export default async function RootLayout({
         </PrimaryLayoutComponent>
         <ToastContainer />
         {/* Thêm script bằng next/script */}
-        {/* ✅ Đặt container cho chat */}
         <div id="jaklcp-chat-container"></div>
 
-        {/* ✅ Nhúng script đúng cách */}
         <Script id="jak-chat-init" strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
