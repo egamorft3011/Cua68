@@ -86,15 +86,30 @@ export default async function RootLayout({
         </PrimaryLayoutComponent>
         <ToastContainer />
         {/* Thêm script bằng next/script */}
-        <script type="text/javascript">
-          (function(w, d, s, u) {
-            w.id = 2; w.lang = ''; w.cName = ''; w.cEmail = ''; w.cMessage = ''; w.lcjUrl = u;
-            var h = d.getElementsByTagName(s)[0], j = d.createElement(s);
-            j.async = true; j.src = 'https://choi88.online/js/jaklcpchat.js';
-            h.parentNode.insertBefore(j, h);
-          })(window, document, 'script', 'https://choi88.online/');
-        </script>
+        {/* ✅ Đặt container cho chat */}
         <div id="jaklcp-chat-container"></div>
+
+        {/* ✅ Nhúng script đúng cách */}
+        <Script id="jak-chat-init" strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                window.id = 2;
+                window.lang = '';
+                window.cName = '';
+                window.cEmail = '';
+                window.cMessage = '';
+                window.lcjUrl = 'https://choi88.online/';
+
+                var h = document.getElementsByTagName('script')[0];
+                var j = document.createElement('script');
+                j.async = true;
+                j.src = 'https://choi88.online/js/jaklcpchat.js';
+                h.parentNode?.insertBefore(j, h);
+              })();
+            `
+          }}
+        />
       </body>
     </html>
   );
