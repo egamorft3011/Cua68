@@ -24,29 +24,52 @@ export default function ClaimFunds() {
     <>
       <Box
         sx={{
-          position: "fixed",
-          top: "50%",
-          right: 0,
-          transform: "translateY(-50%)",
-          zIndex: 1000,
-          cursor: "pointer",
-        }}
-        onClick={() => {
-          setOpen(true);
-          setOpenedIndex(null);
-        }}
-      >
-        <Box
-          component="img"
-          src="/images/Icon_lixi/icon_index_lixi.png"
-          alt="Lì xì"
-          sx={{
+            position: "fixed",
+            top: "50%",
+            right: 0,
+            transform: "translateY(-50%)",
+            zIndex: 1000,
+            cursor: "pointer",
             width: 60,
             height: 60,
-            animation: "pulseZoom 2s infinite",
-          }}
+        }}
+        onClick={() => {
+            setOpen(true);
+            setOpenedIndex(null);
+        }}
+        >
+        {/* Light xoay */}
+        <Box
+            component="img"
+            src="/images/Icon_lixi/light1.png"
+            alt="Light Spin"
+            sx={{
+            position: "absolute",
+            top: "-30%",
+            left: "-30%",
+            width: "150%",
+            height: "auto",
+            zIndex: 0,
+            animation: "spin 3s linear infinite",
+            transformOrigin: "center",
+            }}
         />
-      </Box>
+
+        {/* Icon chính */}
+        <Box
+            component="img"
+            src="/images/Icon_lixi/icon_index_lixi.png"
+            alt="Lì xì"
+            sx={{
+            width: "100%",
+            height: "100%",
+            animation: "pulseZoom 2s infinite",
+            position: "relative",
+            zIndex: 1,
+            }}
+        />
+        </Box>
+
 
       <Modal open={open} onClose={() => setOpen(false)}>
         <Box
