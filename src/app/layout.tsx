@@ -85,17 +85,16 @@ export default async function RootLayout({
           <Analytics />
         </PrimaryLayoutComponent>
         <ToastContainer />
-        <!-- Live Chat 3 widget -->
-        <script type="text/javascript">
-          (function(w, d, s, u) {
-            w.id = 2; w.lang = ''; w.cName = ''; w.cEmail = ''; w.cMessage = ''; w.lcjUrl = u;
-            var h = d.getElementsByTagName(s)[0], j = d.createElement(s);
-            j.async = true; j.src = 'https://choi88.online/js/jaklcpchat.js';
-            h.parentNode.insertBefore(j, h);
-          })(window, document, 'script', 'https://choi88.online/');
-        </script>
-        <div id="jaklcp-chat-container"></div>
-        <!-- end Live Chat 3 widget -->
+        {/* Thêm script bằng next/script */}
+        <Script
+          src="https://chat.theabcdef.com/js/min/jquery.min.js"
+          strategy="beforeInteractive"
+        />
+        <Script
+          id="sbinit"
+          src="https://chat.theabcdef.com/js/main.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
