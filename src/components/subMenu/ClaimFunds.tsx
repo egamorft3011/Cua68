@@ -24,7 +24,7 @@ export default function ClaimFunds() {
       <Box
         sx={{
           position: "fixed",
-          top: "35%",
+          top: "50%",
           right: 0,
           transform: "translateY(-50%)",
           zIndex: 1000,
