@@ -9,41 +9,40 @@ const rewards = [10000, 25000, 100000];
 
 export default function ClaimFunds() {
   const [open, setOpen] = useState(false);
-  const [openedIndex, setOpenedIndex] = useState<number | null>(null);
+  const [openedIndices, setOpenedIndices] = useState<number[]>([]);
 
   const handleOpenGift = (index: number) => {
-    if (openedIndex !== null) {
-      swal("Bạn đã mở rồi!", "Chỉ được mở 1 túi lì xì duy nhất!", "error");
-      return;
+    if (openedIndices.includes(index)) {
+      return; // Prevent re-opening the same box
     }
 
-    setOpenedIndex(index);
+    setOpenedIndices([...openedIndices, index]);
   };
 
   return (
     <>
       <Box
         sx={{
-            position: "fixed",
-            top: "50%",
-            right: 0,
-            transform: "translateY(-50%)",
-            zIndex: 1000,
-            cursor: "pointer",
-            width: 60,
-            height: 60,
+          position: "fixed",
+          top: "35%",
+          right: 0,
+          transform: "translateY(-50%)",
+          zIndex: 1000,
+          cursor: "pointer",
+          width: 60,
+          height: 60,
         }}
         onClick={() => {
-            setOpen(true);
-            setOpenedIndex(null);
+          setOpen(true);
+          setOpenedIndices([]);
         }}
-        >
+      >
         {/* Light xoay */}
         <Box
-            component="img"
-            src="/images/Icon_lixi/light1.png"
-            alt="Light Spin"
-            sx={{
+          component="img"
+          src="/images/Icon_lixi/light1.png"
+          alt="Light Spin"
+          sx={{
             position: "absolute",
             top: "-30%",
             left: "-30%",
@@ -52,24 +51,23 @@ export default function ClaimFunds() {
             zIndex: 0,
             animation: "spin 3s linear infinite",
             transformOrigin: "center",
-            }}
+          }}
         />
 
         {/* Icon chính */}
         <Box
-            component="img"
-            src="/images/Icon_lixi/icon_index_lixi.png"
-            alt="Lì xì"
-            sx={{
+          component="img"
+          src="/images/Icon_lixi/icon_index_lixi.png"
+          alt="Lì xì"
+          sx={{
             width: "100%",
             height: "100%",
             animation: "pulseZoom 2s infinite",
             position: "relative",
             zIndex: 1,
-            }}
+          }}
         />
-        </Box>
-
+      </Box>
 
       <Modal open={open} onClose={() => setOpen(false)}>
         <Box
@@ -114,14 +112,15 @@ export default function ClaimFunds() {
                     cursor: "pointer",
                     width: "100%",
                     "&:hover": {
-                      transform:
-                        openedIndex === null ? "scale(1.05)" : "none",
+                      transform: openedIndices.includes(index)
+                        ? "none"
+                        : "scale(1.05)",
                       transition: "0.3s",
                     },
                   }}
                   onClick={() => handleOpenGift(index)}
                 >
-                  {openedIndex === index ? (
+                  {openedIndices.includes(index) ? (
                     <Box sx={{ position: "relative", width: "100%" }}>
                       <Box
                         component="img"

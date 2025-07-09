@@ -117,7 +117,7 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
     setIsLoading(true);
 
     try {
-      const limit = 1;
+      const limit = 4;
       const response = await contentInstance.get('/api/info/annoucement', {
         headers: { Authorization: `Bearer ${token}` },
         params: { page: pageNum, limit },
