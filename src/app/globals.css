@@ -299,5 +299,13 @@ input {
 }
 
 #jaklcp-chat-container {
-  bottom: 30% !important;
+  bottom: 0 !important;
 }
+
+@media (max-width: 767px) {
+  #jaklcp-chat-container {
+    bottom: 15%!important;
+    height: 550px !important;
+  }
+}
+

@@ -201,7 +201,7 @@ const FloatingRefund: React.FC = () => {
             style={{
               position: "fixed",
               right: "0",
-              top: "70%",
+              top: "55%",
               zIndex: 1000,
               cursor: 'pointer',
               userSelect: "none",
