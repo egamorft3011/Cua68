@@ -1,4 +1,7 @@
+"use client";
+
 import * as React from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
@@ -13,22 +16,9 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
-import SavingsOutlinedIcon from "@mui/icons-material/SavingsOutlined";
-import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
-import LoyaltyOutlinedIcon from "@mui/icons-material/LoyaltyOutlined";
-import HistoryEduOutlinedIcon from "@mui/icons-material/HistoryEduOutlined";
-import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
-import Logout from "@mui/icons-material/Logout";
-import FolderIcon from "@mui/icons-material/Folder";
 import CloseIcon from "@mui/icons-material/Close";
-import { userResponse } from "@/interface/user.interface";
 import { Button } from "@mui/material";
-import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/utils/formatMoney";
-import Image from "next/image";
 import {
   BankMenuIcon,
   GiftMenuIcon,
@@ -43,21 +33,63 @@ import {
   RutMenuIcon,
   VipIcon,
 } from "@/shared/Svgs/Svg.component";
-import NavigationGame from "@/hook/NavigationGame";
+import { contentInstance } from "@/configs/CustomizeAxios";
+import { userResponse } from "@/interface/user.interface";
 import { PageConfig } from "@/interface/PageConfig.interface";
+import ClaimFunds from "./ClaimFunds";
 
-export interface userProps {
-  user: userResponse;
-  message: any[];
+export interface UserProps {
+  user: {
+    coin: number;
+    username: string;
+  };
   pageConfig: PageConfig;
+  status?: string;
+  message?: string;
 }
 
-export default function MenuProfileMobile(data: userProps) {
+export default function MenuProfileMobile({ user: initialUser, message, pageConfig }: UserProps) {
   const [anchorEl1, setAnchorEl1] = React.useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-
+  const [user, setUser] = React.useState(initialUser);
   const open1 = Boolean(anchorEl1);
-  const route = useRouter();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Hàm gọi API để lấy dữ liệu người dùng
+  const fetchUserData = async () => {
+    const token = window.localStorage.getItem("tokenCUA68");
+    if (!token) {
+      window.location.href = "/login";
+      return;
+    }
+
+    try {
+      const response: UserProps = await contentInstance.get("/api/auth/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status) {
+        setUser({
+          coin: response.user.coin,
+          username: response.user.username,
+        });
+      } else {
+        console.error("Lỗi từ API");
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Lỗi khi gọi API /api/auth/me:", error);
+      router.push("/");
+    }
+  };
+
+  // Gọi API khi URL thay đổi hoặc component mount
+  React.useEffect(() => {
+    fetchUserData();
+  }, [pathname, searchParams]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setDrawerOpen(true);
@@ -84,47 +116,37 @@ export default function MenuProfileMobile(data: userProps) {
     {
       text: "Quản lý tài khoản",
       icon: <ProfileIcon />,
-      onClick: () => route.push("/profile"),
+      onClick: () => router.push("/profile"),
     },
-    // {
-    //   text: "Giao dịch P2P",
-    //   icon: <P2PMenuIcon />,
-    //   onClick: () => route.push("/profile/account-deposit"),
-    // },
     {
       text: "Quản lý ngân hàng",
       icon: <BankMenuIcon />,
-      onClick: () => route.push("/profile"),
+      onClick: () => router.push("/profile"),
     },
     {
       text: "Khuyến mãi",
       icon: <GiftMenuIcon />,
-      onClick: () => route.push("/promotion"),
+      onClick: () => router.push("/promotion"),
     },
-    // {
-    //   text: "Hoàn Tiền",
-    //   icon: <HoanIcon />,
-    //   onClick: () => route.push("/profile/account-withdraw"),
-    // },
     {
       text: "Cấp độ VIP",
       icon: <VipIcon />,
-      onClick: () => route.push("/vip"),
+      onClick: () => router.push("/vip"),
     },
     {
       text: "Lịch sử giao dịch",
       icon: <HistoryMenuIcon />,
-      onClick: () => route.push("/profile/transaction-history"),
+      onClick: () => router.push("/profile/transaction-history"),
     },
     {
       text: "Lịch sử cược",
       icon: <HistoryBetMenuIcon />,
-      onClick: () => route.push("/profile/betting-history"),
+      onClick: () => router.push("/profile/betting-history"),
     },
     {
       text: "Live chat 24/7",
       icon: <LiveChatMenuIcon />,
-      onClick: () => window.open(data.pageConfig.contact.telegram, "_blank"),
+      onClick: () => window.open(pageConfig.contact.telegram, "_blank"),
     },
   ];
 
@@ -154,10 +176,10 @@ export default function MenuProfileMobile(data: userProps) {
           <Avatar src="/images/avatar-4.webp" sx={{ width: 40, height: 40 }} />
           <Box>
             <Typography sx={{ fontSize: "16px", fontWeight: "bold" }}>
-              {data.user?.username || "huyn19e6bffa5"}
+              {user?.username || "huyn19e6bffa5"}
             </Typography>
             <Typography sx={{ fontSize: "12px", color: "#fbc16c" }}>
-              Ví của tui {formatCurrency(data.user?.coin ?? 0)}
+              Ví của tui {formatCurrency(user?.coin ?? 0)}
             </Typography>
           </Box>
         </Box>
@@ -177,7 +199,7 @@ export default function MenuProfileMobile(data: userProps) {
       >
         <Button
           onClick={() =>
-            handleMenuItemClick(() => route.push("/profile/account-withdraw"))
+            handleMenuItemClick(() => router.push("/profile/account-withdraw"))
           }
           sx={{
             flex: 1,
@@ -197,18 +219,17 @@ export default function MenuProfileMobile(data: userProps) {
           RÚT
         </Button>
         <Button
-          onClick={() => route.replace("/profile/account-deposit")}
+          onClick={() => handleMenuItemClick(() => router.push("/profile/account-deposit"))}
           sx={{
             flex: 1,
             backgroundImage:
               "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #1f50d6 0deg, #4a02ff 89.73deg, #003daf 180.18deg, #2b1fd6 1turn)",
-
             color: "white",
             borderRadius: "20px",
             textTransform: "none",
             fontSize: "14px",
             "&:hover": {
-              background: " #e00000",
+              background: "#e00000",
             },
           }}
         >
@@ -295,7 +316,7 @@ export default function MenuProfileMobile(data: userProps) {
           marginLeft: "-20px",
         }}
       >
-        <Tooltip title={formatCurrency(data.user?.coin ?? 0)}>
+        <Tooltip title={formatCurrency(user?.coin ?? 0)}>
           <Button
             sx={{
               background: "#1a263f",
@@ -315,11 +336,11 @@ export default function MenuProfileMobile(data: userProps) {
               },
             }}
           >
-            {formatCurrency(data.user?.coin ?? 0)}
+            {formatCurrency(user?.coin ?? 0)}
           </Button>
         </Tooltip>
         <Button
-          onClick={() => route.replace("/profile/account-deposit")}
+          onClick={() => router.push("/profile/account-deposit")}
           sx={{
             backgroundImage:
               "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #d61f1f 0deg, #ff0202 89.73deg, #af0036 180.18deg, #d61f1f 1turn)",
@@ -335,19 +356,19 @@ export default function MenuProfileMobile(data: userProps) {
         >
           NẠP
         </Button>
-         {/* Nút Đại lý */}
         <Button
-          onClick={() => route.replace("/agency")}
-          style={{
-            display: "flex",
+          onClick={() => router.push("/agency")}
+          sx={{
             backgroundImage:
-              " url(/images/bg-btn.png), conic-gradient( from 0deg at 50% 50%, #ff9900 0deg, #ff6600 90deg, #ff3300 180deg, #ff6600 270deg, #ff9900 360deg )",
-
-             color: "white",
+              "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff9900 0deg, #ff6600 90deg, #ff3300 180deg, #ff6600 270deg, #ff9900 360deg)",
+            color: "white",
             borderRadius: "16px",
+            margin: "6px 0px",
             fontSize: "10px",
             textTransform: "none",
-            margin: "6px 0px",
+            "&:hover": {
+              background: "#e00000",
+            },
           }}
         >
           ĐẠI LÝ
@@ -374,7 +395,7 @@ export default function MenuProfileMobile(data: userProps) {
         sx={{
           zIndex: 9999999,
           "& .MuiDrawer-paper": {
-            background: " #4f2323",
+            background: "#4f2323",
             border: "none",
             borderRadius: "0",
           },
@@ -382,6 +403,7 @@ export default function MenuProfileMobile(data: userProps) {
       >
         {drawerList()}
       </Drawer>
+      <ClaimFunds refreshUserData={fetchUserData} />
     </React.Fragment>
   );
 }

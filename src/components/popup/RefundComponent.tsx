@@ -201,7 +201,7 @@ const FloatingRefund: React.FC = () => {
             style={{
               position: "fixed",
               right: "0",
-              top: "65%",
+              top: "70%",
               zIndex: 1000,
               cursor: 'pointer',
               userSelect: "none",
@@ -222,10 +222,11 @@ const FloatingRefund: React.FC = () => {
               variant="caption"
               style={{
                 position: "absolute",
-                top: "75%",
+                top: "85%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                color: '#ffe924',
+                color: "#ffffff",
+                fontWeight: "bold",
                 textAlign: 'center',
                 fontSize: '1rem',
                 display: 'block'
@@ -234,7 +235,7 @@ const FloatingRefund: React.FC = () => {
               {formatShortMoney(refundAmount)}
             </Typography>
             <Image
-              src={"/images/refund/hoantra.png"}
+              src={"/images/Icon_lixi/icon_hoantra.png"}
               width={70}
               height={70}
               alt="Mini Game Icon"
@@ -244,7 +245,7 @@ const FloatingRefund: React.FC = () => {
         </Box>
       )}
 
-      <Modal open={isModalOpen} onClose={handleCloseModal}>
+      <Modal open={isModalOpen} onClose={handleCloseModal} sx={{ zIndex: 9999, }}>
         <Box className={styles.modalContent}>
           <Typography className={styles.modalTitle}>Hoàn trả ngay</Typography>
           <IconButton

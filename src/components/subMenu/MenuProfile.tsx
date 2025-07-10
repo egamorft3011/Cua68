@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import Box from '@mui/material/Box';
@@ -24,9 +26,8 @@ import {
   VipIcon,
 } from '@/shared/Svgs/Svg.component';
 import NotificationBell from './NotificationBell';
-
+import ClaimFunds from './ClaimFunds';
 import { contentInstance } from "@/configs/CustomizeAxios";
-
 import { PageConfig } from "@/interface/PageConfig.interface";
 
 export interface UserProps {
@@ -35,12 +36,12 @@ export interface UserProps {
     username: string;
   };
   pageConfig: PageConfig;
-  status?: string; 
+  status?: string;
 }
 
 export default function MenuProfile({ user: initialUser, pageConfig }: UserProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [user, setUser] = React.useState(initialUser); // Quản lý user trong state
+  const [user, setUser] = React.useState(initialUser);
   const open = Boolean(anchorEl);
   const router = useRouter();
   const pathname = usePathname();
@@ -50,7 +51,7 @@ export default function MenuProfile({ user: initialUser, pageConfig }: UserProps
   const fetchUserData = async () => {
     const token = window.localStorage.getItem('tokenCUA68');
     if (!token) {
-      window.location.href = '/login'; // Chuyển hướng nếu không có token
+      window.location.href = '/login';
       return;
     }
 
@@ -116,11 +117,6 @@ export default function MenuProfile({ user: initialUser, pageConfig }: UserProps
       icon: <RutIcon />,
       onClick: () => router.push('/profile/account-withdraw'),
     },
-    // {
-    //   text: 'Hoàn Tiền',
-    //   icon: <HoanIcon />,
-    //   onClick: () => router.push('/profile/account-withdraw'),
-    // },
     {
       text: 'Khuyến mãi',
       icon: <GiftMenuIcon />,
@@ -164,7 +160,7 @@ export default function MenuProfile({ user: initialUser, pageConfig }: UserProps
           borderRadius: '8px',
         }}
       >
-        <Typography sx={{ color: 'whiteಸ. white', fontSize: 14 }}>
+        <Typography sx={{ color: 'white', fontSize: 14 }}>
           <NotificationBell />
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -343,6 +339,9 @@ export default function MenuProfile({ user: initialUser, pageConfig }: UserProps
           </Tooltip>
         </Box>
       </Box>
+
+      {/* Truyền fetchUserData làm prop cho ClaimFunds */}
+      <ClaimFunds refreshUserData={fetchUserData} />
     </React.Fragment>
   );
 }
