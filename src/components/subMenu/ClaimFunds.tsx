@@ -35,51 +35,64 @@ export default function ClaimFunds({ refreshUserData }: ClaimFundsProps) {
   const [rewards, setRewards] = useState<Reward[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // Check authentication on mount
+  // Function to fetch rewards
+  const fetchRewards = async () => {
+    const token = localStorage.getItem("tokenCUA68");
+    if (!token) {
+      setRewards([]);
+      return;
+    }
+
+    try {
+      const response = await contentInstance.get("/api/game/daily-award", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      console.log("API Response:", response);
+      if (response.status && response.data.data) {
+        setRewards(response.data.data); // Set rewards from API
+      } else {
+        throw new Error("Failed to fetch rewards");
+      }
+    } catch (error: any) {
+      let errorMessage = "Failed to fetch rewards";
+      if (error instanceof AxiosError) {
+        errorMessage = error.response?.data?.msg || error.message || errorMessage;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      console.error("Fetch Rewards Error:", errorMessage);
+      setRewards([]); // Ensure rewards is empty on error
+    }
+  };
+
+  // Check authentication and fetch rewards on mount
   useEffect(() => {
-    const checkAuth = () => {
+    const checkAuthAndFetchRewards = async () => {
       const token = localStorage.getItem("tokenCUA68");
       setIsAuthenticated(!!token);
       setAuthChecked(true);
-    };
 
-    checkAuth();
-  }, []);
-
-  // Fetch rewards when modal opens
-  useEffect(() => {
-    if (!open) return;
-
-    const fetchRewards = async () => {
-      try {
-        const token = localStorage.getItem("tokenCUA68");
-        if (!token) {
-          throw new Error("No token found");
-        }
-
-        const response = await contentInstance.get("/api/game/daily-award", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        console.log("API Response:", response);
-        if (response.status && response.data.data) {
-          setRewards(response.data.data); // Set rewards from API
-        } else {
-          throw new Error(response.data.msg || "Failed to fetch rewards");
-        }
-      } catch (error: any) {
-        let errorMessage = "Failed to fetch rewards";
-        if (error instanceof AxiosError) {
-          errorMessage = error.response?.data?.msg || error.message || errorMessage;
-        } else if (error instanceof Error) {
-          errorMessage = error.message;
-        }
-        swal("Error", errorMessage, "error");
+      if (token) {
+        await fetchRewards();
       }
     };
 
-    fetchRewards();
-  }, [open]);
+    checkAuthAndFetchRewards();
+  }, []);
+
+  const handleOpenModal = async () => {
+    // Reset opened indices và fetch rewards mỗi lần mở modal
+    setOpenedIndices([]);
+    await fetchRewards();
+    setOpen(true);
+  };
+
+  const handleCloseModal = async () => {
+    setOpen(false);
+    // Sau khi đóng modal, kiểm tra lại rewards để ẩn icon nếu hết lì xì
+    await fetchRewards();
+  };
 
   const handleOpenGift = async (index: number) => {
     if (loading || openedIndices.includes(index) || !rewards[index]) {
@@ -136,6 +149,11 @@ export default function ClaimFunds({ refreshUserData }: ClaimFundsProps) {
     return null;
   }
 
+  // Don't render the gift icon if there are no rewards
+  if (rewards.length === 0) {
+    return null;
+  }
+
   return (
     <React.Fragment>
       <Box
@@ -149,10 +167,7 @@ export default function ClaimFunds({ refreshUserData }: ClaimFundsProps) {
           width: 60,
           height: 60,
         }}
-        onClick={() => {
-          setOpen(true);
-          setOpenedIndices([]);
-        }}
+        onClick={handleOpenModal}
       >
         {/* Light xoay */}
         <Box
@@ -188,7 +203,7 @@ export default function ClaimFunds({ refreshUserData }: ClaimFundsProps) {
 
       <Modal 
         open={open} 
-        onClose={() => setOpen(false)}
+        onClose={handleCloseModal}
         sx={{
           zIndex: 9999,
         }}
@@ -348,7 +363,7 @@ export default function ClaimFunds({ refreshUserData }: ClaimFundsProps) {
 
           {/* Close button */}
           <IconButton
-            onClick={() => setOpen(false)}
+            onClick={handleCloseModal}
             sx={{
               mt: 4,
               mb: 4,
