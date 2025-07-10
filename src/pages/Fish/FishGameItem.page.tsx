@@ -249,7 +249,7 @@ export default function FishGameItemPage({
                       <Box sx={commonTextBoxStyles}>
                         <Button
                           sx={buttonStyles}
-                          onClick={() => playGame(item.tcgGameCode, item.productCode)}
+                          onClick={() => playGame(item.id, item.product)}
                         >
                           Chơi ngay
                         </Button>
