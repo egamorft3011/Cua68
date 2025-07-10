@@ -98,7 +98,7 @@ export default function ClaimFunds({ refreshUserData }: ClaimFundsProps) {
         if (refreshUserData) {
           await refreshUserData(); // Gọi callback để cập nhật số dư
         }
-        swal("Success", `You received ${reward.betAward.toLocaleString()}đ!`, "success");
+        // swal("Success", `You received ${reward.betAward.toLocaleString()}đ!`, "success");
       } else {
         swal("Lỗi", "Bạn không thể nhận lì xì này!", "error");
       }
