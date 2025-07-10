@@ -25,10 +25,26 @@ interface ClaimFundsProps {
 }
 
 export default function ClaimFunds({ refreshUserData }: ClaimFundsProps) {
+  // Auth check states
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+  
+  // Existing states
   const [open, setOpen] = useState(false);
   const [openedIndices, setOpenedIndices] = useState<number[]>([]);
   const [rewards, setRewards] = useState<Reward[]>([]);
   const [loading, setLoading] = useState(false);
+
+  // Check authentication on mount
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem("tokenCUA68");
+      setIsAuthenticated(!!token);
+      setAuthChecked(true);
+    };
+
+    checkAuth();
+  }, []);
 
   // Fetch rewards when modal opens
   useEffect(() => {
@@ -91,7 +107,6 @@ export default function ClaimFunds({ refreshUserData }: ClaimFundsProps) {
         { id: rewardId.toString() },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
       console.log("POST API Response:", response);
       if (response.status) {
         setOpenedIndices([...openedIndices, index]);
@@ -115,6 +130,11 @@ export default function ClaimFunds({ refreshUserData }: ClaimFundsProps) {
       setLoading(false);
     }
   };
+
+  // Don't render anything if auth not checked yet or user not authenticated
+  if (!authChecked || !isAuthenticated) {
+    return null;
+  }
 
   return (
     <React.Fragment>
@@ -176,18 +196,14 @@ export default function ClaimFunds({ refreshUserData }: ClaimFundsProps) {
         <Box
           sx={{
             position: "absolute",
-            top: "50%",
+            top: 0,
             left: "50%",
-            transform: "translate(-50%, -50%)",
+            transform: "translateX(-50%)",
             bgcolor: "transparent",
-            backgroundImage:
-              "linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(22, 0, 1, 1) 0%, rgba(39, 7, 0, 1) 100%)",
-            borderRadius: 3,
             width: "95%",
             maxWidth: 600,
-            p: 3,
+            height: "100vh",
             textAlign: "center",
-            boxShadow: 24,
             outline: "none",
             border: "none",
             display: "flex",
@@ -195,116 +211,156 @@ export default function ClaimFunds({ refreshUserData }: ClaimFundsProps) {
             alignItems: "center",
           }}
         >
-          <Box
-            component="img"
-            src="/images/Icon_lixi/title.png"
-            alt="Decor"
-            sx={{
-              width: "100%",
-              height: "auto",
-              mb: 4,
-            }}
-          />
-
-          {rewards.length === 0 ? (
-            <Typography
+          {/* Title với light effect */}
+          <Box sx={{ position: "relative", width: "100%", mb: 4 }}>
+            {/* Light xoay phía sau title */}
+            <Box
+              component="img"
+              src="/images/Icon_lixi/light1.png"
+              alt="Light Effect"
               sx={{
-                fontSize: "16px",
-                fontWeight: "bold",
-                color: "#fbc16c",
-                mb: 4,
+                position: "absolute",
+                top: openedIndices.length > 0 ? "-230%" : "10%",
+                left: openedIndices.length > 0 ? "10%" : "50%",
+                transform: "translate(-50%, -50%)",
+                width: "80%",
+                height: "auto",
+                zIndex: 0,
+                animation: openedIndices.length > 0 ? "spin 3s linear infinite" : "none",
+                transformOrigin: "center",
               }}
-            >
-              Hôm nay bạn không có lì xì, Quay lại vào hôm sau nhé
-            </Typography>
-          ) : (
-            <Grid container spacing={5} justifyContent="center">
-              {rewards.map((reward, index) => (
-                <Grid item xs={4} sm={3} key={reward.id}>
-                  <Box
-                    sx={{
-                      position: "relative",
-                      cursor: "pointer",
-                      width: "100%",
-                      "&:hover": {
-                        transform: openedIndices.includes(index)
-                          ? "none"
-                          : "scale(1.05)",
-                        transition: "0.3s",
-                      },
-                    }}
-                    onClick={() => handleOpenGift(index)}
-                  >
-                    {openedIndices.includes(index) ? (
-                      <Box sx={{ position: "relative", width: "100%" }}>
+            />
+
+            {/* Title image */}
+            <Box
+              component="img"
+              src="/images/Icon_lixi/title.png"
+              alt="Title"
+              sx={{
+                width: "100%",
+                height: "auto",
+                position: "relative",
+                zIndex: 1,
+              }}
+            />
+          </Box>
+
+          {/* Content area */}
+          <Box
+            sx={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              width: "100%",
+            }}
+          >
+            {rewards.length === 0 ? (
+              <Typography
+                sx={{
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  color: "#fbc16c",
+                  mb: 4,
+                }}
+              >
+                Hôm nay bạn không có lì xì, Quay lại vào hôm sau nhé
+              </Typography>
+            ) : (
+              <Grid container spacing={5} justifyContent="center">
+                {rewards.map((reward, index) => (
+                  <Grid item xs={4} sm={3} key={reward.id}>
+                    <Box
+                      sx={{
+                        position: "relative",
+                        cursor: "pointer",
+                        width: "100%",
+                        "&:hover": {
+                          transform: openedIndices.includes(index)
+                            ? "none"
+                            : "scale(1.05)",
+                          transition: "0.3s",
+                        },
+                      }}
+                      onClick={() => handleOpenGift(index)}
+                    >
+                      {openedIndices.includes(index) ? (
+                        <Box sx={{ position: "relative", width: "100%" }}>
+                          <Box
+                            component="img"
+                            src="/images/Icon_lixi/light1.png"
+                            alt="Light Effect"
+                            sx={{
+                              position: "absolute",
+                              top: "-45%",
+                              left: "-65%",
+                              width: "230%",
+                              height: "auto",
+                              zIndex: 0,
+                              animation: "spin 3s linear infinite",
+                              transformOrigin: "center",
+                            }}
+                          />
+
+                          <Box
+                            component="img"
+                            src="/images/Icon_lixi/box_lixi.png"
+                            alt="Opened"
+                            sx={{
+                              width: "100%",
+                              position: "relative",
+                              zIndex: 1,
+                            }}
+                          />
+
+                          <Typography
+                            sx={{
+                              position: "absolute",
+                              top: "32%",
+                              left: "50%",
+                              transform: "translate(-50%, -50%)",
+                              fontSize: "12px",
+                              fontWeight: "bold",
+                              background:
+                                "linear-gradient(to bottom, #ff3d00, #ff9100)",
+                              WebkitBackgroundClip: "text",
+                              WebkitTextFillColor: "transparent",
+                              zIndex: 2,
+                            }}
+                          >
+                            {reward.betAward.toLocaleString()}đ
+                          </Typography>
+                        </Box>
+                      ) : (
                         <Box
                           component="img"
-                          src="/images/Icon_lixi/light1.png"
-                          alt="Light Effect"
-                          sx={{
-                            position: "absolute",
-                            top: "-45%",
-                            left: "-65%",
-                            width: "230%",
-                            height: "auto",
-                            zIndex: 0,
-                            animation: "spin 3s linear infinite",
-                            transformOrigin: "center",
-                          }}
+                          src="/images/Icon_lixi/box_lixi_unactive.png"
+                          alt="Gift Box"
+                          sx={{ width: "100%" }}
                         />
+                      )}
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            )}
+          </Box>
 
-                        <Box
-                          component="img"
-                          src="/images/Icon_lixi/box_lixi.png"
-                          alt="Opened"
-                          sx={{
-                            width: "100%",
-                            position: "relative",
-                            zIndex: 1,
-                          }}
-                        />
-
-                        <Typography
-                          sx={{
-                            position: "absolute",
-                            top: "32%",
-                            left: "50%",
-                            transform: "translate(-50%, -50%)",
-                            fontSize: "12px",
-                            fontWeight: "bold",
-                            background:
-                              "linear-gradient(to bottom, #ff3d00, #ff9100)",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                            zIndex: 2,
-                          }}
-                        >
-                          {reward.betAward.toLocaleString()}đ
-                        </Typography>
-                      </Box>
-                    ) : (
-                      <Box
-                        component="img"
-                        src="/images/Icon_lixi/box_lixi_unactive.png"
-                        alt="Gift Box"
-                        sx={{ width: "100%" }}
-                      />
-                    )}
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
-          )}
-
+          {/* Close button */}
           <IconButton
             onClick={() => setOpen(false)}
             sx={{
               mt: 4,
-              backgroundColor: "#eee",
-              "&:hover": { backgroundColor: "#ccc" },
+              mb: 4,
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+              border: "2px solid transparent",
+              "&:hover": { 
+                backgroundColor: "rgba(255, 255, 255, 0.3)",
+                border: "2px solid rgba(255, 255, 255, 0.5)",
+              },
             }}
           >
-            <CloseIcon />
+            <CloseIcon sx={{ color: "white" }} />
           </IconButton>
         </Box>
       </Modal>
