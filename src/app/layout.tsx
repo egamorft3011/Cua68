@@ -86,29 +86,7 @@ export default async function RootLayout({
           <Analytics />
         </PrimaryLayoutComponent>
         <ToastContainer />
-        {/* Thêm script bằng next/script */}
-        {/* <div id="jaklcp-chat-container"></div>
 
-        <Script id="jak-chat-init" strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                window.id = 2;
-                window.lang = '';
-                window.cName = '';
-                window.cEmail = '';
-                window.cMessage = '';
-                window.lcjUrl = 'https://choi88.online/';
-
-                var h = document.getElementsByTagName('script')[0];
-                var j = document.createElement('script');
-                j.async = true;
-                j.src = 'https://choi88.online/js/jaklcpchat.js';
-                h.parentNode?.insertBefore(j, h);
-              })();
-            `
-          }}
-        /> */}
 
         <ClaimFunds />
       </body>
