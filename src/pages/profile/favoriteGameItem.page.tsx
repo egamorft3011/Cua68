@@ -98,15 +98,17 @@ const favoriteButtonStyles = {
   right: "8px",
   zIndex: 4,
   pointerEvents: "auto",
-  opacity: 1, // Changed from 0 to 1 to always show
+  opacity: 1, // Always show
   transition: "opacity 0.2s ease-in-out",
   backgroundColor: "rgba(0, 0, 0, 0.7)",
+  color: "#ff4444",
   padding: "4px",
   minWidth: "auto",
   width: "32px",
   height: "32px",
   "&:hover": {
     backgroundColor: "rgba(0, 0, 0, 0.9)",
+    color: "#ff0000",
   },
 };
 
@@ -160,6 +162,11 @@ export default function FishGameItemPage({
         }));
         setGameTable(arrayData);
         setAllGames(arrayData);
+        
+        // Tất cả games được yêu thích mặc định
+        const allGameIds = new Set(arrayData.map(game => game.id));
+        setFavoriteGames(allGameIds);
+        
         setLoad(false);
         setCurrentPage(1);
       }
@@ -217,58 +224,42 @@ export default function FishGameItemPage({
     setGameTable((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Xử lý thêm/bỏ yêu thích
-  const handleToggleFavorite = (gameId: string, gameName: string) => {
-    const isFavorite = favoriteGames.has(gameId);
-    
-    if (isFavorite) {
-      // Bỏ yêu thích
-      swal({
-        title: "Xác nhận bỏ yêu thích",
-        text: `Bạn có chắc chắn muốn bỏ yêu thích game "${gameName}"?`,
-        icon: "warning",
-        buttons: {
-          cancel: {
-            text: "Hủy",
-            value: false,
-            visible: true,
-          },
-          confirm: {
-            text: "Xác nhận",
-            value: true,
-            visible: true,
-          },
+  // Xử lý bỏ yêu thích
+  const handleRemoveFavorite = (gameId: string, gameName: string) => {
+    swal({
+      title: "Xác nhận bỏ yêu thích",
+      text: `Bạn có chắc chắn muốn bỏ yêu thích game "${gameName}"?`,
+      icon: "warning",
+      buttons: {
+        cancel: {
+          text: "Hủy",
+          value: false,
+          visible: true,
         },
-        dangerMode: true,
-      }).then((willDelete) => {
-        if (willDelete) {
-          setFavoriteGames(prev => {
-            const newSet = new Set(prev);
-            newSet.delete(gameId);
-            return newSet;
-          });
-          
-          swal(
-            "Đã bỏ yêu thích!",
-            `Game "${gameName}" đã được bỏ khỏi danh sách yêu thích.`,
-            "success"
-          );
-        }
-      });
-    } else {
-      // Thêm yêu thích
-      setFavoriteGames(prev => {
-        const newSet = new Set(prev);
-        newSet.add(gameId);
-        return newSet;
-      });
-      
-      swal(
-        "Đã thêm yêu thích!",
-        `Game "${gameName}" đã được thêm vào danh sách yêu thích.`,
-        "success"
-      );
-    }
+        confirm: {
+          text: "Xác nhận",
+          value: true,
+          visible: true,
+        },
+      },
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        // Xóa khỏi danh sách yêu thích
+        setFavoriteGames(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(gameId);
+          return newSet;
+        });
+        
+        // Hiển thị thông báo thành công
+        swal(
+          "Đã bỏ yêu thích!",
+          `Game "${gameName}" đã được bỏ khỏi danh sách yêu thích.`,
+          "success"
+        );
+      }
+    });
   };
 
   return (
@@ -308,81 +299,77 @@ export default function FishGameItemPage({
                   marginBottom: "20px",
                 }}
               >
-                {displayedGames.map((item: any, index) => {
-                  const isFavorite = favoriteGames.has(item.id);
-                  
-                  return (
-                    <Box
-                      key={`${item.id}-${index}`}
-                      sx={{
-                        width: { xs: "30%", sm: "170px" },
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        gap: 1,
-                      }}
-                    >
-                      {/* Box hình + overlay nút */}
-                      <Box sx={commonCardStyles}>
-                        <Box sx={commonImgStyles}>
-                          <Image
-                            src={item.icon}
-                            alt={item.gameName || item.name || item.tcgGameCode || "Game"}
-                            width={200}
-                            height={200}
-                            layout="responsive"
-                            placeholder="blur"
-                            loading="lazy"
-                            blurDataURL="/images/gallery-icon-picture-landscape-vector-sign-symbol_660702-224.avif"
-                            style={{
-                              height: "100%",
-                              width: "100%",
-                              objectFit: "cover",
-                            }}
-                            onError={() => handleImageError(index)}
-                          />
-                        </Box>
-
-                        {/* Nút yêu thích - now always visible */}
-                        <IconButton
-                          sx={isFavorite ? favoriteFilledStyles : favoriteEmptyStyles}
-                          onClick={() => handleToggleFavorite(
-                            item.id, 
-                            item.gameName || item.name || item.tcgGameCode
-                          )}
-                        >
-                          {isFavorite ? <Favorite /> : <FavoriteBorder />}
-                        </IconButton>
-
-                        <Box sx={commonTextBoxStyles}>
-                          <Button
-                            sx={buttonStyles}
-                            onClick={() => playGame(item.id, item.product)}
-                          >
-                            Chơi ngay
-                          </Button>
-                        </Box>
+                {displayedGames.map((item: any, index) => (
+                  <Box
+                    key={`${item.id}-${index}`}
+                    sx={{
+                      width: { xs: "30%", sm: "170px" },
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 1,
+                    }}
+                  >
+                    {/* Box hình + overlay nút */}
+                    <Box sx={commonCardStyles}>
+                      <Box sx={commonImgStyles}>
+                        <Image
+                          src={item.icon}
+                          alt={item.gameName || item.name || item.tcgGameCode || "Game"}
+                          width={200}
+                          height={200}
+                          layout="responsive"
+                          placeholder="blur"
+                          loading="lazy"
+                          blurDataURL="/images/gallery-icon-picture-landscape-vector-sign-symbol_660702-224.avif"
+                          style={{
+                            height: "100%",
+                            width: "100%",
+                            objectFit: "cover",
+                          }}
+                          onError={() => handleImageError(index)}
+                        />
                       </Box>
 
-                      {/* Tên game nằm ngoài ảnh */}
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          fontSize: { xs: "12px", sm: "14px" },
-                          fontWeight: "bold",
-                          textAlign: "center",
-                          color: "white",
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          maxWidth: "100%",
-                        }}
+                      {/* Nút bỏ yêu thích - now always visible */}
+                      <IconButton
+                        sx={favoriteButtonStyles}
+                        onClick={() => handleRemoveFavorite(
+                          item.id, 
+                          item.gameName || item.name || item.tcgGameCode
+                        )}
                       >
-                        {item.gameName || item.name || item.tcgGameCode}
-                      </Typography>
+                        <Favorite />
+                      </IconButton>
+
+                      <Box sx={commonTextBoxStyles}>
+                        <Button
+                          sx={buttonStyles}
+                          onClick={() => playGame(item.id, item.product)}
+                        >
+                          Chơi ngay
+                        </Button>
+                      </Box>
                     </Box>
-                  );
-                })}
+
+                    {/* Tên game nằm ngoài ảnh */}
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontSize: { xs: "12px", sm: "14px" },
+                        fontWeight: "bold",
+                        textAlign: "center",
+                        color: "white",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        maxWidth: "100%",
+                      }}
+                    >
+                      {item.gameName || item.name || item.tcgGameCode}
+                    </Typography>
+                  </Box>
+                ))}
               </Box>
 
               {/* Phân trang */}

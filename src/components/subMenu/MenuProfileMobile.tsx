@@ -19,6 +19,7 @@ import ListItemText from "@mui/material/ListItemText";
 import CloseIcon from "@mui/icons-material/Close";
 import { Button } from "@mui/material";
 import { formatCurrency } from "@/utils/formatMoney";
+import SportsEsports from '@mui/icons-material/SportsEsports';
 import {
   BankMenuIcon,
   GiftMenuIcon,
@@ -147,6 +148,11 @@ export default function MenuProfileMobile({ user: initialUser, message, pageConf
       text: "Live chat 24/7",
       icon: <LiveChatMenuIcon />,
       onClick: () => window.open(pageConfig.contact.telegram, "_blank"),
+    },
+    {
+      text: 'Game Yêu Thích',
+      icon: <SportsEsports sx={{ color: '#ff9a9a' }} />,
+      onClick: () => router.push('/profile/favorite-games'),
     },
   ];
 

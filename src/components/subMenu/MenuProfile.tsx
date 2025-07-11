@@ -142,7 +142,7 @@ export default function MenuProfile({ user: initialUser, pageConfig }: UserProps
     {
       text: 'Game Yêu Thích',
       icon: <SportsEsports sx={{ color: '#ff9a9a' }} />,
-      onClick: () => window.open(pageConfig.contact.telegram, '_blank'),
+      onClick: () => router.push('/profile/favorite-games'),
     },
     {
       text: 'Đăng xuất',

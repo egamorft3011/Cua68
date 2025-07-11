@@ -8,6 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import swal from "sweetalert";
 import MenuI from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import SportsEsports from '@mui/icons-material/SportsEsports';
 import {
   AccountBalance,
   AccountBalanceWallet,
@@ -176,6 +177,11 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
       text: "Live chat 24/7",
       icon: <LiveChatMenuIcon />,
       onClick: () => window.open(pageConfig.contact.telegram, "_blank"),
+    },
+    {
+      text: 'Game Yêu Thích',
+      icon: <SportsEsports sx={{ color: '#ff9a9a' }} />,
+      onClick: () => router.push('/profile/favorite-games'),
     },
   ];
 
