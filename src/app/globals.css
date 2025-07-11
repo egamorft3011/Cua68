@@ -301,11 +301,16 @@ input {
 #jaklcp-chat-container {
   bottom: 0 !important;
 }
+#livesupportchat2{
+  top: 10% !important;
+}
 
 @media (max-width: 767px) {
   #jaklcp-chat-container {
-    bottom: 15%!important;
-    height: 550px !important;
+    bottom: 10% !important;
+    
   }
 }
 
+
+ 
