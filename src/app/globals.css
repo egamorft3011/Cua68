@@ -298,7 +298,7 @@ input {
   }
 }
 
-#jaklcp-chat-container {
+/* #jaklcp-chat-container {
   bottom: 0 !important;
 }
 #livesupportchat2{
@@ -308,9 +308,8 @@ input {
 @media (max-width: 767px) {
   #jaklcp-chat-container {
     bottom: 10% !important;
-    
   }
-}
+} */
 
 
  
