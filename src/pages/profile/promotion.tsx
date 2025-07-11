@@ -92,33 +92,66 @@ const PromotionsPage: React.FC = () => {
             <Grid item xs={12} sm={6} md={4} key={promotion.id}>
               <Card
                 sx={{
-                   cursor: "pointer",
-                   height: 320,
-                  "&:hover": { boxShadow: "0 6px 12px rgba(0,0,0,0.3)" },
+                  cursor: "pointer",
+                  height: "auto",
+                  position: "relative",
+                  overflow: "hidden",
+                  background: "transparent",
+                  boxShadow: "none", 
                 }}
                 onClick={() => handleCardClick(promotion.id)}
               >
                 <CardMedia
                   component="img"
-                   image={promotion.thumbnail}
+                  image={promotion.thumbnail}
                   alt={promotion.title}
-                sx={{
-                  height: { xs: 143, sm: 143, md: 240 },  }}                
-                  />
-
-                <CardContent sx={{ p: 1, bgcolor: "#fff" }}>
-                  <Typography variant="body2" sx={{ fontWeight: "bold" }}>
-                    {promotion.title}
-                  </Typography>
-                  <Typography variant="caption" display="block">
-                  </Typography>
-                </CardContent>
+                  sx={{
+                    height: "100%",
+                    width: "100%",
+                    objectFit: "cover",
+                    borderRadius: 3,
+                    
+                  }}
+                />
+                <Box
+                  sx={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    display: "flex",
+                    justifyContent: "center",
+                    pb: 2,
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                   sx={{
+                    color: "#fff",
+                    fontWeight: "bold",
+                    width: "80%",
+                    px: 3,
+                    py: 1,
+                    borderRadius: 2,
+                    background: "transparent",
+                    backgroundImage: `url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)`,
+                    backgroundBlendMode: "overlay",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                    "&:hover": {
+                      backgroundBlendMode: "multiply",
+                    },
+                  }}
+                  >
+                    Tìm hiểu ngay
+                  </Button>
+                </Box>
               </Card>
             </Grid>
           ))}
         </Grid>
       )}
-
     </Box>
   );
 };

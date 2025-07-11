@@ -7,6 +7,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import IconButton from '@mui/material/IconButton';
+import SportsEsports from '@mui/icons-material/SportsEsports';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import { Avatar } from '@mui/material';
@@ -24,6 +25,7 @@ import {
   RutIcon,
   RutMenuIcon,
   VipIcon,
+  ClaimIcon,
 } from '@/shared/Svgs/Svg.component';
 import NotificationBell from './NotificationBell';
 import ClaimFunds from './ClaimFunds';
@@ -135,6 +137,11 @@ export default function MenuProfile({ user: initialUser, pageConfig }: UserProps
     {
       text: 'Live chat 24/7',
       icon: <LiveChatMenuIcon />,
+      onClick: () => window.open(pageConfig.contact.telegram, '_blank'),
+    },
+    {
+      text: 'Game Yêu Thích',
+      icon: <SportsEsports sx={{ color: '#ff9a9a' }} />,
       onClick: () => window.open(pageConfig.contact.telegram, '_blank'),
     },
     {

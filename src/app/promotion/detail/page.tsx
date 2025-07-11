@@ -142,7 +142,9 @@ const PromotionDetailPage: React.FC = () => {
               src={selectedPromotion.thumbnail}
               alt="Promotion Banner"
               sx={{
-                width: "100%",
+                display: "block",   
+                mx: "auto", 
+                width: "auto",
                 height: 300,
                 objectFit: "cover",
                 borderRadius: 1,
