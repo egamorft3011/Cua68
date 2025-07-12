@@ -13,6 +13,12 @@ import {
 } from "@mui/material";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { getListGame, getListGameFish } from "@/services/GameApi.service";
+import { 
+  getListFavorites, 
+  addToFavorites, 
+  removeFromFavorites, 
+  getGameCategory 
+} from "@/services/FavoriteApi.service";
 import { GameSlotsMenu } from "@/datafake/Menu";
 import swal from "sweetalert";
 
@@ -98,8 +104,8 @@ const favoriteButtonStyles = {
   right: "8px",
   zIndex: 4,
   pointerEvents: "auto",
-  opacity: 1, // Changed from 0 to 1 to always show
-  transition: "opacity 0.2s ease-in-out",
+  opacity: 1,
+  transition: "all 0.2s ease-in-out",
   backgroundColor: "rgba(0, 0, 0, 0.7)",
   padding: "4px",
   minWidth: "auto",
@@ -107,6 +113,7 @@ const favoriteButtonStyles = {
   height: "32px",
   "&:hover": {
     backgroundColor: "rgba(0, 0, 0, 0.9)",
+    transform: "scale(1.1)",
   },
 };
 
@@ -148,8 +155,10 @@ export default function FishGameItemPage({
   const [allGames, setAllGames] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [favoriteGames, setFavoriteGames] = useState<Set<string>>(new Set());
+  const [favoriteLoading, setFavoriteLoading] = useState<string>('');
   const itemsPerPage = 30;
 
+  // Load danh sách game
   useEffect(() => {
     setLoad(true);
     getListGameFish().then((res) => {
@@ -164,6 +173,23 @@ export default function FishGameItemPage({
         setCurrentPage(1);
       }
     });
+  }, []);
+
+  // Load danh sách game yêu thích từ API
+  const loadFavoriteGames = async () => {
+    try {
+      const response = await getListFavorites();
+      if (response.success && response.data) {
+        const favoriteIds = new Set<string>(response.data.map((game: any) => String(game.id)));
+        setFavoriteGames(favoriteIds);
+      }
+    } catch (error) {
+      console.error('Error loading favorite games:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadFavoriteGames();
   }, []);
 
   // Filter games theo searchTerm
@@ -217,31 +243,21 @@ export default function FishGameItemPage({
     setGameTable((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Xử lý thêm/bỏ yêu thích
-  const handleToggleFavorite = (gameId: string, gameName: string) => {
+  // Xử lý thêm/bỏ yêu thích với API
+  const handleToggleFavorite = async (gameData: any) => {
+    const gameId = gameData.id;
+    const gameName = gameData.gameName || gameData.name || gameData.tcgGameCode;
     const isFavorite = favoriteGames.has(gameId);
+    const category = 'fish';
     
-    if (isFavorite) {
-      // Bỏ yêu thích
-      swal({
-        title: "Xác nhận bỏ yêu thích",
-        text: `Bạn có chắc chắn muốn bỏ yêu thích game "${gameName}"?`,
-        icon: "warning",
-        buttons: {
-          cancel: {
-            text: "Hủy",
-            value: false,
-            visible: true,
-          },
-          confirm: {
-            text: "Xác nhận",
-            value: true,
-            visible: true,
-          },
-        },
-        dangerMode: true,
-      }).then((willDelete) => {
-        if (willDelete) {
+    setFavoriteLoading(gameId);
+    
+    try {
+      if (isFavorite) {
+        // Bỏ yêu thích
+        const response = await removeFromFavorites(gameId, category);
+        
+        if (response.success) {
           setFavoriteGames(prev => {
             const newSet = new Set(prev);
             newSet.delete(gameId);
@@ -253,21 +269,46 @@ export default function FishGameItemPage({
             `Game "${gameName}" đã được bỏ khỏi danh sách yêu thích.`,
             "success"
           );
+        } else {
+          swal(
+            "Lỗi!",
+            "Không thể bỏ yêu thích game này. Vui lòng thử lại.",
+            "error"
+          );
         }
-      });
-    } else {
-      // Thêm yêu thích
-      setFavoriteGames(prev => {
-        const newSet = new Set(prev);
-        newSet.add(gameId);
-        return newSet;
-      });
-      
+      } else {
+        // Thêm yêu thích
+        const response = await addToFavorites(gameId, category);
+        
+        if (response.success) {
+          setFavoriteGames(prev => {
+            const newSet = new Set(prev);
+            newSet.add(gameId);
+            return newSet;
+          });
+          
+          swal(
+            "Đã thêm yêu thích!",
+            `Game "${gameName}" đã được thêm vào danh sách yêu thích.`,
+            "success"
+          );
+        } else {
+          swal(
+            "Lỗi!",
+            "Không thể thêm game này vào yêu thích. Vui lòng thử lại.",
+            "error"
+          );
+        }
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
       swal(
-        "Đã thêm yêu thích!",
-        `Game "${gameName}" đã được thêm vào danh sách yêu thích.`,
-        "success"
+        "Lỗi!",
+        "Có lỗi xảy ra. Vui lòng thử lại.",
+        "error"
       );
+    } finally {
+      setFavoriteLoading('');
     }
   };
 
@@ -310,6 +351,7 @@ export default function FishGameItemPage({
               >
                 {displayedGames.map((item: any, index) => {
                   const isFavorite = favoriteGames.has(item.id);
+                  const isProcessing = favoriteLoading === item.id;
                   
                   return (
                     <Box
@@ -343,16 +385,33 @@ export default function FishGameItemPage({
                           />
                         </Box>
 
-                        {/* Nút yêu thích - now always visible */}
-                        <IconButton
-                          sx={isFavorite ? favoriteFilledStyles : favoriteEmptyStyles}
-                          onClick={() => handleToggleFavorite(
-                            item.id, 
-                            item.gameName || item.name || item.tcgGameCode
-                          )}
-                        >
-                          {isFavorite ? <Favorite /> : <FavoriteBorder />}
-                        </IconButton>
+                        {/* Nút yêu thích */}
+                        <Tooltip title={isFavorite ? "Bỏ yêu thích" : "Thêm vào yêu thích"}>
+                          <IconButton
+                            sx={isFavorite ? favoriteFilledStyles : favoriteEmptyStyles}
+                            onClick={() => handleToggleFavorite(item)}
+                            disabled={isProcessing}
+                          >
+                            {isProcessing ? (
+                              <Box 
+                                sx={{ 
+                                  width: 16, 
+                                  height: 16, 
+                                  border: '2px solid #fff',
+                                  borderTop: '2px solid transparent',
+                                  borderRadius: '50%',
+                                  animation: 'spin 1s linear infinite',
+                                  '@keyframes spin': {
+                                    '0%': { transform: 'rotate(0deg)' },
+                                    '100%': { transform: 'rotate(360deg)' },
+                                  },
+                                }}
+                              />
+                            ) : (
+                              isFavorite ? <Favorite /> : <FavoriteBorder />
+                            )}
+                          </IconButton>
+                        </Tooltip>
 
                         <Box sx={commonTextBoxStyles}>
                           <Button
