@@ -268,11 +268,11 @@ export default function SlotsGameItemPage({
             return newSet;
           });
           
-          swal(
-            "Đã bỏ yêu thích!",
-            `Game "${gameName}" đã được bỏ khỏi danh sách yêu thích.`,
-            "success"
-          );
+          // swal(
+          //   "Đã bỏ yêu thích!",
+          //   `Game "${gameName}" đã được bỏ khỏi danh sách yêu thích.`,
+          //   "success"
+          // );
         } else {
           swal(
             "Lỗi!",
@@ -291,11 +291,11 @@ export default function SlotsGameItemPage({
             return newSet;
           });
           
-          swal(
-            "Đã thêm yêu thích!",
-            `Game "${gameName}" đã được thêm vào danh sách yêu thích.`,
-            "success"
-          );
+          // swal(
+          //   "Đã thêm yêu thích!",
+          //   `Game "${gameName}" đã được thêm vào danh sách yêu thích.`,
+          //   "success"
+          // );
         } else {
           swal(
             "Lỗi!",

@@ -6,8 +6,18 @@ import {
   Box,
   Button,
   Pagination,
+  Typography,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { getListGame, getListGameFish } from "@/services/GameApi.service";
+import { 
+  getListFavorites, 
+  addToFavorites, 
+  removeFromFavorites 
+} from "@/services/FavoriteApi.service";
+import swal from "sweetalert";
 
 const commonImgStyles = {
   height: {
@@ -24,6 +34,7 @@ const commonImgStyles = {
     filter: "blur(3px)",
   },
 };
+
 const commonTextBoxStyles = {
   position: "absolute",
   width: "100%",
@@ -37,6 +48,7 @@ const commonTextBoxStyles = {
   justifyContent: "center",
   pointerEvents: "none",
 };
+
 const commonCardStyles = {
   width: {
     xs: "105px",
@@ -62,10 +74,10 @@ const commonCardStyles = {
     transform: "scale(1.04) rotate(-1deg)",
   },
 };
+
 const buttonStyles = {
   backgroundImage:
     "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
-
   color: "white",
   padding: "4px 10px",
   border: "none",
@@ -78,17 +90,57 @@ const buttonStyles = {
   "&:hover": {
     backgroundImage:
       "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
-
     opacity: 1,
     filter: "none",
   },
 };
+
+const favoriteButtonStyles = {
+  position: "absolute",
+  top: "8px",
+  right: "8px",
+  zIndex: 4,
+  pointerEvents: "auto",
+  opacity: 1,
+  transition: "all 0.2s ease-in-out",
+  backgroundColor: "rgba(0, 0, 0, 0.7)",
+  padding: "4px",
+  minWidth: "auto",
+  width: "32px",
+  height: "32px",
+  "&:hover": {
+    backgroundColor: "rgba(0, 0, 0, 0.9)",
+    transform: "scale(1.1)",
+  },
+};
+
+// Style cho trái tim chưa yêu thích (rỗng)
+const favoriteEmptyStyles = {
+  ...favoriteButtonStyles,
+  color: "#ffffff",
+  "&:hover": {
+    ...favoriteButtonStyles["&:hover"],
+    color: "#ffd700",
+  },
+};
+
+// Style cho trái tim đã yêu thích (đầy)
+const favoriteFilledStyles = {
+  ...favoriteButtonStyles,
+  color: "#ff4444",
+  "&:hover": {
+    ...favoriteButtonStyles["&:hover"],
+    color: "#ff0000",
+  },
+};
+
 type ItemProps = {
   GameType1: string;
   ProductType1: string;
   GameType2: string;
   ProductType2: string;
 };
+
 export default function MixedGameItemPage({
   ProductType1,
   GameType1,
@@ -100,6 +152,8 @@ export default function MixedGameItemPage({
   const [isPageLoading, setIsPageLoading] = useState<boolean>(false);
   const [gameTable, setGameTable] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [favoriteGames, setFavoriteGames] = useState<Set<string>>(new Set());
+  const [favoriteLoading, setFavoriteLoading] = useState<string>('');
   const itemsPerPage = 30;
 
   const shuffleArray = (array: any[]) => {
@@ -109,6 +163,23 @@ export default function MixedGameItemPage({
     }
     return array;
   };
+
+  // Load danh sách game yêu thích từ API
+  const loadFavoriteGames = async () => {
+    try {
+      const response = await getListFavorites();
+      if (response.success && response.data) {
+        const favoriteIds = new Set<string>(response.data.map((game: any) => String(game.id)));
+        setFavoriteGames(favoriteIds);
+      }
+    } catch (error) {
+      console.error('Error loading favorite games:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadFavoriteGames();
+  }, []);
 
   useEffect(() => {
     setLoad(true);
@@ -169,11 +240,70 @@ export default function MixedGameItemPage({
     setTimeout(() => {
       setCurrentPage(page);
       setIsPageLoading(false);
+      // Cuộn lên đầu trang
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 1000);
   };
 
   const handleImageError = (index: number) => {
     setGameTable((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Xử lý thêm/bỏ yêu thích với API
+  const handleToggleFavorite = async (gameData: any) => {
+    const gameId = gameData.tcgGameCode || gameData.productCode || gameData.id;
+    const gameName = gameData.gameName || gameData.name || gameData.tcgGameCode;
+    const isFavorite = favoriteGames.has(gameId);
+    const category = gameData.gameType || gameData.productCode || 'mixed';
+    
+    setFavoriteLoading(gameId);
+    
+    try {
+      if (isFavorite) {
+        // Bỏ yêu thích
+        const response = await removeFromFavorites(gameId, category);
+        
+        if (response.success) {
+          setFavoriteGames(prev => {
+            const newSet = new Set(prev);
+            newSet.delete(gameId);
+            return newSet;
+          });
+        } else {
+          swal(
+            "Lỗi!",
+            "Không thể bỏ yêu thích game này. Vui lòng thử lại.",
+            "error"
+          );
+        }
+      } else {
+        // Thêm yêu thích
+        const response = await addToFavorites(gameId, category);
+        
+        if (response.success) {
+          setFavoriteGames(prev => {
+            const newSet = new Set(prev);
+            newSet.add(gameId);
+            return newSet;
+          });
+        } else {
+          swal(
+            "Lỗi!",
+            "Không thể thêm game này vào yêu thích. Vui lòng thử lại.",
+            "error"
+          );
+        }
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+      swal(
+        "Lỗi!",
+        "Có lỗi xảy ra. Vui lòng thử lại.",
+        "error"
+      );
+    } finally {
+      setFavoriteLoading('');
+    }
   };
 
   return (
@@ -191,58 +321,124 @@ export default function MixedGameItemPage({
               marginBottom: "20px",
             }}
           >
-            {displayedGames.map((item: any, index) => (
-              <Box key={item.id} sx={commonCardStyles}>
-                <Box sx={commonImgStyles}>
-                  <Image
-                    src={item.icon}
-                    alt=""
-                    width={200}
-                    height={200}
-                    layout="responsive"
-                    placeholder="blur"
-                    loading="lazy"
-                    blurDataURL="/images/gallery-icon-picture-landscape-vector-sign-symbol_660702-224.avif"
-                    style={{
-                      height: "100%",
-                      width: "100%",
-                      objectFit: "cover",
-                    }}
-                    onError={() => handleImageError(index)} // Gọi hàm khi lỗi
-                  />
-                </Box>
+            {displayedGames.map((item: any, index) => {
+              const gameId = item.tcgGameCode || item.productCode || item.id;
+              const isFavorite = favoriteGames.has(gameId);
+              const isProcessing = favoriteLoading === gameId;
+              
+              return (
+                <Box
+                  key={`${item.id}-${index}`}
+                  sx={{
+                    width: { xs: "105px", sm: "170px" },
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 1,
+                  }}
+                >
+                  {/* Box hình + overlay nút */}
+                  <Box sx={commonCardStyles}>
+                    <Box sx={commonImgStyles}>
+                      <Image
+                        src={item.icon}
+                        alt={item.gameName || item.name || item.tcgGameCode || "Game"}
+                        width={200}
+                        height={200}
+                        layout="responsive"
+                        placeholder="blur"
+                        loading="lazy"
+                        blurDataURL="/images/gallery-icon-picture-landscape-vector-sign-symbol_660702-224.avif"
+                        style={{
+                          height: "100%",
+                          width: "100%",
+                          objectFit: "cover",
+                        }}
+                        onError={() => handleImageError(index)}
+                      />
+                    </Box>
 
-                <Box sx={commonTextBoxStyles}>
-                  <Button
-                    sx={buttonStyles}
-                    onClick={() => playGame(item.tcgGameCode, item.productCode)}
+                    {/* Nút yêu thích */}
+                    <Tooltip title={isFavorite ? "Bỏ yêu thích" : "Thêm vào yêu thích"}>
+                      <IconButton
+                        sx={isFavorite ? favoriteFilledStyles : favoriteEmptyStyles}
+                        onClick={() => handleToggleFavorite(item)}
+                        disabled={isProcessing}
+                      >
+                        {isProcessing ? (
+                          <Box 
+                            sx={{ 
+                              width: 16, 
+                              height: 16, 
+                              border: '2px solid #fff',
+                              borderTop: '2px solid transparent',
+                              borderRadius: '50%',
+                              animation: 'spin 1s linear infinite',
+                              '@keyframes spin': {
+                                '0%': { transform: 'rotate(0deg)' },
+                                '100%': { transform: 'rotate(360deg)' },
+                              },
+                            }}
+                          />
+                        ) : (
+                          isFavorite ? <Favorite /> : <FavoriteBorder />
+                        )}
+                      </IconButton>
+                    </Tooltip>
+
+                    <Box sx={commonTextBoxStyles}>
+                      <Button
+                        sx={buttonStyles}
+                        onClick={() => playGame(item.tcgGameCode, item.productCode)}
+                      >
+                        Chơi ngay
+                      </Button>
+                    </Box>
+                  </Box>
+
+                  {/* Tên game nằm ngoài ảnh */}
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontSize: { xs: "12px", sm: "14px" },
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      color: "white",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxWidth: "100%",
+                    }}
                   >
-                    Chơi ngay
-                  </Button>
+                    {item.gameName || item.name || item.tcgGameCode}
+                  </Typography>
                 </Box>
-              </Box>
-            ))}
+              );
+            })}
           </Box>
-          <Pagination
-            count={totalPages}
-            page={currentPage}
-            onChange={handlePageChange}
-            color="primary"
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              "& .MuiPaginationItem-root": {
-                color: "white", // Mặc định chữ màu trắng
-              },
-              "& .Mui-selected": {
-                backgroundColor: " #b20707", // Nền màu xanh vàng khi active
-                color: "white", // Chữ màu trắng
-                "&:hover": {
-                  backgroundColor: " #b20707", // Duy trì màu khi hover
+          
+          {totalPages > 1 && (
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+              onChange={handlePageChange}
+              color="primary"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                "& .MuiPaginationItem-root": {
+                  color: "white",
                 },
-              },
-            }}
-          />
+                "& .Mui-selected": {
+                  backgroundColor: "#b20707",
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "#b20707",
+                  },
+                },
+              }}
+            />
+          )}
         </>
       )}
     </>
