@@ -20,6 +20,7 @@ import {
   getGameCategory 
 } from "@/services/FavoriteApi.service";
 import { GameSlotsMenu } from "@/datafake/Menu";
+import { userResponse } from "@/interface/user.interface";
 import swal from "sweetalert";
 
 const commonImgStyles = {
@@ -156,7 +157,25 @@ export default function FishGameItemPage({
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [favoriteGames, setFavoriteGames] = useState<Set<string>>(new Set());
   const [favoriteLoading, setFavoriteLoading] = useState<string>('');
+  const [user, setUser] = useState<userResponse | null>(null);
   const itemsPerPage = 30;
+
+  // Load thông tin user
+  const loadUserInfo = async () => {
+    try {
+      const { getMe } = await import("@/services/User.service");
+      const res: any = await getMe();
+      if (res?.user) {
+        setUser(res.user);
+      }
+    } catch (error) {
+      console.error("Error loading user info:", error);
+    }
+  };
+
+  useEffect(() => {
+    loadUserInfo();
+  }, []);
 
   // Load danh sách game
   useEffect(() => {
@@ -175,8 +194,10 @@ export default function FishGameItemPage({
     });
   }, []);
 
-  // Load danh sách game yêu thích từ API
+  // Load danh sách game yêu thích từ API - chỉ khi user đã đăng nhập
   const loadFavoriteGames = async () => {
+    if (!user) return; // Không load nếu chưa đăng nhập
+    
     try {
       const response = await getListFavorites();
       if (response.success && response.data) {
@@ -190,7 +211,7 @@ export default function FishGameItemPage({
 
   useEffect(() => {
     loadFavoriteGames();
-  }, []);
+  }, [user]); // Phụ thuộc vào user
 
   // Filter games theo searchTerm
   const filteredGames = useMemo(() => {
@@ -236,6 +257,8 @@ export default function FishGameItemPage({
     setTimeout(() => {
       setCurrentPage(page);
       setIsPageLoading(false);
+      // Cuộn lên đầu trang
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 1000);
   };
 
@@ -243,8 +266,18 @@ export default function FishGameItemPage({
     setGameTable((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Xử lý thêm/bỏ yêu thích với API
+  // Xử lý thêm/bỏ yêu thích với check user
   const handleToggleFavorite = async (gameData: any) => {
+    // Kiểm tra user đã đăng nhập chưa
+    if (!user) {
+      swal({
+        title: "Thông báo!",
+        text: "Bạn cần đăng nhập để sử dụng tính năng yêu thích.",
+        icon: "warning",
+      });
+      return;
+    }
+
     const gameId = gameData.id;
     const gameName = gameData.gameName || gameData.name || gameData.tcgGameCode;
     const isFavorite = favoriteGames.has(gameId);
@@ -265,8 +298,8 @@ export default function FishGameItemPage({
           });
           
           // swal(
-          //   "Đã bỏ yêu thích!",
-          //   `Game "${gameName}" đã được bỏ khỏi danh sách yêu thích.`,
+          //   "Thành công!",
+          //   `Đã bỏ "${gameName}" khỏi danh sách yêu thích.`,
           //   "success"
           // );
         } else {
@@ -288,8 +321,8 @@ export default function FishGameItemPage({
           });
           
           // swal(
-          //   "Đã thêm yêu thích!",
-          //   `Game "${gameName}" đã được thêm vào danh sách yêu thích.`,
+          //   "Thành công!",
+          //   `Đã thêm "${gameName}" vào danh sách yêu thích.`,
           //   "success"
           // );
         } else {
@@ -329,8 +362,8 @@ export default function FishGameItemPage({
               borderRadius: '8px'
             }}>
               <Typography variant="body2">
-                {displayedGames.length > 0 
-                  ? `Tìm thấy ${displayedGames.length} trò chơi cho "${searchTerm}"`
+                {gameTable.length > 0 
+                  ? `Tìm thấy ${gameTable.length} trò chơi cho "${searchTerm}"`
                   : `Không tìm thấy trò chơi nào cho "${searchTerm}"`
                 }
               </Typography>
@@ -357,7 +390,7 @@ export default function FishGameItemPage({
                     <Box
                       key={`${item.id}-${index}`}
                       sx={{
-                        width: { xs: "30%", sm: "170px" },
+                        width: { xs: "105px", sm: "170px" },
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
@@ -386,7 +419,11 @@ export default function FishGameItemPage({
                         </Box>
 
                         {/* Nút yêu thích */}
-                        <Tooltip title={isFavorite ? "Bỏ yêu thích" : "Thêm vào yêu thích"}>
+                        <Tooltip title={
+                          !user 
+                            ? "Đăng nhập để yêu thích" 
+                            : (isFavorite ? "Bỏ yêu thích" : "Thêm vào yêu thích")
+                        }>
                           <IconButton
                             sx={isFavorite ? favoriteFilledStyles : favoriteEmptyStyles}
                             onClick={() => handleToggleFavorite(item)}
