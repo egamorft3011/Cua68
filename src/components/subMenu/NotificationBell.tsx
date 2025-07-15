@@ -18,21 +18,20 @@ interface Notification {
 }
 
 const formatDate = (dateString: string): string => {
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleString('vi-VN', {
-        hour: '2-digit',
-        minute: '2-digit',
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      });
-    } catch {
-      return dateString;
-    }
-  };
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleString('vi-VN', {
+      hour: '2-digit',
+      minute: '2-digit',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+  } catch {
+    return dateString;
+  }
+};
 
-// Hàm format số lượng thông báo
 const formatNotificationCount = (count: number): string => {
   return count > 9 ? '9+' : count.toString();
 };
@@ -45,14 +44,13 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState<number | null>(null);
   const [isInitialLoadComplete, setIsInitialLoadComplete] = useState(false);
-  const [token, setToken] = useState<string | null>(null); // Quản lý token qua state
+  const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
   const observer = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const modalContentRef = useRef<HTMLDivElement | null>(null);
   const [unreadCount, setUnreadCount] = useState(initialCount);
 
-  // Lấy token từ localStorage khi component mount
   useEffect(() => {
     const storedToken = typeof window !== 'undefined' ? localStorage.getItem('tokenCUA68') : null;
     setToken(storedToken);
@@ -65,31 +63,19 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
     }
 
     try {
-      let unreadCount = 0;
-      let page = 1;
+      const response = await contentInstance.get('/api/info/annoucement', {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { page: 1 }, // Chỉ cần lấy page đầu tiên để có totalUnread
+      });
 
-      while (true) {
-        const response = await contentInstance.get('/api/info/annoucement', {
-          headers: { Authorization: `Bearer ${token}` },
-          params: { page },
-        });
-
-        if (response.status) {
-          const announcements = response.data.data || [];
-          unreadCount += announcements.filter((item: { isRead: boolean }) => !item.isRead).length;
-
-          if (announcements.length === 0 || page * announcements.length >= response.data.total) {
-            break;
-          }
-          page++;
-        } else {
-          throw new Error('Dữ liệu thông báo không hợp lệ.');
-        }
+      if (response.status) {
+        const { totalUnread } = response.data;
+        setUnreadCount(totalUnread || 0); // Sử dụng totalUnread từ API
+      } else {
+        throw new Error('Dữ liệu thông báo không hợp lệ.');
       }
-
-      setUnreadCount(unreadCount);
     } catch (error: any) {
-      console.error('Lỗi khi lấy thông báo:', error);
+      console.error('Lỗi khi lấy số lượng thông báo chưa đọc:', error);
       if (error.response?.status === 401) {
         setError('Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.');
       } else {
@@ -99,13 +85,9 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
     }
   }, [token]);
 
-  // Gọi fetchUnreadCount khi token thay đổi
   useEffect(() => {
     fetchUnreadCount();
   }, [fetchUnreadCount]);
-
-  // Calculate notification count based on unread notifications
-  const notificationCount = notifications.filter((notif) => !notif.isRead).length || initialCount;
 
   const isFetchingRef = useRef(false);
 
@@ -125,14 +107,14 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
 
       if (response.status) {
         const apiData = response.data;
-        const { data, total: totalItems } = apiData;
+        const { data, total: totalItems, totalUnread } = apiData;
 
         const newNotifications = data.map((item: any, index: number) => ({
           id: item.id.toString() || `notif-${index + notifications.length}`,
           title: item.title || 'Không có tiêu đề',
           time: item.createdAt || new Date().toLocaleString('vi-VN'),
           content: item.content || 'Không có nội dung',
-          isRead: item.isRead === 1,
+          isRead: item.isRead,
         }));
 
         if (newNotifications.length === 0) {
@@ -144,6 +126,7 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
 
         setNotifications((prev) => [...prev, ...newNotifications]);
         setTotal(totalItems !== undefined ? totalItems : notifications.length + newNotifications.length);
+        setUnreadCount(totalUnread || 0); // Cập nhật unreadCount từ totalUnread
 
         if (notifications.length + newNotifications.length < (totalItems || Infinity)) {
           setPage((prev) => prev + 1);
@@ -204,31 +187,17 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ notificationCount: 
   const handleDetailClick = (id: string) => {
     const notification = notifications.find((notif) => notif.id === id);
     if (notification) {
-      // Lưu thông báo vào localStorage
       localStorage.setItem('notificationDetail', JSON.stringify(notification));
 
-      // Cập nhật trạng thái isRead của thông báo
       if (!notification.isRead) {
         setNotifications((prev) =>
           prev.map((notif) =>
             notif.id === id ? { ...notif, isRead: true } : notif
           )
         );
-        
-        // Cập nhật unreadCount - chỉ trừ 1 và để React re-render
         setUnreadCount((prev) => (prev > 0 ? prev - 1 : 0));
-
-        // Xóa unread-dot
-        const dotEl = document.getElementById(id);
-        if (dotEl?.classList.contains('unread-dot')) {
-          dotEl.classList.remove('unread-dot');
-        }
-
-        // LOẠI BỎ việc cập nhật badge bằng DOM manipulation
-        // Để React tự động cập nhật thông qua state change
       }
 
-      // Chuyển hướng đến trang chi tiết thông báo
       router.push(`/notification?notificationID=${id}`);
     }
   };
