@@ -144,6 +144,18 @@ type ItemProps = {
   searchTerm?: string;
 };
 
+// Hàm xử lý game code cho CHESS
+const processChessGameCode = (gameCode: string, gameType: string): string => {
+  if (gameType === "CHESS" && gameCode && gameCode.length === 7) {
+    // Kiểm tra pattern LCC0011 -> LCC011
+    const match = gameCode.match(/^([A-Z]{3})0(\d{3})$/);
+    if (match) {
+      return match[1] + match[2]; // LCC + 011 = LCC011
+    }
+  }
+  return gameCode;
+};
+
 export default function SlotsGameItemPage({
   ProductType,
   GameType,
@@ -200,15 +212,24 @@ export default function SlotsGameItemPage({
   useEffect(() => {
     setLoad(true);
     getListGame(ProductType, GameType).then((res) => {
-      if (res.data.games.length > 30) {
-        const gamesFromPosition20 = res.data.games.slice(29);
+     // Xử lý game code cho CHESS - chỉ khi GameType là CHESS
+      const processedGames = GameType === "CHESS" 
+        ? res.data.games.map((game: any) => ({
+            ...game,
+            tcgGameCode: processChessGameCode(game.tcgGameCode, GameType),
+            productCode: processChessGameCode(game.productCode, GameType)
+          }))
+        : res.data.games; // Không xử lý nếu không phải CHESS
+
+      if (processedGames.length > 30) {
+        const gamesFromPosition20 = processedGames.slice(29);
         setAllGames(gamesFromPosition20);
         setGameTable(gamesFromPosition20);
         setLoad(false);
         setCurrentPage(1);
       } else {
-        setAllGames(res.data.games);
-        setGameTable(res.data.games);
+        setAllGames(processedGames);
+        setGameTable(processedGames);
         setLoad(false);
         setCurrentPage(1);
       }
