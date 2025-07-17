@@ -14,8 +14,8 @@ export default function usePlayGame() {
     id: string,
     onError?: (error: any) => void
   ): Promise<string | null> => {
-    setLoading(true);
-
+    setLoading(true); // Bắt đầu trạng thái loading
+    
     if (!user) {
       swal("Lỗi", "Bạn chưa đăng nhập", "error");
       setLoading(false);
@@ -28,13 +28,23 @@ export default function usePlayGame() {
       return null;
     }
 
+    const tempWindow = window.open("", "_blank");
     const dataGame = GameConfig.find((item) => item.code === id);
+    // const res: any = await getPlayGameById(code, id);
+    if (!tempWindow) {
+      swal(
+        "Chuyển tiền không thành công",
+        "Cửa sổ bật lên bị chặn bởi trình duyệt. Vui lòng cho phép cửa sổ bật lên.",
+        "error"
+      );
+      setLoading(false); // Dừng trạng thái loading
+      return null;
+    }
 
     try {
-      // Gọi API để lấy URL game
+      // Sử dụng code và id từ tham số vào API
       const res: any = await getPlayGameById(code, id);
-      
-      // Chuyển tiền vào ví game
+
       const wallet: any = await walletTransfer(
         user.coin,
         String(dataGame?.type),
@@ -42,22 +52,26 @@ export default function usePlayGame() {
       );
 
       if (res.status === false) {
+        tempWindow.close(); // Đóng tab nếu không có URL
         swal("Lỗi", res.msg, "error");
-        setLoading(false);
+        setLoading(false); // Dừng trạng thái loading
         return null;
       }
-
       if (res?.data?.playUrl && wallet) {
-        setLoading(false);
-        return res.data.playUrl; // Trả về URL để sử dụng trong iframe
+        tempWindow.location.href = res.data.playUrl;
+        setLoading(false); // Dừng trạng thái loading sau khi đã mở tab mới
+        return res.data.playUrl; // Trả về URL nếu có
       } else {
+        tempWindow.close(); // Đóng tab nếu không có URL
         swal("Lỗi", res.msg, "error");
-        setLoading(false);
+        setLoading(false); // Dừng trạng thái loading
         return null;
       }
     } catch (error) {
+      tempWindow.close();
       console.log("error", error);
-      swal("Lỗi", "Có lỗi xảy ra khi tải game", "error");
+
+      swal("Lỗi", "Bạn chưa đăng nhập", "error");
       setLoading(false);
       if (onError) onError(error);
       return null;

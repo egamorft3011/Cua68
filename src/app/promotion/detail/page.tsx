@@ -136,7 +136,7 @@ const PromotionDetailPage: React.FC = () => {
             boxShadow: "0 8px 32px rgba(0, 0, 0, 0.5)",
           }}
         >
-          {/* {selectedPromotion.thumbnail && (
+          {selectedPromotion.thumbnail && (
             <Box
               component="img"
               src={selectedPromotion.thumbnail}
@@ -151,7 +151,7 @@ const PromotionDetailPage: React.FC = () => {
                 mb: 3,
               }}
             />
-          )} */}
+          )}
 
           <Typography variant="h4" fontWeight="bold" sx={{ mb: 2, color: "#00FF00" }}>
             {selectedPromotion.title}
