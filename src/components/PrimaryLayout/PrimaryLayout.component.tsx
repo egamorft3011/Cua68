@@ -561,7 +561,14 @@ export default function PrimaryLayoutComponent({ children, pageConfig, user }: P
             {drawerList()}
           </Drawer>
 
-          {currentUser ? <FloatingRefund /> : <></>}
+          {currentUser ? (
+            <div className="game-open">
+              <div className="floating-refund">
+                <FloatingRefund />
+              </div>
+            </div>
+          ) : null}
+
         </div>
       )}
     </>

@@ -126,11 +126,13 @@ export default function LiveCasinoPage() {
   return (
     <>
       <style jsx global>{`
-        .game-open footer,
-        .game-open .footer-mobile {
-          display: none;
-        }
-      `}</style>
+          .game-open .floating-refund,
+          .game-open .menu-mobile,
+          .game-open footer,
+          .game-open .footer-mobile {
+            display: none;
+          }
+        `}</style>
       {loading ? (
         <>
           <SimpleBackdrop />
