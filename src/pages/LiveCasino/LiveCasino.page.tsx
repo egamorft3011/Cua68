@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import NumberCount from "@/components/NumberCount/NumberCount";
 import swal from "sweetalert";
@@ -10,6 +10,30 @@ import { Box, Typography, Button } from "@mui/material";
 
 export default function LiveCasinoPage() {
   const { loading, playGame } = usePlayGame();
+  const [gameUrl, setGameUrl] = useState("");
+  const [isGameOpen, setIsGameOpen] = useState(false);
+  const [gameLoading, setGameLoading] = useState(false);
+
+  const handlePlayGame = async (codeGame :any, gameId :any) => {
+    setGameLoading(true);
+    try {
+      const url = await playGame(codeGame, gameId);
+      if (url) {
+        setGameUrl(url);
+        setIsGameOpen(true);
+      }
+    } catch (error) {
+      console.error("Error playing game:", error);
+    } finally {
+      setGameLoading(false);
+    }
+  };
+
+  const handleCloseGame = () => {
+    setIsGameOpen(false);
+    setGameUrl("");
+  };
+
   const commonImgStyles = {
     height: {
       xs: "210px",
@@ -25,6 +49,7 @@ export default function LiveCasinoPage() {
       filter: "blur(3px)",
     },
   };
+
   const commonTextBoxStyles = {
     position: "absolute",
     width: "100%",
@@ -68,7 +93,6 @@ export default function LiveCasinoPage() {
   const buttonStyles = {
     backgroundImage:
       "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
-
     color: "white",
     padding: "10px 20px",
     border: "none",
@@ -81,7 +105,6 @@ export default function LiveCasinoPage() {
     "&:hover": {
       backgroundImage:
         "url(/images/bg-btn.png), conic-gradient(from 0deg at 50% 50%, #ff0808 0deg, #e02626 89.73deg, #e02626 180.18deg, #ff0808 1turn)",
-
       opacity: 1,
       filter: "none",
     },
@@ -143,9 +166,10 @@ export default function LiveCasinoPage() {
                   <Box sx={commonTextBoxStyles}>
                     <Button
                       sx={buttonStyles}
-                      onClick={() => playGame(item.codeGame, item.gameId)}
+                      onClick={() => handlePlayGame(item.codeGame, item.gameId)}
+                      disabled={gameLoading}
                     >
-                      Chơi ngay
+                      {gameLoading ? "Đang tải..." : "Chơi ngay"}
                     </Button>
                   </Box>
                 </Box>
@@ -153,7 +177,63 @@ export default function LiveCasinoPage() {
             </Box>
           </Box>
         </>
+      ) : isGameOpen ? (
+        // Hiển thị game trong body
+        <Box
+          sx={{
+            width: "100%",
+            height: "100vh",
+            position: "relative",
+            overflow: "hidden",
+          }}
+        >
+          {/* Header với nút đóng */}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              p: 2,
+              bgcolor: '#333',
+              color: 'white',
+              position: 'relative',
+              zIndex: 10,
+            }}
+          >
+            <Typography variant="h6">Live Casino Game</Typography>
+            <Button
+              variant="contained"
+              onClick={handleCloseGame}
+              sx={{
+                bgcolor: '#ff0808',
+                '&:hover': {
+                  bgcolor: '#e02626',
+                },
+              }}
+            >
+              Đóng Game
+            </Button>
+          </Box>
+          
+          {/* Iframe game */}
+          <Box sx={{ height: 'calc(100vh - 80px)', width: '100%' }}>
+            {gameUrl && (
+              <iframe
+                src={gameUrl}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  border: 'none',
+                }}
+                title="Live Casino Game"
+                allow="camera; microphone; fullscreen; payment"
+                sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
+              />
+            )}
+          </Box>
+        </Box>
       ) : (
+        // Hiển thị danh sách game
         <Box
           sx={{
             width: "100%",
@@ -215,9 +295,10 @@ export default function LiveCasinoPage() {
                   <Box sx={commonTextBoxStyles}>
                     <Button
                       sx={buttonStyles}
-                      onClick={() => playGame(item.codeGame, item.gameId)}
+                      onClick={() => handlePlayGame(item.codeGame, item.gameId)}
+                      disabled={gameLoading}
                     >
-                      Chơi ngay
+                      {gameLoading ? "Đang tải..." : "Chơi ngay"}
                     </Button>
                   </Box>
                 </Box>
