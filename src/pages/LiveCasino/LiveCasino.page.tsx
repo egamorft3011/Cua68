@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import NumberCount from "@/components/NumberCount/NumberCount";
 import swal from "sweetalert";
-import usePlayGame from "@/hook/usePlayGame";
+import usePlayGame from "@/hook/usePlayGameCasino";
 import SimpleBackdrop from "@/components/Loading/LoaddingPage";
 import { ListGameLiveCasino } from "@/datafake/ListGame";
 import { Box, Typography, Button } from "@mui/material";
