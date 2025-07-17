@@ -215,11 +215,11 @@ export default function FavoriteGamesOnly({
         // Remove from local state
         setFavoriteGames(prev => prev.filter(game => game.id !== gameId));
         
-        swal(
-          "Đã bỏ yêu thích!",
-          `Game "${gameName}" đã được bỏ khỏi danh sách yêu thích.`,
-          "success"
-        );
+        // swal(
+        //   "Đã bỏ yêu thích!",
+        //   `Game "${gameName}" đã được bỏ khỏi danh sách yêu thích.`,
+        //   "success"
+        // );
       } else {
         swal(
           "Lỗi!",

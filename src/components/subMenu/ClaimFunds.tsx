@@ -47,8 +47,6 @@ export default function ClaimFunds({ refreshUserData }: ClaimFundsProps) {
       const response = await contentInstance.get("/api/game/daily-award", {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      console.log("API Response:", response);
       if (response.status && response.data.data) {
         setRewards(response.data.data); // Set rewards from API
       } else {
@@ -120,7 +118,6 @@ export default function ClaimFunds({ refreshUserData }: ClaimFundsProps) {
         { id: rewardId.toString() },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log("POST API Response:", response);
       if (response.status) {
         setOpenedIndices([...openedIndices, index]);
         if (refreshUserData) {
@@ -284,7 +281,7 @@ export default function ClaimFunds({ refreshUserData }: ClaimFundsProps) {
             ) : (
               <Grid container spacing={5} justifyContent="center">
                 {rewards.map((reward, index) => (
-                  <Grid item xs={4} sm={3} key={reward.id}>
+                  <Grid item xs={4} sm={4} key={reward.id}>
                     <Box
                       sx={{
                         position: "relative",
@@ -334,7 +331,7 @@ export default function ClaimFunds({ refreshUserData }: ClaimFundsProps) {
                               top: "32%",
                               left: "50%",
                               transform: "translate(-50%, -50%)",
-                              fontSize: "12px",
+                              fontSize: "16px",
                               fontWeight: "bold",
                               background:
                                 "linear-gradient(to bottom, #ff3d00, #ff9100)",
