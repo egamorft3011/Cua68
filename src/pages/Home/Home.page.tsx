@@ -61,7 +61,7 @@ interface DraggableCloseButtonProps {
 const DraggableCloseButton: React.FC<DraggableCloseButtonProps> = ({ onClose, isMobile }) => {
   const [position, setPosition] = useState({ 
     x: isMobile ? window.innerWidth - 70 : window.innerWidth - 70, 
-    y: isMobile ? window.innerHeight - 100 : 110 
+    y: isMobile ? window.innerHeight / 2 : 110  
   });
   const [isDragging, setIsDragging] = useState(false);
   const [hasMoved, setHasMoved] = useState(false);
