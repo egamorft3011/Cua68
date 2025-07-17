@@ -1,18 +1,31 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import NumberCount from "@/components/NumberCount/NumberCount";
 import swal from "sweetalert";
-import usePlayGame from "@/hook/usePlayGameCasino";
+import usePlayGame from "@/hook/usePlayGameInPage";
 import SimpleBackdrop from "@/components/Loading/LoaddingPage";
 import { ListGameLiveCasino } from "@/datafake/ListGame";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, useMediaQuery, useTheme } from "@mui/material";
 
 export default function LiveCasinoPage() {
   const { loading, playGame } = usePlayGame();
   const [gameUrl, setGameUrl] = useState("");
   const [isGameOpen, setIsGameOpen] = useState(false);
   const [gameLoading, setGameLoading] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  useEffect(() => {
+    if (isGameOpen) {
+      document.body.classList.add("game-open");
+    } else {
+      document.body.classList.remove("game-open");
+    }
+    return () => {
+      document.body.classList.remove("game-open");
+    };
+  }, [isGameOpen]);
 
   const handlePlayGame = async (codeGame :any, gameId :any) => {
     setGameLoading(true);
@@ -112,6 +125,12 @@ export default function LiveCasinoPage() {
 
   return (
     <>
+      <style jsx global>{`
+        .game-open footer,
+        .game-open .footer-mobile {
+          display: none;
+        }
+      `}</style>
       {loading ? (
         <>
           <SimpleBackdrop />
@@ -185,38 +204,12 @@ export default function LiveCasinoPage() {
             height: "100vh",
             position: "relative",
             overflow: "hidden",
+            paddingTop: isMobile ? "60px" : "80px",
           }}
         >
-          {/* Header với nút đóng */}
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              p: 2,
-              bgcolor: '#333',
-              color: 'white',
-              position: 'relative',
-              zIndex: 10,
-            }}
-          >
-            <Typography variant="h6">Live Casino Game</Typography>
-            <Button
-              variant="contained"
-              onClick={handleCloseGame}
-              sx={{
-                bgcolor: '#ff0808',
-                '&:hover': {
-                  bgcolor: '#e02626',
-                },
-              }}
-            >
-              Đóng Game
-            </Button>
-          </Box>
           
           {/* Iframe game */}
-          <Box sx={{ height: 'calc(100vh - 80px)', width: '100%' }}>
+          <Box sx={{ height: 'calc(100vh - 80px)', width: '100%'}}>
             {gameUrl && (
               <iframe
                 src={gameUrl}

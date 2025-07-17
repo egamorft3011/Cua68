@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import "./BannerListgame.css";
 import Carousel from "react-multi-carousel";
 import { getPlayGameById } from "@/services/GameApi.service";
-
 import NavigationGameComponent from "@/hook/NavigationGame";
 import Image from "next/image";
 import NumberCount from "@/components/NumberCount/NumberCount";
 import swal from "sweetalert";
-import usePlayGame from "@/hook/usePlayGame";
+import usePlayGame from "@/hook/usePlayGameInPage";
 import { Box, Button } from "@mui/material";
 import { ListGameLiveCasino } from "@/datafake/ListGame";
-export default function BannerListgamePage() {
-  const { loading, playGame } = usePlayGame();
+
+interface BannerListgamePageProps {
+  onPlayGame: (codeGame: any, gameId: any) => void;
+  gameLoading: boolean;
+}
+
+export default function BannerListgamePage({ onPlayGame, gameLoading }: BannerListgamePageProps) {
   const commonImgStyles = {
     height: {
       xs: "110px",
@@ -27,6 +31,7 @@ export default function BannerListgamePage() {
       filter: "blur(3px)",
     },
   };
+
   const commonTextBoxStyles = {
     position: "absolute",
     width: "100%",
@@ -130,9 +135,10 @@ export default function BannerListgamePage() {
             <Box sx={commonTextBoxStyles}>
               <Button
                 sx={buttonStyles}
-                onClick={() => playGame(item.codeGame, item.gameId)}
+                onClick={() => onPlayGame(item.codeGame, item.gameId)}
+                disabled={gameLoading}
               >
-                Chơi Game
+                {gameLoading ? "Đang tải..." : "Chơi Game"}
               </Button>
             </Box>
           </Box>

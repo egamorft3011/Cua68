@@ -17,6 +17,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { HomeIcon } from "@/shared/Svgs/Svg.component";
 import TranslateContextComponent from "../../components/GgTranstale/TranslateContext.component";
 import { userResponse } from "@/interface/user.interface";
 import MenuProfile from "@/components/subMenu/MenuProfile";
@@ -45,6 +46,7 @@ export default function HeaderPage(props: propUser) {
   const [message, setMessage] = React.useState<any>(null);
   const handleClose = () => setShow(false);
   const [anchorEl1, setAnchorEl1] = React.useState<null | HTMLElement>(null);
+  const [isHover, setIsHover] = useState(false);
 
   const open = Boolean(anchorEl1);
   const handleSetActiveTab = useCallback((tabIndex: number) => {
@@ -113,9 +115,19 @@ export default function HeaderPage(props: propUser) {
           </div>
           <nav className="header-bottom">
             <ul>
+              <li key={0} style={{ fontSize: "14px", display: "flex", alignItems: "center", gap: "4px" }}
+              onMouseEnter={() => setIsHover(true)}
+              onMouseLeave={() => setIsHover(false)}
+              >
+                <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
+                  <HomeIcon width={"30"} height={"30"}  fill={isHover ? "#e74c31" : "#fff"} />
+                </Link>
+              </li>
               {MenuWebsite.map((item) => (
                 <li key={item.id}>
-                  <Link href={item.link}>{item.title}</Link>
+                  <Link href={item.link} style={{ fontSize: "16px" }}>
+                    {item.title}
+                  </Link>
                 </li>
               ))}
             </ul>
