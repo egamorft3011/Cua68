@@ -7,6 +7,7 @@ import usePlayGame from "@/hook/usePlayGameInPage";
 import SimpleBackdrop from "@/components/Loading/LoaddingPage";
 import { ListGameLiveCasino } from "@/datafake/ListGame";
 import { Box, Typography, Button, useMediaQuery, useTheme } from "@mui/material";
+import DraggableCloseButton from "@/components/subMenu/DraggableCloseButton";
 
 export default function LiveCasinoPage() {
   const { loading, playGame } = usePlayGame();
@@ -27,7 +28,7 @@ export default function LiveCasinoPage() {
     };
   }, [isGameOpen]);
 
-  const handlePlayGame = async (codeGame :any, gameId :any) => {
+  const handlePlayGame = async (codeGame: any, gameId: any) => {
     setGameLoading(true);
     try {
       const url = await playGame(codeGame, gameId);
@@ -199,7 +200,7 @@ export default function LiveCasinoPage() {
           </Box>
         </>
       ) : isGameOpen ? (
-        // Hiển thị game trong body
+        // Hiển thị game fullscreen với draggable close button
         <Box
           sx={{
             width: "100%",
@@ -209,6 +210,8 @@ export default function LiveCasinoPage() {
             paddingTop: isMobile ? "60px" : "80px",
           }}
         >
+          {/* Draggable Close Button */}
+          <DraggableCloseButton onClose={handleCloseGame} isMobile={isMobile} />
           
           {/* Iframe game */}
           <Box sx={{ height: 'calc(100vh - 80px)', width: '100%'}}>

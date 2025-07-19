@@ -12,8 +12,26 @@ import usePlayGame from "@/hook/usePlayGame";
 import SimpleBackdrop from "@/components/Loading/LoaddingPage";
 import Link from "next/link";
 import { GameLotto, ListGameHome } from "@/datafake/ListGame";
-export default function HotPage() {
+
+interface HotPageProps {
+  onPlayGame?: (codeGame: any, gameId: any) => void;
+  gameLoading?: boolean;
+}
+
+export default function HotPage({ onPlayGame, gameLoading = false }: HotPageProps) {
   const { loading, playGame } = usePlayGame();
+
+  // Handle lotto game click
+  const handleLottoClick = async (codeGame: any, gameId: any) => {
+    if (onPlayGame) {
+      // Use the parent's onPlayGame function for iframe loading
+      onPlayGame(codeGame, gameId);
+    } else {
+      // Fallback to direct playGame if no parent handler
+      await playGame(codeGame, gameId);
+    }
+  };
+
   return (
     <>
       {loading ? (
@@ -47,14 +65,27 @@ export default function HotPage() {
           </div>
           <div className="list-item">
             {GameLotto.map((item) => (
-              <div 
-                className={"card it-" + item.id} 
+              <div
+                className={"card it-" + item.id}
                 key={item.id}
-                onClick={() =>
-                  playGame(item.codeGame, item.gameId)
-                }
-                style={{ cursor: "pointer" }}
-                >
+                onClick={() => handleLottoClick(item.codeGame, item.gameId)}
+                style={{ 
+                  cursor: "pointer",
+                  opacity: gameLoading ? 0.7 : 1,
+                  pointerEvents: gameLoading ? 'none' : 'auto'
+                }}
+              >
+                {gameLoading && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 10
+                  }}>
+                    <LoadingComponent />
+                  </div>
+                )}
                 <Image
                   src={item.images}
                   className="img"

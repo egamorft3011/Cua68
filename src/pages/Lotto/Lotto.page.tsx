@@ -1,7 +1,7 @@
 "use client";
 import React, { cloneElement, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import usePlayGame from "@/hook/usePlayGame";
+import usePlayGame from "@/hook/usePlayGameInPage"; // Changed to usePlayGameInPage
 import SimpleBackdrop from "@/components/Loading/LoaddingPage";
 import {
   Box,
@@ -11,10 +11,12 @@ import {
   Tooltip,
   IconButton,
   useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { getListGame } from "@/services/GameApi.service";
 import { GameLotto } from "@/datafake/ListGame";
 import { GameSlotsMenu, ListMenu } from "@/datafake/Menu";
+import DraggableCloseButton from "@/components/subMenu/DraggableCloseButton";
 
 const commonImgStyles = {
   height: {
@@ -92,12 +94,52 @@ const buttonStyles = {
 };
 
 export default function LottoPage() {
-  const { loading, playGame } = usePlayGame();
+  const { loading, playGame } = usePlayGame(); // Using usePlayGameInPage hook
   const [acctiveMenu, setAcctiveMenu] = useState<string>("1");
   const listMenuRef = useRef<HTMLDivElement>(null);
   const gameSlotsMenuRef = useRef<HTMLDivElement>(null);
-  // Sử dụng media query string thay vì theme.breakpoints
-  const isMobile = useMediaQuery("(max-width: 600px)"); // Breakpoint xs thường là 600px
+  
+  // New state for iframe functionality
+  const [gameUrl, setGameUrl] = useState("");
+  const [isGameOpen, setIsGameOpen] = useState(false);
+  const [gameLoading, setGameLoading] = useState(false);
+  
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  // Add body class when game is open (hide other elements)
+  useEffect(() => {
+    if (isGameOpen) {
+      document.body.classList.add("game-open");
+    } else {
+      document.body.classList.remove("game-open");
+    }
+    return () => {
+      document.body.classList.remove("game-open");
+    };
+  }, [isGameOpen]);
+
+  // Handle play game with iframe
+  const handlePlayGame = async (codeGame: any, gameId: any) => {
+    setGameLoading(true);
+    try {
+      const url = await playGame(codeGame, gameId);
+      if (url) {
+        setGameUrl(url);
+        setIsGameOpen(true);
+      }
+    } catch (error) {
+      console.error("Error playing game:", error);
+    } finally {
+      setGameLoading(false);
+    }
+  };
+
+  // Handle close game
+  const handleCloseGame = () => {
+    setIsGameOpen(false);
+    setGameUrl("");
+  };
 
   // Hàm cuộn item active vào giữa màn hình
   const scrollToCenter = (
@@ -137,6 +179,16 @@ export default function LottoPage() {
 
   return (
     <>
+      {/* Global styles to hide elements when game is open */}
+      <style jsx global>{`
+        .game-open .floating-refund,
+        .game-open .menu-mobile,
+        .game-open footer,
+        .game-open .footer-mobile {
+          display: none;
+        }
+      `}</style>
+      
       {loading ? (
         <>
           <SimpleBackdrop />
@@ -154,7 +206,39 @@ export default function LottoPage() {
             }}
           ></Box>
         </>
+      ) : isGameOpen ? (
+        // Hiển thị game fullscreen với draggable close button
+        <Box
+          sx={{
+            width: "100%",
+            height: "100vh",
+            position: "relative",
+            overflow: "hidden",
+            paddingTop: isMobile ? "60px" : "80px",
+          }}
+        >
+          {/* Draggable Close Button */}
+          <DraggableCloseButton onClose={handleCloseGame} isMobile={isMobile} />
+          
+          {/* Iframe game */}
+          <Box sx={{ height: 'calc(100vh - 80px)', width: '100%'}}>
+            {gameUrl && (
+              <iframe
+                src={gameUrl}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  border: 'none',
+                }}
+                title="Lotto Game"
+                allow="camera; microphone; fullscreen; payment"
+                sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
+              />
+            )}
+          </Box>
+        </Box>
       ) : (
+        // Hiển thị danh sách game lotto
         <Box
           sx={{
             width: {
@@ -175,7 +259,6 @@ export default function LottoPage() {
             height={150}
             alt=""
             style={{ width: "100%" }}
-            // className="banner-games"
             loading="lazy"
           />
           <Box
@@ -211,7 +294,7 @@ export default function LottoPage() {
                       height={200}
                       layout="responsive"
                       placeholder="blur"
-                      blurDataURL="/images/Quay số - techplay - Lô đề 3 miền_1727969202.webp"
+                      blurDataURL="/images/Quay số - techplay - Lô đề 3 miền_1727969202.webp"
                       style={{
                         height: "100%",
                         width: "100%",
@@ -221,7 +304,7 @@ export default function LottoPage() {
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src =
-                          "/images/Quay số - techplay - Lô đề 3 miền_1727969202.webp"; // Đường dẫn fallback
+                          "/images/Quay số - techplay - Lô đề 3 miền_1727969202.webp"; // Đường dẫn fallback
                       }}
                     />
                   </Box>
@@ -229,11 +312,10 @@ export default function LottoPage() {
                   <Box sx={commonTextBoxStyles}>
                     <Button
                       sx={buttonStyles}
-                      onClick={() =>
-                        playGame(item.codeGame, item.gameId)
-                      }
+                      onClick={() => handlePlayGame(item.codeGame, item.gameId)}
+                      disabled={gameLoading}
                     >
-                      Chơi ngay
+                      {gameLoading ? "Đang tải..." : "Chơi ngay"}
                     </Button>
                   </Box>
                 </Box>
