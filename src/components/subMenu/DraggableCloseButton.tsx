@@ -118,32 +118,32 @@ const DraggableCloseButton: React.FC<DraggableCloseButtonProps> = ({
         left: `${position.x}px`,
         top: `${position.y}px`,
         zIndex: 1000,
-        backgroundColor: "rgba(0, 0, 0, 0.6)",
         color: "white",
-        minWidth: "50px",
-        height: "50px",
-        borderRadius: "50%",
+        minWidth: "80px",
+        height: "80px",
         cursor: isDragging ? 'grabbing' : 'grab',
         userSelect: 'none',
         touchAction: 'none',
         transition: isDragging ? 'none' : 'all 0.2s ease',
-        "&:hover": {
-          backgroundColor: "rgba(0, 0, 0, 0.8)",
-          transform: isDragging ? 'none' : 'scale(1.1)',
-        },
         "&:active": {
           transform: 'scale(0.95)',
         },
         fontSize: "18px",
         fontWeight: "bold",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
-        border: "2px solid rgba(255, 255, 255, 0.3)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
       }}
     >
-      <BackHome />
+      <img 
+        src="/assets/backhome.svg"
+        alt="Back Home"
+        style={{
+          width: "80px",
+          height: "80px",
+          pointerEvents: "none"
+        }}
+      />
     </Button>
   );
 };
