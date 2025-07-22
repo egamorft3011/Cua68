@@ -65,7 +65,6 @@ export default function HomePage({ pageConfig: initialPageConfig }: HomePageProp
 
   // Use the custom hook to get page config
   const { pageConfig, loading: configLoading } = usePageConfig(initialPageConfig);
-  console.log("PageConfig:", pageConfig);
 
   // Transform site_banner array to match the expected format
   const bannerImages = pageConfig?.site_banner?.map((banner, index) => ({
@@ -75,7 +74,7 @@ export default function HomePage({ pageConfig: initialPageConfig }: HomePageProp
     // number: someNumberValue
   })) || [];
   // Fallback to original slideImg if no site_banner is available
-     
+  //url img not found
   const slideImages = bannerImages.length > 0 ? bannerImages : slideImg;
   const slideMobileImages = bannerImages.length > 0 ? bannerImages : slideMBImg;
 
