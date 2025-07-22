@@ -29,6 +29,8 @@ import Carousel from "react-multi-carousel";
 import NumberCount from "@/components/NumberCount/NumberCount";
 import usePlayGame from "@/hook/usePlayGame";
 import DraggableCloseButton from "@/components/subMenu/DraggableCloseButton";
+import { PageConfig } from "@/interface/PageConfig.interface";
+import { usePageConfig } from "@/hook/usePageConfig";
 
 const responsiveSettings = [
   {
@@ -47,7 +49,11 @@ const responsiveSettings = [
   },
 ];
 
-export default function HomePage() {
+interface HomePageProps {
+  pageConfig?: PageConfig; // Optional prop for SSR/SSG pages
+}
+
+export default function HomePage({ pageConfig: initialPageConfig }: HomePageProps) {
   const [isFixed, setIsFixed] = useState(false);
   const [gameUrl, setGameUrl] = useState("");
   const [isGameOpen, setIsGameOpen] = useState(false);
@@ -56,6 +62,21 @@ export default function HomePage() {
   const { loading, playGame } = usePlayGame();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  // Use the custom hook to get page config
+  const { pageConfig, loading: configLoading } = usePageConfig(initialPageConfig);
+
+  // Transform site_banner array to match the expected format
+  const bannerImages = pageConfig?.site_banner?.map((banner, index) => ({
+    id: index + 1,
+    img: banner,
+    // You can add number property if needed for NumberCount component
+    // number: someNumberValue
+  })) || [];
+
+  // Fallback to original slideImg if no site_banner is available
+  const slideImages = bannerImages.length > 0 ? bannerImages : slideImg;
+  const slideMobileImages = bannerImages.length > 0 ? bannerImages : slideMBImg;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -101,6 +122,11 @@ export default function HomePage() {
     setIsGameOpen(false);
     setGameUrl("");
   };
+
+  // Show loading while fetching config (only if no initial config provided)
+  if (configLoading && !initialPageConfig) {
+    return <LoadingComponent />;
+  }
 
   // Nếu game đang mở, hiển thị game fullscreen
   if (isGameOpen) {
@@ -209,7 +235,7 @@ export default function HomePage() {
           slidesToSlide={1}
           swipeable
         >
-          {slideImg.map((item) => {
+          {slideImages.map((item) => {
             return (
               <div key={item.id} className="slide">
                 <Image
@@ -289,7 +315,7 @@ export default function HomePage() {
           slidesToSlide={1}
           swipeable
         >
-          {slideMBImg.map((item) => {
+          {slideMobileImages.map((item) => {
             return (
               <div key={item.id} className="slide">
                 <Image
