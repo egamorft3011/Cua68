@@ -65,16 +65,17 @@ export default function HomePage({ pageConfig: initialPageConfig }: HomePageProp
 
   // Use the custom hook to get page config
   const { pageConfig, loading: configLoading } = usePageConfig(initialPageConfig);
+  console.log("PageConfig:", pageConfig);
 
   // Transform site_banner array to match the expected format
   const bannerImages = pageConfig?.site_banner?.map((banner, index) => ({
     id: index + 1,
-    img: banner,
+    img: banner.image_url,
     // You can add number property if needed for NumberCount component
     // number: someNumberValue
   })) || [];
-
   // Fallback to original slideImg if no site_banner is available
+     
   const slideImages = bannerImages.length > 0 ? bannerImages : slideImg;
   const slideMobileImages = bannerImages.length > 0 ? bannerImages : slideMBImg;
 
@@ -246,11 +247,11 @@ export default function HomePage({ pageConfig: initialPageConfig }: HomePageProp
                   loading="lazy"
                   alt=""
                 />
-                {item.number && (
+                {item.id && (
                   <NumberCount
                     classname="slide-count"
                     numStart={1000}
-                    numEnd={item?.number}
+                    numEnd={item?.id}
                   />
                 )}
               </div>
@@ -326,11 +327,11 @@ export default function HomePage({ pageConfig: initialPageConfig }: HomePageProp
                   loading="lazy"
                   alt=""
                 />
-                {item.number && (
+                {item.id && (
                   <NumberCount
                     classname="slide-count"
                     numStart={1000}
-                    numEnd={item?.number}
+                    numEnd={item?.id}
                   />
                 )}
               </div>

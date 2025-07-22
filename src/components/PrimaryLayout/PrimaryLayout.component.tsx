@@ -77,7 +77,6 @@ interface PrimaryLayoutProps {
 }
 
 export default function PrimaryLayoutComponent({ children, pageConfig, user }: PrimaryLayoutProps) {
-  console.log("PageConfig:", pageConfig);
   const [menu, setMenu] = useState<number | undefined>(undefined);
   const router = useRouter();
   const path = usePathname();
