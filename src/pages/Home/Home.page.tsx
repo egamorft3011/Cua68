@@ -1,12 +1,5 @@
 "use client";
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-  useRef,
-} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./Home.css";
 import Image from "next/image";
 import { Slide } from "react-slideshow-image";
@@ -25,7 +18,8 @@ import { IBannerImg, INotification, IUser } from "@/shared/interfaces";
 import { useRouter } from "next/navigation";
 import LoadingComponent from "@/components/Loading";
 import swal from "sweetalert";
-import { Avatar, Box, Button, useMediaQuery, useTheme } from "@mui/material";
+import { Avatar, Box, Button, useMediaQuery, useTheme, Typography } from "@mui/material";
+import { contentInstance } from "@/configs/CustomizeAxios";
 import { properties, slideMBImg } from "@/datafake/slide";
 import { slideImg } from "@/datafake/slide";
 import HotPage from "./Hot/Hot.page";
@@ -33,7 +27,7 @@ import BannerListgamePage from "./BannerListgame/BannerListgame.page";
 import ListCasioPage from "./ListCasio/ListCasio.page";
 import Carousel from "react-multi-carousel";
 import NumberCount from "@/components/NumberCount/NumberCount";
-import usePlayGame from "@/hook/usePlayGameInPage";
+import usePlayGame from "@/hook/usePlayGame";
 import DraggableCloseButton from "@/components/subMenu/DraggableCloseButton";
 
 const responsiveSettings = [
@@ -129,18 +123,20 @@ export default function HomePage() {
             paddingTop: isMobile ? "60px" : "80px",
           }}
         >
-          {/* Draggable Close Button */}
           <DraggableCloseButton onClose={handleCloseGame} isMobile={isMobile} />
-
-          {/* Iframe game */}
-          <Box sx={{ height: 'calc(100vh - 80px)', width: '100%'}}>
+          <Box
+            sx={{
+              height: isMobile ? "calc(100vh - 60px)" : "calc(100vh - 130px)",
+              width: "100%",
+            }}
+          >
             {gameUrl && (
               <iframe
                 src={gameUrl}
                 style={{
-                  width: '100%',
-                  height: '100%',
-                  border: 'none',
+                  width: "100%",
+                  height: "100%",
+                  border: "none",
                 }}
                 title="Casino Game"
                 allow="camera; microphone; fullscreen; payment"
@@ -316,13 +312,8 @@ export default function HomePage() {
           })}
         </Carousel>
       </div>
-      <HotPage 
-        onPlayGame={handlePlayGame}
-      />
-      <BannerListgamePage 
-        onPlayGame={handlePlayGame}
-        gameLoading={gameLoading}
-      />
+      <HotPage onPlayGame={handlePlayGame} />
+      <BannerListgamePage onPlayGame={handlePlayGame} gameLoading={gameLoading} />
       <ListCasioPage />
     </div>
   );

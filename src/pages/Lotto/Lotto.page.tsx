@@ -221,7 +221,10 @@ export default function LottoPage() {
           <DraggableCloseButton onClose={handleCloseGame} isMobile={isMobile} />
           
           {/* Iframe game */}
-          <Box sx={{ height: 'calc(100vh - 80px)', width: '100%'}}>
+          <Box sx={{
+            height: isMobile ? 'calc(100vh - 60px)' : 'calc(100vh - 130px)',
+            width: '100%',
+          }}>
             {gameUrl && (
               <iframe
                 src={gameUrl}
