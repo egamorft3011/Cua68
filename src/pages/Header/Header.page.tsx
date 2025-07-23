@@ -60,7 +60,7 @@ export default function HeaderPage(props: propUser) {
   const [message, setMessage] = React.useState<any>(null);
   
   // Promotion popup states
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false); // Changed to false initially
   const [promotions, setPromotions] = useState<Promotion[]>([]);
   const [loadingPromotions, setLoadingPromotions] = useState(true);
   
@@ -78,6 +78,15 @@ export default function HeaderPage(props: propUser) {
   };
   const [device, setDevice] = useState("");
 
+  // Check if user has chosen to hide popup
+  const shouldShowPopup = () => {
+    if (typeof window !== 'undefined') {
+      const hidePopup = localStorage.getItem('hidePromotionPopup');
+      return hidePopup !== 'true';
+    }
+    return true;
+  };
+
   // Fetch promotions data
   const getPromotionData = async () => {
     setLoadingPromotions(true);
@@ -89,6 +98,10 @@ export default function HeaderPage(props: propUser) {
       });
       if (response.status) {
         setPromotions(response.data);
+        // Only show popup if there are promotions AND user hasn't disabled it
+        if (response.data.length > 0 && shouldShowPopup()) {
+          setShowPopup(true);
+        }
       } else {
         swal("Không thể tải danh sách khuyến mãi", "error");
       }
@@ -132,8 +145,7 @@ export default function HeaderPage(props: propUser) {
   useEffect(() => {
     const userAgent = navigator.userAgent;
     if (/iPhone|iPad|iPod/i.test(userAgent)) {
-      setDevice("iOS");
-    } else if (/Android/i.test(userAgent)) {
+      setDevice("iOS");    } else if (/Android/i.test(userAgent)) {
       setDevice("Android");
     } else {
       setDevice("Khác");
@@ -144,7 +156,7 @@ export default function HeaderPage(props: propUser) {
 
   return (
     <>
-      {/* Promotion Popup */}
+      {/* Promotion Popup - Only show if conditions are met */}
       {showPopup && !loadingPromotions && promotions.length > 0 && (
         <PromotionPopup promotions={promotions} onClose={handleClosePopup} />
       )}

@@ -27,7 +27,7 @@ import BannerListgamePage from "./BannerListgame/BannerListgame.page";
 import ListCasioPage from "./ListCasio/ListCasio.page";
 import Carousel from "react-multi-carousel";
 import NumberCount from "@/components/NumberCount/NumberCount";
-import usePlayGame from "@/hook/usePlayGame";
+import usePlayGame from "@/hook/usePlayGameInPage";
 import DraggableCloseButton from "@/components/subMenu/DraggableCloseButton";
 import { PageConfig } from "@/interface/PageConfig.interface";
 import { usePageConfig } from "@/hook/usePageConfig";
@@ -74,7 +74,7 @@ export default function HomePage({ pageConfig: initialPageConfig }: HomePageProp
     // number: someNumberValue
   })) || [];
   // Fallback to original slideImg if no site_banner is available
-  //url img not found
+  //url img banner not found
   const slideImages = bannerImages.length > 0 ? bannerImages : slideImg;
   const slideMobileImages = bannerImages.length > 0 ? bannerImages : slideMBImg;
 
